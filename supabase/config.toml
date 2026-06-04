@@ -1,0 +1,24 @@
+# Chirp Supabase project (edjtshisztwaunytdlxd)
+# See: https://supabase.com/docs/guides/cli/config
+
+project_id = "edjtshisztwaunytdlxd"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "storage", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15
+
+[studio]
+enabled = true
+port = 54323
+
+# Custom session auth uses X-Chirp-Session; gateway must accept anon JWT in Authorization
+[functions.make-server-b89d4352]
+verify_jwt = false

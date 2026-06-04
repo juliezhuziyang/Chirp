@@ -1,0 +1,71 @@
+export const NEED_OPTIONS = [
+  { id: "care-advice", label: "Better care advice" },
+  { id: "understanding", label: "Understanding my bird better" },
+  { id: "training", label: "Training help" },
+  { id: "behavior", label: "Behavior analysis" },
+  { id: "health", label: "Health monitoring" },
+  { id: "emotion", label: "Emotion understanding" },
+  { id: "other", label: "Other" },
+] as const;
+
+export const PARROT_SPECIES = [
+  "African Grey",
+  "Amazon",
+  "Budgerigar (Budgie)",
+  "Cockatiel",
+  "Cockatoo",
+  "Conure",
+  "Eclectus",
+  "Lovebird",
+  "Macaw",
+  "Parakeet",
+  "Quaker Parrot",
+  "Ring-necked Parakeet",
+  "Senegal Parrot",
+  "Sun Conure",
+  "Other",
+] as const;
+
+export const CONTRIBUTE_EMOTIONS = [
+  "Happy",
+  "Excited",
+  "Playful",
+  "Curious",
+  "Relaxed",
+  "Calm",
+  "Content",
+  "Affectionate",
+  "Friendly",
+  "Alert",
+  "Energetic",
+  "Interested",
+  "Confident",
+  "Vocal",
+  "Seeking Attention",
+  "Bored",
+  "Lonely",
+  "Anxious",
+  "Nervous",
+  "Stressed",
+  "Frustrated",
+  "Angry",
+  "Fearful",
+  "Defensive",
+  "Aggressive",
+  "Jealous",
+  "Territorial",
+  "Tired",
+  "Sleepy",
+  "Unwell",
+  "Other",
+] as const;
+
+export const AUTH_TOKEN_KEY = "chirp_auth_token";
+
+export const DASHBOARD_NAV = [
+  { id: "sound", path: "/dashboard/sound", label: "Sound Emotion", icon: "waves" },
+  { id: "my-bird", path: "/dashboard/my-bird", label: "My Bird Profile", icon: "bird" },
+  { id: "community", path: "/dashboard/community", label: "Community", icon: "users" },
+  { id: "friends", path: "/dashboard/friends", label: "Friends", icon: "heart" },
+  { id: "contribute", path: "/dashboard/contribute", label: "Contribute", icon: "gift" },
+] as const;
