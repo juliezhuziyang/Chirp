@@ -25,11 +25,11 @@ Run `npm run dev` to start the development server.
 
 ## Bird sound ML analysis
 
-Sound Emotion Recognition uses the Python service in `../ml-service` (not notebooks at runtime).
+Sound Emotion Recognition uses the Python service in `ml-service/` (not notebooks at runtime).
 
   1. Install Python 3.10+, then:
      ```powershell
-     cd ..\ml-service
+     cd ml-service
      python -m venv .venv
      .\.venv\Scripts\activate
      pip install -r requirements.txt

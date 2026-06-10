@@ -1,5 +1,5 @@
 # Start the Chirp ML analysis API (port 8000)
-$mlRoot = Resolve-Path (Join-Path $PSScriptRoot "..\..\ml-service")
+$mlRoot = Resolve-Path (Join-Path $PSScriptRoot "..\ml-service")
 Set-Location $mlRoot
 
 if (-not (Test-Path "models\bird_classifier.joblib")) {
