@@ -38,7 +38,20 @@ Sound Emotion Recognition uses the Python service in `ml-service/` (not notebook
      ```
      Or from `Chirp`: `.\scripts\start-ml-service.ps1`
 
-  2. In another terminal: `npm run dev` (proxies `/api/ml` → port 8000).
+  2. In another terminal: `npm run dev` (proxies `/api/ml` → local ML service by default).
+
+### Production ML service (Railway)
+
+The ML API can run on [Railway](https://railway.app) instead of localhost. See `ml-service/README.md` for deploy steps.
+
+1. Deploy the `ml-service` directory as a Railway service (Root Directory: `ml-service`).
+2. Copy the Railway public URL and set it on your frontend host:
+   ```
+   VITE_ML_SERVICE_URL=https://your-ml-service.up.railway.app
+   ```
+3. Rebuild/redeploy the frontend. Sound analysis will call Railway directly.
+
+For local dev against Railway, set `VITE_ML_SERVICE_URL` in `.env` (see `.env.example`).
 
 Redeploy the edge function after social API changes:
 `supabase functions deploy make-server-b89d4352 --project-ref edjtshisztwaunytdlxd --no-verify-jwt`

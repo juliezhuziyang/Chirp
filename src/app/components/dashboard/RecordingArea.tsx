@@ -75,7 +75,7 @@ export function RecordingArea() {
         );
       } else if (msg.includes("Failed to fetch") || msg.includes("NetworkError")) {
         setAnalysisMessage(
-          "Cannot reach the analysis service. Ensure the ML API is running on port 8000.",
+          "Cannot reach the analysis service. Check that VITE_ML_SERVICE_URL is set for production, or start the local ML service for development.",
         );
       } else {
         setAnalysisMessage(msg);

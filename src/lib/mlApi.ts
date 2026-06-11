@@ -1,8 +1,8 @@
 import { convertBlobToWav } from "./audioToWav";
+import { getMlServiceBaseUrl } from "./mlConfig";
 import type { MlAnalyzeResponse } from "./types";
 
-const ML_BASE =
-  import.meta.env.VITE_ML_SERVICE_URL?.replace(/\/$/, "") || "/api/ml";
+const ML_BASE = getMlServiceBaseUrl();
 
 export type AnalysisStep =
   | "uploading"
