@@ -46,6 +46,18 @@ app.add_middleware(
 )
 
 
+@app.get("/")
+def root():
+    return {
+        "service": "Chirp ML Service",
+        "endpoints": {
+            "health": "GET /health",
+            "analyze": "POST /analyze (multipart field: audio)",
+        },
+        "modelsLoaded": pipeline is not None,
+    }
+
+
 @app.get("/health")
 def health():
     return {"ok": True, "modelsLoaded": pipeline is not None}

@@ -1,0 +1,7 @@
+# Frontend service — set Railway Root Directory to "/" (repo root, NOT ml-service).
+[build]
+buildCommand = "npm ci && npm run build"
+
+[deploy]
+startCommand = "npm start"
+restartPolicyType = "ON_FAILURE"
