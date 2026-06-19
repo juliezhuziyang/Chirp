@@ -34,9 +34,11 @@ This service is configured for [Railway](https://railway.app) using the Dockerfi
 | Setting | Value |
 |---------|--------|
 | **Root Directory** | `ml-service` |
-| **Builder** | Dockerfile (auto-detected from `railway.toml`) |
-| **Start Command** | `uvicorn main:app --host 0.0.0.0 --port $PORT` (set in `railway.toml`) |
+| **Builder** | Dockerfile (from `railway.toml`) |
+| **Custom Start Command** | **Leave empty** — do not use Caddy or `file-server`; the Dockerfile runs uvicorn |
 | **Health Check Path** | `/health` |
+
+Remove any custom start command in Railway Settings → Deploy (e.g. `caddy file-server ...`). That overrides the Dockerfile and fails because Caddy is not installed in the ML image.
 
 No separate build command is required; the Dockerfile runs `pip install -r requirements.txt` during the image build. Model files (`models/*.joblib`) and training CSVs (`data/*.csv`) are copied into the image from the repository.
 

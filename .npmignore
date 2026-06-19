@@ -1,0 +1,2 @@
+# Avoid stale Vite cache interfering with Railway/Nixpacks installs
+.vite
