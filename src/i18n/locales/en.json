@@ -174,6 +174,21 @@
     "dimensionArousal": "Arousal:",
     "dimensionSocial": "Social:"
   },
+  "analysisFeedback": {
+    "title": "Was this result accurate?",
+    "accurate": "Yes, it looks right",
+    "inaccurate": "No, not quite",
+    "thanks": "Thank you for your feedback! It helps us improve Chirp.",
+    "correctionTitle": "What emotion do you think your bird was showing?",
+    "correctionSubtitle": "Select all that apply",
+    "behaviorLabel": "What was your bird doing at the time? (optional)",
+    "behaviorPlaceholder": "e.g. pacing, fluffing feathers, singing to you...",
+    "submit": "Submit feedback",
+    "submitting": "Submitting...",
+    "correctionThanks": "Thank you! Your correction has been sent.",
+    "selectEmotion": "Please select at least one emotion",
+    "submitFailed": "Failed to submit feedback. Please try again."
+  },
   "chart": {
     "valence": "Valence",
     "arousal": "Arousal",

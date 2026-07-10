@@ -5,6 +5,7 @@ import type { UserAvatar } from "./avatars.ts";
 
 const COMMUNITY_KEY = "community:posts";
 const FEEDBACK_KEY = "feedback:entries";
+const ANALYSIS_FEEDBACK_KEY = "feedback:analysis";
 const ACTIVITY_KEY = "activity:feed";
 
 function friendsKey(userId: string) {
@@ -518,6 +519,74 @@ export async function saveFeedback(userId: string, text: string) {
     });
   } catch (e) {
     console.error("Feedback email failed:", e);
+  }
+
+  return entry;
+}
+
+export async function saveAnalysisFeedback(
+  userId: string,
+  data: {
+    accurate: boolean;
+    predictedState: string;
+    scores: { valence: number; arousal: number; socialEngagement: number };
+    birdProbability?: number;
+    correctedEmotions?: string[];
+    behaviorNotes?: string;
+  },
+) {
+  const user = await auth.getUserById(userId);
+  if (!user) throw new Error("USER_NOT_FOUND");
+
+  const entry = {
+    id: crypto.randomUUID(),
+    userId,
+    userName: user.name,
+    userEmail: user.email,
+    birdName: user.bird?.name ?? "—",
+    birdSpecies: user.bird?.species ?? "—",
+    accurate: data.accurate,
+    predictedState: data.predictedState,
+    scores: data.scores,
+    birdProbability: data.birdProbability ?? null,
+    correctedEmotions: data.correctedEmotions ?? [],
+    behaviorNotes: data.behaviorNotes?.trim() ?? "",
+    createdAt: new Date().toISOString(),
+  };
+
+  const entries = (await kv.get(ANALYSIS_FEEDBACK_KEY)) as unknown[] | null;
+  const all = Array.isArray(entries) ? entries : [];
+  all.unshift(entry);
+  await kv.set(ANALYSIS_FEEDBACK_KEY, all.slice(0, 500));
+
+  const accuracyLabel = data.accurate ? "Confirmed accurate" : "User correction";
+  const emotionBlock = data.accurate
+    ? ""
+    : `<p><strong>User-selected emotions:</strong> ${
+        (data.correctedEmotions ?? []).join(", ") || "—"
+      }</p>
+       <p><strong>Behavior notes:</strong> ${entry.behaviorNotes || "—"}</p>`;
+
+  try {
+    await sendResendEmail({
+      subject: `Chirp Analysis Feedback — ${accuracyLabel}`,
+      html: `
+        <h2>Analysis Feedback</h2>
+        <p><strong>User:</strong> ${user.name} (${user.email})</p>
+        <p><strong>Bird:</strong> ${entry.birdName} (${entry.birdSpecies})</p>
+        <p><strong>Result accurate:</strong> ${data.accurate ? "Yes" : "No"}</p>
+        <p><strong>Predicted state:</strong> ${data.predictedState}</p>
+        <p><strong>Scores:</strong> Valence ${data.scores.valence.toFixed(2)}, Arousal ${data.scores.arousal.toFixed(2)}, Social ${data.scores.socialEngagement.toFixed(2)}</p>
+        ${
+          data.birdProbability != null
+            ? `<p><strong>Bird detection confidence:</strong> ${Math.round(data.birdProbability * 100)}%</p>`
+            : ""
+        }
+        ${emotionBlock}
+      `,
+    });
+  } catch (e) {
+    console.error("Analysis feedback email failed:", e);
   }
 
   return entry;

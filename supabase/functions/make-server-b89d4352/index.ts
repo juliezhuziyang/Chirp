@@ -466,4 +466,32 @@ app.post("/feedback", async (c) => {
   }
 });
 
+app.post("/feedback/analysis", async (c) => {
+  const user = await requireUser(c);
+  if (!user) return c.json({ error: "Unauthorized" }, 401);
+  try {
+    const body = await c.req.json();
+    const entry = await social.saveAnalysisFeedback(user.id, {
+      accurate: Boolean(body.accurate),
+      predictedState: String(body.predictedState ?? ""),
+      scores: {
+        valence: Number(body.scores?.valence ?? 0),
+        arousal: Number(body.scores?.arousal ?? 0),
+        socialEngagement: Number(body.scores?.socialEngagement ?? 0),
+      },
+      birdProbability:
+        body.birdProbability != null ? Number(body.birdProbability) : undefined,
+      correctedEmotions: Array.isArray(body.correctedEmotions)
+        ? body.correctedEmotions.map(String)
+        : undefined,
+      behaviorNotes: body.behaviorNotes ? String(body.behaviorNotes) : undefined,
+    });
+    return c.json({ success: true, entry });
+  } catch (e) {
+    const detail = e instanceof Error ? e.message : String(e);
+    console.error("feedback/analysis:", detail);
+    return c.json({ error: "Failed to save analysis feedback", detail }, 500);
+  }
+});
+
 Deno.serve(app.fetch);

@@ -142,6 +142,20 @@ export function submitFeedback(text: string) {
   });
 }
 
+export function submitAnalysisFeedback(payload: {
+  accurate: boolean;
+  predictedState: string;
+  scores: { valence: number; arousal: number; socialEngagement: number };
+  birdProbability?: number;
+  correctedEmotions?: string[];
+  behaviorNotes?: string;
+}) {
+  return socialRequest<{ success: boolean }>("/feedback/analysis", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
 export async function fileToBase64(file: File): Promise<string> {
   const buffer = await file.arrayBuffer();
   const bytes = new Uint8Array(buffer);

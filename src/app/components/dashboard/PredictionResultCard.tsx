@@ -6,6 +6,7 @@ import { interpretEmotionScores } from "../../../lib/emotionInterpretation";
 import { localizeEmotionInterpretation } from "../../../lib/localizeEmotion";
 import { EmotionRadarChart } from "./EmotionRadarChart";
 import { SocialSoundIntervention } from "./SocialSoundIntervention";
+import { AnalysisFeedback } from "./AnalysisFeedback";
 
 interface PredictionResultCardProps {
   scores: MlEmotionScores;
@@ -87,6 +88,12 @@ export function PredictionResultCard({ scores, birdProbability }: PredictionResu
       </div>
 
       <SocialSoundIntervention scores={scores} />
+
+      <AnalysisFeedback
+        scores={scores}
+        predictedState={interpretation.combinedState}
+        birdProbability={birdProbability}
+      />
     </motion.div>
   );
 }

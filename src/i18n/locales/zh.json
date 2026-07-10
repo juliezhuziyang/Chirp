@@ -161,7 +161,7 @@
   "prediction": {
     "birdDetected": "检测到鸟叫声",
     "confidence": "（置信度 {{percent}}%）",
-    "valence": "效价",
+    "valence": "心情",
     "arousal": "唤醒度",
     "socialEngagement": "社交参与度",
     "rangeValence": "-5 至 +5",
@@ -170,29 +170,44 @@
     "detectedState": "检测到的状态",
     "detailedInterpretation": "详细解读",
     "careAdvice": "养护建议",
-    "dimensionValence": "效价：",
+    "dimensionValence": "心情：",
     "dimensionArousal": "唤醒度：",
     "dimensionSocial": "社交："
   },
+  "analysisFeedback": {
+    "title": "你觉得这个结果准确吗？",
+    "accurate": "准确",
+    "inaccurate": "不太准确",
+    "thanks": "感谢你的反馈！这对我们改进 Chirp 非常有帮助。",
+    "correctionTitle": "你觉得这段声音表达的是什么情绪？",
+    "correctionSubtitle": "可多选",
+    "behaviorLabel": "当时鸟儿在做什么？（选填）",
+    "behaviorPlaceholder": "例如：来回踱步、蓬羽、对你唱歌……",
+    "submit": "提交反馈",
+    "submitting": "提交中...",
+    "correctionThanks": "感谢！你的纠正意见已发送。",
+    "selectEmotion": "请至少选择一种情绪",
+    "submitFailed": "提交失败，请重试。"
+  },
   "chart": {
-    "valence": "效价",
+    "valence": "心情",
     "arousal": "唤醒度",
     "social": "社交",
     "emotion": "情绪",
-    "legendValence": "效价 −5 至 +5",
+    "legendValence": "心情 −5 至 +5",
     "legendArousal": "唤醒度 0 至 5",
     "legendSocial": "社交 −5 至 +5"
   },
   "vas3d": {
-    "valenceNegative": "效价（−）",
-    "valencePositive": "效价（+）",
+    "valenceNegative": "心情（−）",
+    "valencePositive": "心情（+）",
     "arousalPositive": "唤醒度（+）",
     "socialNegative": "社交（−）",
     "socialPositive": "社交（+）",
     "dragHint": "拖动旋转",
     "viewHint": "从不同角度查看三维图表",
     "valuesTitle": "VAS 数值",
-    "valenceLabel": "效价：",
+    "valenceLabel": "心情：",
     "arousalLabel": "唤醒度：",
     "socialLabel": "社交："
   },
@@ -311,8 +326,8 @@
       },
       "vas": {
         "title": "VAS 值推断",
-        "description": "运用先进的信号处理与特征提取技术，从每段音频样本中提取并推断 VAS（效价、唤醒度、社交参与度）值。",
-        "details": "效价衡量正负情绪，唤醒度表示能量水平，社交参与度反映互动意图。"
+        "description": "运用先进的信号处理与特征提取技术，从每段音频样本中提取并推断 VAS（心情、唤醒度、社交参与度）值。",
+        "details": "心情衡量正负情绪，唤醒度表示能量水平，社交参与度反映互动意图。"
       },
       "cnn": {
         "title": "CNN 机器学习",
