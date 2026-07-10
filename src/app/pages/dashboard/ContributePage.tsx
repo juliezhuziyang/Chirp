@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Gift, Upload, CheckCircle, Bug } from "lucide-react";
-import { CONTRIBUTE_EMOTIONS } from "../../../lib/constants";
+import { useContributeEmotions } from "../../../lib/useTranslatedOptions";
 import * as socialApi from "../../../lib/socialApi";
 import { notifyActivityFeedUpdated } from "../../../lib/activityFeed";
 
 export default function ContributePage() {
+  const contributeEmotions = useContributeEmotions();
   const [emotions, setEmotions] = useState<string[]>([]);
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -144,18 +145,18 @@ export default function ContributePage() {
               </h3>
               <p className="text-sm text-gray-500 mb-4">Select all that apply</p>
               <div className="flex flex-wrap gap-2 max-h-64 overflow-y-auto">
-                {CONTRIBUTE_EMOTIONS.map((e) => (
+                {contributeEmotions.map((e) => (
                   <button
-                    key={e}
+                    key={e.id}
                     type="button"
-                    onClick={() => toggleEmotion(e)}
+                    onClick={() => toggleEmotion(e.id)}
                     className={`px-3 py-2 rounded-xl text-sm border-2 transition-colors ${
-                      emotions.includes(e)
+                      emotions.includes(e.id)
                         ? "border-orange-500 bg-orange-50 text-orange-800 font-medium"
                         : "border-orange-100 text-gray-600 hover:border-orange-200"
                     }`}
                   >
-                    {e}
+                    {e.label}
                   </button>
                 ))}
               </div>

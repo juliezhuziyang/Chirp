@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { ArrowLeft, ArrowRight, Bird, Search } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../contexts/AuthContext";
-import { NEED_OPTIONS, PARROT_SPECIES } from "../../../lib/constants";
+import { useNeedOptions, useParrotSpecies } from "../../../lib/useTranslatedOptions";
 import { formatAgeLabel } from "../../../lib/localAuth";
 import type { BirdSex, OnboardingData } from "../../../lib/types";
 import { OnboardingProgress } from "./OnboardingProgress";
@@ -21,6 +21,8 @@ type StepId =
 export function OnboardingFlow() {
   const navigate = useNavigate();
   const { completeOnboarding } = useAuth();
+  const needOptions = useNeedOptions();
+  const parrotSpecies = useParrotSpecies();
   const [stepIndex, setStepIndex] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [speciesSearch, setSpeciesSearch] = useState("");
@@ -43,8 +45,10 @@ export function OnboardingFlow() {
   const currentStep = steps[stepIndex];
   const totalSteps = steps.length;
 
-  const filteredSpecies = PARROT_SPECIES.filter((s) =>
-    s.toLowerCase().includes(speciesSearch.toLowerCase()),
+  const filteredSpecies = parrotSpecies.filter(
+    (s) =>
+      s.label.toLowerCase().includes(speciesSearch.toLowerCase()) ||
+      s.id.toLowerCase().includes(speciesSearch.toLowerCase()),
   );
 
   const toggleNeed = (id: string) => {
@@ -153,10 +157,10 @@ export function OnboardingFlow() {
                 <div className="grid gap-2 max-h-64 overflow-y-auto pr-1">
                   {filteredSpecies.map((s) => (
                     <OptionCard
-                      key={s}
-                      label={s}
-                      selected={species === s}
-                      onClick={() => setSpecies(s)}
+                      key={s.id}
+                      label={s.label}
+                      selected={species === s.id}
+                      onClick={() => setSpecies(s.id)}
                     />
                   ))}
                 </div>
@@ -208,7 +212,7 @@ export function OnboardingFlow() {
 
             {currentStep === "needs" && (
               <QuestionBlock title="What do you need the most?" subtitle="Select all that apply">
-                {NEED_OPTIONS.map((opt) => (
+                {needOptions.map((opt) => (
                   <OptionCard
                     key={opt.id}
                     label={opt.label}

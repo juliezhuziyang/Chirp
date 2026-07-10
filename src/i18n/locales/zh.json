@@ -1,0 +1,110 @@
+{
+  "nav": {
+    "home": "首页",
+    "about": "关于我们",
+    "howItWorks": "工作原理",
+    "demo": "演示",
+    "login": "登录",
+    "getStarted": "立即开始",
+    "dashboard": "控制台"
+  },
+  "footer": {
+    "tagline": "架起沟通的桥梁",
+    "subtitle": "智能音频分析",
+    "copyright": "© 2026 Chirp. 保留所有权利。"
+  },
+  "home": {
+    "badge": "AI 驱动的沟通理解",
+    "heroTitle": "读懂你的",
+    "heroTitleHighlight": "爱情鸟",
+    "heroTitleEnd": "的心声",
+    "heroDescription": "Chirp 运用 AI 技术，帮助人类更好地理解宠物爱情鸟的声音表达，通过智能音频分析实现更有同理心、更科学的养护。",
+    "learnMore": "了解更多",
+    "featuresTitle": "智能音频分析",
+    "featuresSubtitle": "运用先进 AI 技术，解读爱情鸟的各种叫声",
+    "featurePatternTitle": "模式识别",
+    "featurePatternDesc": "运用先进的音频分析算法，探索爱情鸟叫声中的规律，识别重复出现的声音与行为模式。",
+    "featureBehaviorTitle": "行为分类",
+    "featureBehaviorDesc": "将常见叫声归类为行为或情绪类别，帮助你更好地理解宠物的需求。",
+    "featureAiTitle": "AI 智能洞察",
+    "featureAiDesc": "借助机器学习提供可解读的反馈，支持更明智、更有同理心的宠物养护。",
+    "ctaTitle": "准备好更懂你的爱情鸟了吗？",
+    "ctaDescription": "加入我们，一起探索 AI 如何架起人类与心爱宠物之间的沟通桥梁。",
+    "ctaButton": "开启 Chirp 之旅"
+  },
+  "loading": {
+    "tagline": "读懂爱情鸟的心声",
+    "loadingExperience": "正在加载"
+  },
+  "dashboard": {
+    "soundEmotion": "声音情绪",
+    "myBirdProfile": "我的鸟儿档案",
+    "community": "社区",
+    "friends": "好友",
+    "contribute": "贡献数据",
+    "logout": "退出登录",
+    "birdParent": "鸟主人"
+  },
+  "language": {
+    "switchTo": "EN"
+  },
+  "needs": {
+    "care-advice": "更好的养护建议",
+    "understanding": "更了解我的鸟",
+    "training": "训练帮助",
+    "behavior": "行为分析",
+    "health": "健康监测",
+    "emotion": "情绪理解",
+    "other": "其他"
+  },
+  "species": {
+    "African Grey": "非洲灰鹦鹉",
+    "Amazon": "亚马逊鹦鹉",
+    "Budgerigar (Budgie)": "虎皮鹦鹉",
+    "Cockatiel": "玄凤鹦鹉",
+    "Cockatoo": "凤头鹦鹉",
+    "Conure": "锥尾鹦鹉",
+    "Eclectus": "折衷鹦鹉",
+    "Lovebird": "爱情鸟",
+    "Macaw": "金刚鹦鹉",
+    "Parakeet": "长尾小鹦鹉",
+    "Quaker Parrot": "和尚鹦鹉",
+    "Ring-necked Parakeet": "环颈鹦鹉",
+    "Senegal Parrot": "塞内加尔鹦鹉",
+    "Sun Conure": "太阳锥尾鹦鹉",
+    "Other": "其他"
+  },
+  "emotions": {
+    "Happy": "开心",
+    "Excited": "兴奋",
+    "Playful": "顽皮",
+    "Curious": "好奇",
+    "Relaxed": "放松",
+    "Calm": "平静",
+    "Content": "满足",
+    "Affectionate": "亲昵",
+    "Friendly": "友好",
+    "Alert": "警觉",
+    "Energetic": "精力充沛",
+    "Interested": "感兴趣",
+    "Confident": "自信",
+    "Vocal": "爱叫",
+    "Seeking Attention": "寻求关注",
+    "Bored": "无聊",
+    "Lonely": "孤独",
+    "Anxious": "焦虑",
+    "Nervous": "紧张",
+    "Stressed": "压力大",
+    "Frustrated": "沮丧",
+    "Angry": "生气",
+    "Fearful": "害怕",
+    "Defensive": "防御",
+    "Aggressive": "攻击性",
+    "Jealous": "嫉妒",
+    "Territorial": "领地意识",
+    "Tired": "疲惫",
+    "Sleepy": "困倦",
+    "Unwell": "不舒服",
+    "Other": "其他"
+  }
+}

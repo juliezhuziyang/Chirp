@@ -1,15 +1,17 @@
 import { motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 import { Sparkles, Bird } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { RecordingArea } from "../../components/dashboard/RecordingArea";
 import { UserAvatar } from "../../components/shared/UserAvatar";
-import { NEED_OPTIONS } from "../../../lib/constants";
+import { useNeedOptions } from "../../../lib/useTranslatedOptions";
 import { formatAgeLabel } from "../../../lib/localAuth";
 
 export default function SoundRecognitionPage() {
   const { user } = useAuth();
+  const needOptions = useNeedOptions();
   const needLabels = user?.needs
-    .map((id) => NEED_OPTIONS.find((n) => n.id === id)?.label)
+    .map((id) => needOptions.find((n) => n.id === id)?.label)
     .filter(Boolean);
 
   return (

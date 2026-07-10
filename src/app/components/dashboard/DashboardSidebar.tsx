@@ -1,5 +1,6 @@
 import { NavLink, useLocation, useNavigate } from "react-router";
 import { motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 import {
   Waves,
   Bird,
@@ -16,17 +17,19 @@ import * as socialApi from "../../../lib/socialApi";
 import {
   FRIENDS_NOTIFICATIONS_EVENT,
 } from "../../../lib/friendsNotifications";
+import { LanguageSwitcher } from "../LanguageSwitcher";
 
 const NAV = [
-  { to: "/dashboard/sound", label: "Sound Emotion", icon: Waves, end: false },
-  { to: "/dashboard/my-bird", label: "My Bird Profile", icon: Bird, end: false },
-  { to: "/dashboard/community", label: "Community", icon: Users, end: false },
-  { to: "/dashboard/friends", label: "Friends", icon: Heart, end: false, badge: true },
-  { to: "/dashboard/contribute", label: "Contribute", icon: Gift, end: false },
+  { to: "/dashboard/sound", labelKey: "dashboard.soundEmotion", icon: Waves, end: false },
+  { to: "/dashboard/my-bird", labelKey: "dashboard.myBirdProfile", icon: Bird, end: false },
+  { to: "/dashboard/community", labelKey: "dashboard.community", icon: Users, end: false },
+  { to: "/dashboard/friends", labelKey: "dashboard.friends", icon: Heart, end: false, badge: true },
+  { to: "/dashboard/contribute", labelKey: "dashboard.contribute", icon: Gift, end: false },
 ] as const;
 
 export function DashboardSidebar() {
   const { user, logout } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const [expanded, setExpanded] = useState(false);
@@ -93,7 +96,7 @@ export function DashboardSidebar() {
             <div className="min-w-0">
               <p className="font-semibold text-gray-900 truncate text-sm">{user.name}</p>
               <p className="text-xs text-gray-500 truncate">
-                {user.bird?.name || "Bird parent"}
+                {user.bird?.name || t("dashboard.birdParent")}
               </p>
             </div>
           )}
@@ -101,7 +104,7 @@ export function DashboardSidebar() {
       )}
 
       <nav className="flex-1 py-3 px-2 space-y-1 overflow-y-auto">
-        {NAV.map(({ to, label, icon: Icon, badge }) => (
+        {NAV.map(({ to, labelKey, icon: Icon, badge }) => (
           <NavLink
             key={to}
             to={to}
@@ -114,7 +117,7 @@ export function DashboardSidebar() {
             }
           >
             <Icon className="w-5 h-5 shrink-0" />
-            {expanded && <span className="text-sm font-medium whitespace-nowrap">{label}</span>}
+            {expanded && <span className="text-sm font-medium whitespace-nowrap">{t(labelKey)}</span>}
             {badge && showFriendsBadge && (
               <span className="absolute top-2 left-9 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white" />
             )}
@@ -122,14 +125,17 @@ export function DashboardSidebar() {
         ))}
       </nav>
 
-      <div className="p-2 border-t border-orange-50">
+      <div className="p-2 border-t border-orange-50 space-y-1">
+        <div className={`flex ${expanded ? "justify-start px-3" : "justify-center"}`}>
+          <LanguageSwitcher />
+        </div>
         <button
           type="button"
           onClick={handleLogout}
           className="w-full flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-red-50 hover:text-red-600 transition-colors"
         >
           <LogOut className="w-5 h-5 shrink-0" />
-          {expanded && <span className="text-sm font-medium">Logout</span>}
+          {expanded && <span className="text-sm font-medium">{t("dashboard.logout")}</span>}
         </button>
       </div>
     </motion.aside>

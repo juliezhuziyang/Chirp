@@ -1,0 +1,110 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "howItWorks": "How It Works",
+    "demo": "Demo",
+    "login": "Login",
+    "getStarted": "Get Started",
+    "dashboard": "Dashboard"
+  },
+  "footer": {
+    "tagline": "Bridging the Communication Gap",
+    "subtitle": "Intelligent Audio Analysis",
+    "copyright": "© 2026 Chirp. All rights reserved."
+  },
+  "home": {
+    "badge": "AI-Powered Communication",
+    "heroTitle": "Understanding Your",
+    "heroTitleHighlight": "Lovebird's",
+    "heroTitleEnd": "Voice",
+    "heroDescription": "Chirp uses AI to help humans better understand the vocal expressions of pet lovebirds, fostering more empathetic and informed care through intelligent audio analysis.",
+    "learnMore": "Learn More",
+    "featuresTitle": "Intelligent Audio Analysis",
+    "featuresSubtitle": "Advanced AI technology to decode your lovebird's vocalizations",
+    "featurePatternTitle": "Pattern Recognition",
+    "featurePatternDesc": "Explore patterns in lovebird vocalizations using advanced audio analysis algorithms to identify recurring sounds and behaviors.",
+    "featureBehaviorTitle": "Behavioral Classification",
+    "featureBehaviorDesc": "Classify common vocal sounds into broad behavioral or emotional categories for better understanding of your pet's needs.",
+    "featureAiTitle": "AI-Powered Insights",
+    "featureAiDesc": "Leverage machine learning to provide interpretable feedback that supports more informed and empathetic pet care.",
+    "ctaTitle": "Ready to Better Understand Your Lovebird?",
+    "ctaDescription": "Join us in exploring how AI can bridge the communication gap between humans and their beloved pets.",
+    "ctaButton": "Start Your Journey with Chirp"
+  },
+  "loading": {
+    "tagline": "Understanding Your Lovebird's Voice",
+    "loadingExperience": "Loading Experience"
+  },
+  "dashboard": {
+    "soundEmotion": "Sound Emotion",
+    "myBirdProfile": "My Bird Profile",
+    "community": "Community",
+    "friends": "Friends",
+    "contribute": "Contribute",
+    "logout": "Logout",
+    "birdParent": "Bird parent"
+  },
+  "language": {
+    "switchTo": "中文"
+  },
+  "needs": {
+    "care-advice": "Better care advice",
+    "understanding": "Understanding my bird better",
+    "training": "Training help",
+    "behavior": "Behavior analysis",
+    "health": "Health monitoring",
+    "emotion": "Emotion understanding",
+    "other": "Other"
+  },
+  "species": {
+    "African Grey": "African Grey",
+    "Amazon": "Amazon",
+    "Budgerigar (Budgie)": "Budgerigar (Budgie)",
+    "Cockatiel": "Cockatiel",
+    "Cockatoo": "Cockatoo",
+    "Conure": "Conure",
+    "Eclectus": "Eclectus",
+    "Lovebird": "Lovebird",
+    "Macaw": "Macaw",
+    "Parakeet": "Parakeet",
+    "Quaker Parrot": "Quaker Parrot",
+    "Ring-necked Parakeet": "Ring-necked Parakeet",
+    "Senegal Parrot": "Senegal Parrot",
+    "Sun Conure": "Sun Conure",
+    "Other": "Other"
+  },
+  "emotions": {
+    "Happy": "Happy",
+    "Excited": "Excited",
+    "Playful": "Playful",
+    "Curious": "Curious",
+    "Relaxed": "Relaxed",
+    "Calm": "Calm",
+    "Content": "Content",
+    "Affectionate": "Affectionate",
+    "Friendly": "Friendly",
+    "Alert": "Alert",
+    "Energetic": "Energetic",
+    "Interested": "Interested",
+    "Confident": "Confident",
+    "Vocal": "Vocal",
+    "Seeking Attention": "Seeking Attention",
+    "Bored": "Bored",
+    "Lonely": "Lonely",
+    "Anxious": "Anxious",
+    "Nervous": "Nervous",
+    "Stressed": "Stressed",
+    "Frustrated": "Frustrated",
+    "Angry": "Angry",
+    "Fearful": "Fearful",
+    "Defensive": "Defensive",
+    "Aggressive": "Aggressive",
+    "Jealous": "Jealous",
+    "Territorial": "Territorial",
+    "Tired": "Tired",
+    "Sleepy": "Sleepy",
+    "Unwell": "Unwell",
+    "Other": "Other"
+  }
+}

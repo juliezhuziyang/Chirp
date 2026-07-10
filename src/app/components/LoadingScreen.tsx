@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
 import { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import logoImage from 'figma:asset/2c2fce460c7929b55577efe6720c0ce0c73a5838.png';
 
 interface LoadingScreenProps {
@@ -7,13 +8,14 @@ interface LoadingScreenProps {
 }
 
 export function LoadingScreen({ onComplete }: LoadingScreenProps) {
+  const { t } = useTranslation();
   const [progress, setProgress] = useState(0);
   const onCompleteRef = useRef(onComplete);
   onCompleteRef.current = onComplete;
 
   useEffect(() => {
-    const duration = 2500; // 2.5 seconds total loading time
-    const interval = 20; // Update every 20ms
+    const duration = 2500;
+    const interval = 20;
     const steps = duration / interval;
     const increment = 100 / steps;
     
@@ -25,7 +27,7 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
         clearInterval(timer);
         setTimeout(() => {
           onCompleteRef.current();
-        }, 500); // Wait 500ms after reaching 100% before transitioning
+        }, 500);
       } else {
         setProgress(Math.min(currentProgress, 100));
       }
@@ -40,7 +42,6 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
       exit={{ opacity: 0, scale: 1.1 }}
       transition={{ duration: 1, ease: 'easeInOut' }}
     >
-      {/* Large background percentage */}
       <motion.div
         className="absolute inset-0 flex items-center justify-center select-none"
         initial={{ opacity: 0 }}
@@ -52,7 +53,6 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
         </div>
       </motion.div>
 
-      {/* Animated circles in background */}
       <motion.div
         className="absolute w-96 h-96 border-4 border-white/20 rounded-full"
         animate={{ scale: [1, 1.5, 1], rotate: 360 }}
@@ -64,7 +64,6 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
         transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
       />
 
-      {/* Main content */}
       <div className="relative z-10 text-center">
         <motion.div
           initial={{ scale: 0, rotate: -180 }}
@@ -92,10 +91,9 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="text-white/90 text-2xl mb-12 font-medium"
         >
-          Understanding Your Lovebird's Voice
+          {t('loading.tagline')}
         </motion.p>
         
-        {/* Progress percentage */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -107,7 +105,6 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
           </div>
         </motion.div>
 
-        {/* Loading bar */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -121,14 +118,13 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
           />
         </motion.div>
 
-        {/* Loading text */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 1.2 }}
           className="text-white/70 text-sm mt-6 tracking-widest uppercase"
         >
-          Loading Experience
+          {t('loading.loadingExperience')}
         </motion.p>
       </div>
     </motion.div>

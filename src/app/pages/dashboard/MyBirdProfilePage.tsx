@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 import { Bird, Pencil, Save, X, Upload, Camera } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
-import { NEED_OPTIONS, PARROT_SPECIES } from "../../../lib/constants";
+import { useNeedOptions, useParrotSpecies } from "../../../lib/useTranslatedOptions";
 import { formatAgeLabel } from "../../../lib/localAuth";
 import { BIRD_AVATAR_PRESETS } from "../../../lib/avatars";
 import type { BirdSex, UserAvatar as UserAvatarData } from "../../../lib/types";
@@ -11,6 +12,9 @@ import { UserAvatar } from "../../components/shared/UserAvatar";
 
 export default function MyBirdProfilePage() {
   const { user, updateProfile } = useAuth();
+  const { t } = useTranslation();
+  const needOptions = useNeedOptions();
+  const parrotSpecies = useParrotSpecies();
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -38,8 +42,10 @@ export default function MyBirdProfilePage() {
     resetForm();
   }, [user]);
 
-  const filteredSpecies = PARROT_SPECIES.filter((s) =>
-    s.toLowerCase().includes(speciesSearch.toLowerCase()),
+  const filteredSpecies = parrotSpecies.filter(
+    (s) =>
+      s.label.toLowerCase().includes(speciesSearch.toLowerCase()) ||
+      s.id.toLowerCase().includes(speciesSearch.toLowerCase()),
   );
 
   const toggleNeed = (id: string) => {
@@ -212,14 +218,16 @@ export default function MyBirdProfilePage() {
                     >
                       <option value="">Select species</option>
                       {filteredSpecies.map((s) => (
-                        <option key={s} value={s}>
-                          {s}
+                        <option key={s.id} value={s.id}>
+                          {s.label}
                         </option>
                       ))}
                     </select>
                   </>
                 ) : (
-                  <p className="text-gray-800">{user.bird?.species || "—"}</p>
+                  <p className="text-gray-800">
+                    {user.bird?.species ? t(`species.${user.bird.species}`) : "—"}
+                  </p>
                 )}
               </Field>
 
@@ -278,7 +286,7 @@ export default function MyBirdProfilePage() {
           <Field label="Your needs & preferences" editing={editing}>
             {editing ? (
               <div className="flex flex-wrap gap-2">
-                {NEED_OPTIONS.map((opt) => (
+                {needOptions.map((opt) => (
                   <button
                     key={opt.id}
                     type="button"
@@ -303,7 +311,7 @@ export default function MyBirdProfilePage() {
                       key={id}
                       className="text-sm bg-orange-100 text-orange-800 px-3 py-1 rounded-full"
                     >
-                      {NEED_OPTIONS.find((n) => n.id === id)?.label ?? id}
+                      {needOptions.find((n) => n.id === id)?.label ?? id}
                     </span>
                   ))
                 )}

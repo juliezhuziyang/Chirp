@@ -1,9 +1,12 @@
 import { Link } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import logoImage from 'figma:asset/2c2fce460c7929b55577efe6720c0ce0c73a5838.png';
 import { useAuth } from '../contexts/AuthContext';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 export function Navigation() {
   const { isAuthenticated } = useAuth();
+  const { t } = useTranslation();
 
   return (
     <nav
@@ -17,36 +20,37 @@ export function Navigation() {
             Chirp
           </span>
         </Link>
-        <div className="flex items-center gap-6 sm:gap-8">
+        <div className="flex items-center gap-4 sm:gap-6">
           <Link to="/" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
-            Home
+            {t('nav.home')}
           </Link>
           <Link to="/about" className="text-gray-700 hover:text-orange-600 transition-colors font-medium hidden sm:inline">
-            About
+            {t('nav.about')}
           </Link>
           <Link to="/how-it-works" className="text-gray-700 hover:text-orange-600 transition-colors font-medium hidden md:inline">
-            How It Works
+            {t('nav.howItWorks')}
           </Link>
           <Link to="/demo" className="text-gray-700 hover:text-orange-600 transition-colors font-medium hidden md:inline">
-            Demo
+            {t('nav.demo')}
           </Link>
+          <LanguageSwitcher />
           {isAuthenticated ? (
             <Link
               to="/dashboard/sound"
               className="bg-gradient-to-r from-orange-500 to-amber-500 text-white px-6 py-2 rounded-full font-semibold shadow-lg hover:shadow-xl transition-shadow"
             >
-              Dashboard
+              {t('nav.dashboard')}
             </Link>
           ) : (
             <>
               <Link to="/login" className="text-gray-700 hover:text-orange-600 transition-colors font-medium">
-                Login
+                {t('nav.login')}
               </Link>
               <Link
                 to="/register"
                 className="bg-gradient-to-r from-orange-500 to-amber-500 text-white px-6 py-2 rounded-full font-semibold shadow-lg hover:shadow-xl transition-shadow"
               >
-                Get Started
+                {t('nav.getStarted')}
               </Link>
             </>
           )}

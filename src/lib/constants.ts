@@ -1,12 +1,18 @@
-export const NEED_OPTIONS = [
-  { id: "care-advice", label: "Better care advice" },
-  { id: "understanding", label: "Understanding my bird better" },
-  { id: "training", label: "Training help" },
-  { id: "behavior", label: "Behavior analysis" },
-  { id: "health", label: "Health monitoring" },
-  { id: "emotion", label: "Emotion understanding" },
-  { id: "other", label: "Other" },
+export const NEED_OPTION_IDS = [
+  "care-advice",
+  "understanding",
+  "training",
+  "behavior",
+  "health",
+  "emotion",
+  "other",
 ] as const;
+
+/** @deprecated Use useNeedOptions() for translated labels */
+export const NEED_OPTIONS = NEED_OPTION_IDS.map((id) => ({
+  id,
+  label: id,
+}));
 
 export const PARROT_SPECIES = [
   "African Grey",
@@ -26,7 +32,7 @@ export const PARROT_SPECIES = [
   "Other",
 ] as const;
 
-export const CONTRIBUTE_EMOTIONS = [
+export const CONTRIBUTE_EMOTION_IDS = [
   "Happy",
   "Excited",
   "Playful",
@@ -60,12 +66,15 @@ export const CONTRIBUTE_EMOTIONS = [
   "Other",
 ] as const;
 
+/** @deprecated Use useContributeEmotions() for translated labels */
+export const CONTRIBUTE_EMOTIONS = CONTRIBUTE_EMOTION_IDS;
+
 export const AUTH_TOKEN_KEY = "chirp_auth_token";
 
 export const DASHBOARD_NAV = [
-  { id: "sound", path: "/dashboard/sound", label: "Sound Emotion", icon: "waves" },
-  { id: "my-bird", path: "/dashboard/my-bird", label: "My Bird Profile", icon: "bird" },
-  { id: "community", path: "/dashboard/community", label: "Community", icon: "users" },
-  { id: "friends", path: "/dashboard/friends", label: "Friends", icon: "heart" },
-  { id: "contribute", path: "/dashboard/contribute", label: "Contribute", icon: "gift" },
+  { id: "sound", path: "/dashboard/sound", labelKey: "dashboard.soundEmotion", icon: "waves" },
+  { id: "my-bird", path: "/dashboard/my-bird", labelKey: "dashboard.myBirdProfile", icon: "bird" },
+  { id: "community", path: "/dashboard/community", labelKey: "dashboard.community", icon: "users" },
+  { id: "friends", path: "/dashboard/friends", labelKey: "dashboard.friends", icon: "heart" },
+  { id: "contribute", path: "/dashboard/contribute", labelKey: "dashboard.contribute", icon: "gift" },
 ] as const;
