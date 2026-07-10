@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Pause, Play, RotateCcw } from "lucide-react";
 import type { AudioLibraryClip } from "../../../lib/types";
 
@@ -14,6 +15,7 @@ interface InterventionAudioPlayerProps {
 }
 
 export function InterventionAudioPlayer({ clip }: InterventionAudioPlayerProps) {
+  const { t } = useTranslation();
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -35,28 +37,29 @@ export function InterventionAudioPlayer({ clip }: InterventionAudioPlayerProps) 
     const audio = audioRef.current;
     if (!audio) return;
     if (audio.paused) {
-      void audio.play().catch(() => setError("Could not play this clip."));
+      void audio.play().catch(() => setError(t("intervention.playError")));
     } else {
       audio.pause();
     }
-  }, []);
+  }, [t]);
 
   const replay = useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
     audio.currentTime = 0;
-    void audio.play().catch(() => setError("Could not play this clip."));
-  }, []);
+    void audio.play().catch(() => setError(t("intervention.playError")));
+  }, [t]);
 
   const onSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
     const audio = audioRef.current;
     if (!audio) return;
-    const t = Number(e.target.value);
-    audio.currentTime = t;
-    setCurrentTime(t);
+    const seekTime = Number(e.target.value);
+    audio.currentTime = seekTime;
+    setCurrentTime(seekTime);
   };
 
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
+  const speciesLabel = clip.species ? t(`species.${clip.species}`, { defaultValue: clip.species }) : null;
 
   return (
     <div className="rounded-xl border border-teal-200 bg-white p-4 space-y-3">
@@ -69,13 +72,15 @@ export function InterventionAudioPlayer({ clip }: InterventionAudioPlayerProps) 
         onTimeUpdate={() => setCurrentTime(audioRef.current?.currentTime ?? 0)}
         onLoadedMetadata={() => setDuration(audioRef.current?.duration ?? 0)}
         onEnded={() => setPlaying(false)}
-        onError={() => setError("Audio file unavailable. Try another clip.")}
+        onError={() => setError(t("intervention.audioUnavailable"))}
       />
 
       <div>
         <p className="text-sm font-semibold text-gray-900">{clip.title}</p>
-        {clip.species && (
-          <p className="text-xs text-gray-500 mt-0.5">{clip.species} · verified sample</p>
+        {speciesLabel && (
+          <p className="text-xs text-gray-500 mt-0.5">
+            {speciesLabel} · {t("intervention.verifiedSample")}
+          </p>
         )}
       </div>
 
@@ -88,7 +93,7 @@ export function InterventionAudioPlayer({ clip }: InterventionAudioPlayerProps) 
           value={currentTime}
           onChange={onSeek}
           className="flex-1 h-2 accent-teal-600 cursor-pointer"
-          aria-label="Playback progress"
+          aria-label={t("intervention.playbackProgress")}
         />
         <span className="text-xs text-gray-500 tabular-nums shrink-0">
           {formatTime(currentTime)} / {formatTime(duration)}
@@ -109,7 +114,7 @@ export function InterventionAudioPlayer({ clip }: InterventionAudioPlayerProps) 
           className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-600 text-white text-sm font-semibold hover:bg-teal-700 transition-colors"
         >
           {playing ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-          {playing ? "Pause" : "Play"}
+          {playing ? t("common.pause") : t("common.play")}
         </button>
         <button
           type="button"
@@ -117,7 +122,7 @@ export function InterventionAudioPlayer({ clip }: InterventionAudioPlayerProps) 
           className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-teal-300 text-teal-800 text-sm font-semibold hover:bg-teal-50 transition-colors"
         >
           <RotateCcw className="w-4 h-4" />
-          Replay
+          {t("common.replay")}
         </button>
       </div>
 

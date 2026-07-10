@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from "motion/react";
+import { useTranslation } from "react-i18next";
 import { Check, UserPlus, X } from "lucide-react";
 import { UserAvatar } from "./UserAvatar";
 import { formatAgeLabel } from "../../../lib/localAuth";
@@ -23,27 +24,29 @@ export function ProfilePopup({
   relationship = "none",
   relationshipLoading,
 }: ProfilePopupProps) {
+  const { t } = useTranslation();
+
   if (!profile) return null;
 
   const isFriends = relationship === "friends";
   const requestSent = relationship === "pending_sent";
   const requestReceived = relationship === "pending_received";
 
-  let friendButtonLabel = "Add Friend";
+  let friendButtonLabel = t("profilePopup.addFriend");
   let friendButtonDisabled = false;
   let friendButtonClass =
     "mt-4 w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 text-white font-semibold disabled:opacity-60";
 
   if (isFriends) {
-    friendButtonLabel = "Already Friends";
+    friendButtonLabel = t("profilePopup.alreadyFriends");
     friendButtonDisabled = true;
     friendButtonClass =
       "mt-4 w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-green-100 text-green-800 border-2 border-green-300 font-semibold cursor-default";
   } else if (requestSent) {
-    friendButtonLabel = "Request Sent";
+    friendButtonLabel = t("profilePopup.requestSent");
     friendButtonDisabled = true;
   } else if (requestReceived) {
-    friendButtonLabel = "Respond in Friends";
+    friendButtonLabel = t("profilePopup.respondInFriends");
     friendButtonDisabled = true;
   }
 
@@ -77,18 +80,19 @@ export function ProfilePopup({
                 <h3 className="mt-4 text-xl font-bold text-gray-900">{profile.name}</h3>
                 {profile.birdName && (
                   <div className="mt-4 w-full bg-orange-50 rounded-2xl p-4 text-left space-y-2">
-                    <p className="text-sm font-semibold text-orange-800">Bird profile</p>
+                    <p className="text-sm font-semibold text-orange-800">{t("profilePopup.birdProfile")}</p>
                     <p className="text-gray-700">
-                      <span className="text-gray-500">Name:</span> {profile.birdName}
+                      <span className="text-gray-500">{t("profilePopup.nameLabel")}</span> {profile.birdName}
                     </p>
                     {profile.birdSpecies && (
                       <p className="text-gray-700">
-                        <span className="text-gray-500">Species:</span> {profile.birdSpecies}
+                        <span className="text-gray-500">{t("profilePopup.speciesLabel")}</span>{" "}
+                        {t(`species.${profile.birdSpecies}`, { defaultValue: profile.birdSpecies })}
                       </p>
                     )}
                     {profile.birdAgeMonths != null && (
                       <p className="text-gray-700">
-                        <span className="text-gray-500">Age:</span>{" "}
+                        <span className="text-gray-500">{t("profilePopup.ageLabel")}</span>{" "}
                         {formatAgeLabel(profile.birdAgeMonths)}
                       </p>
                     )}
@@ -106,7 +110,7 @@ export function ProfilePopup({
                     ) : (
                       <UserPlus className="w-4 h-4" />
                     )}
-                    {relationshipLoading ? "Loading…" : friendButtonLabel}
+                    {relationshipLoading ? t("common.loadingEllipsis") : friendButtonLabel}
                   </button>
                 )}
               </div>

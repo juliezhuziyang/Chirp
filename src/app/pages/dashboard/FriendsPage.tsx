@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 import { Heart, Check, X, Send } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import * as socialApi from "../../../lib/socialApi";
@@ -15,6 +16,7 @@ import { UserAvatar } from "../../components/shared/UserAvatar";
 const ACTIVITY_POLL_MS = 20000;
 
 export default function FriendsPage() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [friends, setFriends] = useState<FriendEntry[]>([]);
   const [incoming, setIncoming] = useState<FriendRequest[]>([]);
@@ -97,14 +99,14 @@ export default function FriendsPage() {
       <div>
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-2">
           <Heart className="w-8 h-8 text-orange-500" />
-          Friends
+          {t("friends.title")}
         </h1>
-        <p className="text-gray-500 mt-1">Stay connected with other bird parents</p>
+        <p className="text-gray-500 mt-1">{t("friends.subtitle")}</p>
       </div>
 
       {incoming.length > 0 && (
         <section className="bg-white rounded-2xl border border-orange-100 p-5 shadow-sm">
-          <h2 className="font-bold text-gray-900 mb-4">Friend requests</h2>
+          <h2 className="font-bold text-gray-900 mb-4">{t("friends.friendRequests")}</h2>
           <div className="space-y-3">
             {incoming.map((req) => (
               <div
@@ -141,13 +143,11 @@ export default function FriendsPage() {
 
       <div className="grid lg:grid-cols-2 gap-6">
         <section className="bg-white rounded-2xl border border-orange-100 p-5 shadow-sm">
-          <h2 className="font-bold text-gray-900 mb-4">Friends list</h2>
+          <h2 className="font-bold text-gray-900 mb-4">{t("friends.friendsList")}</h2>
           {loading ? (
-            <p className="text-gray-500 text-sm">Loading...</p>
+            <p className="text-gray-500 text-sm">{t("common.loading")}</p>
           ) : friends.length === 0 ? (
-            <p className="text-gray-500 text-sm">
-              No friends yet. Add friends from Community profiles!
-            </p>
+            <p className="text-gray-500 text-sm">{t("friends.noFriends")}</p>
           ) : (
             <ul className="space-y-2">
               {friends.map((f) => (
@@ -176,10 +176,12 @@ export default function FriendsPage() {
         </section>
 
         <section className="bg-white rounded-2xl border border-orange-100 p-5 shadow-sm min-h-[280px] flex flex-col">
-          <h2 className="font-bold text-gray-900 mb-4">Messages</h2>
+          <h2 className="font-bold text-gray-900 mb-4">{t("friends.messages")}</h2>
           {selectedFriend ? (
             <>
-              <p className="text-sm text-gray-500 mb-3">Chat with {selectedFriend.name}</p>
+              <p className="text-sm text-gray-500 mb-3">
+                {t("friends.chatWith", { name: selectedFriend.name })}
+              </p>
               <div className="flex-1 overflow-y-auto space-y-2 mb-3 max-h-48">
                 {messages.map((m) => (
                   <div
@@ -199,7 +201,7 @@ export default function FriendsPage() {
                   value={chatText}
                   onChange={(e) => setChatText(e.target.value)}
                   className="flex-1 px-3 py-2 rounded-xl border border-orange-100 text-sm"
-                  placeholder="Type a message..."
+                  placeholder={t("friends.messagePlaceholder")}
                   onKeyDown={(e) => e.key === "Enter" && sendMessage()}
                 />
                 <button
@@ -212,23 +214,20 @@ export default function FriendsPage() {
               </div>
             </>
           ) : (
-            <p className="text-gray-500 text-sm">Select a friend to start chatting</p>
+            <p className="text-gray-500 text-sm">{t("friends.selectFriend")}</p>
           )}
         </section>
       </div>
 
       <section className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl border border-orange-100 p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="font-bold text-gray-900">Activity feed</h2>
-          <span className="text-xs text-gray-500">Latest 5 · updates live</span>
+          <h2 className="font-bold text-gray-900">{t("friends.activityFeed")}</h2>
+          <span className="text-xs text-gray-500">{t("friends.activityMeta")}</span>
         </div>
         {activityLoading ? (
-          <p className="text-gray-500 text-sm">Loading activity…</p>
+          <p className="text-gray-500 text-sm">{t("friends.loadingActivity")}</p>
         ) : activity.length === 0 ? (
-          <p className="text-gray-500 text-sm">
-            No recent activity yet. When you or your friends analyze vocalizations, post in
-            Community, or connect as friends, updates will appear here.
-          </p>
+          <p className="text-gray-500 text-sm">{t("friends.noActivity")}</p>
         ) : (
           <div className="space-y-4">
             {activity.map((item) => (

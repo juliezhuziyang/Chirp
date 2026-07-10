@@ -1,5 +1,6 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { useTranslation } from "react-i18next";
 import { Mic, Upload, Square, Sparkles, Bird, AlertCircle } from "lucide-react";
 import type { AnalysisStatus, MlEmotionScores } from "../../../lib/types";
 import { analyzeBirdAudio, type AnalysisStep } from "../../../lib/mlApi";
@@ -9,18 +10,28 @@ import { notifyActivityFeedUpdated } from "../../../lib/activityFeed";
 import { WaveformVisualizer } from "./WaveformVisualizer";
 import { PredictionResultCard } from "./PredictionResultCard";
 
-const STEP_LABELS: Record<AnalysisStep, string> = {
-  uploading: "Uploading audio…",
-  extracting: "Extracting acoustic features…",
-  detecting_bird: "Detecting bird vocalizations…",
-  predicting: "Predicting emotional dimensions…",
-  done: "Finalizing results…",
-};
-
-const NOT_BIRD_DEFAULT =
-  "We couldn't confidently detect bird vocalizations in this recording. Try moving closer to your bird and reducing background noise.";
+function translateAnalysisError(message: string, t: (key: string) => string): string {
+  if (message.includes("Could not decode this audio format")) {
+    return t("errors.audioDecodeFailed");
+  }
+  if (message.includes("Invalid response from analysis service")) {
+    return t("errors.invalidResponse");
+  }
+  if (message.includes("models not loaded") || message.includes("503")) {
+    return t("errors.modelsNotLoaded");
+  }
+  if (message.includes("Failed to fetch") || message.includes("NetworkError")) {
+    return t("errors.networkError");
+  }
+  const statusMatch = message.match(/Analysis failed \((\d+)\)/);
+  if (statusMatch) {
+    return t("errors.analysisFailed", { status: statusMatch[1] });
+  }
+  return message;
+}
 
 export function RecordingArea() {
+  const { t } = useTranslation();
   const [status, setStatus] = useState<AnalysisStatus>("idle");
   const [analysisMessage, setAnalysisMessage] = useState("");
   const [analysisStep, setAnalysisStep] = useState<AnalysisStep | null>(null);
@@ -47,7 +58,7 @@ export function RecordingArea() {
 
       if (!result.birdDetected) {
         setNotBird(true);
-        setAnalysisMessage(result.message || NOT_BIRD_DEFAULT);
+        setAnalysisMessage(result.message || t("recording.notBirdDefault"));
         setStatus("complete");
         return;
       }
@@ -68,20 +79,10 @@ export function RecordingArea() {
       setStatus("complete");
     } catch (err) {
       setStatus("error");
-      const msg = err instanceof Error ? err.message : "Something went wrong.";
-      if (msg.includes("models not loaded") || msg.includes("503")) {
-        setAnalysisMessage(
-          "The analysis service is not ready. Start the ML service (see ml-service/README.md) and run train_models.py.",
-        );
-      } else if (msg.includes("Failed to fetch") || msg.includes("NetworkError")) {
-        setAnalysisMessage(
-          "Cannot reach the analysis service. Check that VITE_ML_SERVICE_URL is set for production, or start the local ML service for development.",
-        );
-      } else {
-        setAnalysisMessage(msg);
-      }
+      const msg = err instanceof Error ? err.message : t("errors.generic");
+      setAnalysisMessage(translateAnalysisError(msg, t));
     }
-  }, []);
+  }, [t]);
 
   const startRecording = async () => {
     try {
@@ -92,7 +93,7 @@ export function RecordingArea() {
         if (e.data.size > 0) chunksRef.current.push(e.data);
       };
       recorder.onstop = () => {
-        stream.getTracks().forEach((t) => t.stop());
+        stream.getTracks().forEach((track) => track.stop());
         const blob = new Blob(chunksRef.current, { type: "audio/webm" });
         processAudio(blob);
       };
@@ -102,7 +103,7 @@ export function RecordingArea() {
       resetResults();
     } catch {
       setStatus("error");
-      setAnalysisMessage("Microphone access denied or unavailable.");
+      setAnalysisMessage(t("errors.microphoneDenied"));
     }
   };
 
@@ -129,6 +130,10 @@ export function RecordingArea() {
   const isRecording = status === "recording";
   const isBusy = status === "analyzing" || status === "uploading";
 
+  const stepLabel = analysisStep
+    ? t(`recording.steps.${analysisStep}`)
+    : t("recording.analyzingDefault");
+
   return (
     <motion.section
       initial={{ opacity: 0, y: 30 }}
@@ -146,7 +151,7 @@ export function RecordingArea() {
         <div className="p-8 sm:p-10 text-center">
           <div className="inline-flex items-center gap-2 bg-orange-100 px-4 py-1.5 rounded-full mb-6">
             <Sparkles className="w-4 h-4 text-orange-600" />
-            <span className="text-sm font-semibold text-orange-700">Bird Sound Analysis</span>
+            <span className="text-sm font-semibold text-orange-700">{t("recording.badge")}</span>
           </div>
 
           <motion.div
@@ -176,10 +181,8 @@ export function RecordingArea() {
                 className="mt-6 flex flex-col items-center gap-3"
               >
                 <div className="w-10 h-10 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
-                <p className="text-gray-600 font-medium">
-                  {analysisStep ? STEP_LABELS[analysisStep] : "Analyzing bird vocalizations…"}
-                </p>
-                <p className="text-sm text-gray-400">Running ML pipeline on your recording</p>
+                <p className="text-gray-600 font-medium">{stepLabel}</p>
+                <p className="text-sm text-gray-400">{t("recording.analyzingPipeline")}</p>
               </motion.div>
             )}
 
@@ -226,7 +229,7 @@ export function RecordingArea() {
                   className="flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold text-lg shadow-xl hover:shadow-2xl transition-shadow"
                 >
                   <Mic className="w-5 h-5" />
-                  Start Recording
+                  {t("recording.startRecording")}
                 </motion.button>
               ) : (
                 <motion.button
@@ -237,7 +240,7 @@ export function RecordingArea() {
                   className="flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-red-500 text-white font-bold text-lg shadow-xl"
                 >
                   <Square className="w-5 h-5 fill-current" />
-                  Stop Recording
+                  {t("recording.stopRecording")}
                 </motion.button>
               )}
 
@@ -250,7 +253,7 @@ export function RecordingArea() {
                 className="flex items-center justify-center gap-2 px-8 py-4 rounded-2xl border-2 border-orange-200 bg-white text-gray-800 font-bold text-lg hover:border-orange-400 hover:bg-orange-50 transition-all disabled:opacity-50"
               >
                 <Upload className="w-5 h-5 text-orange-500" />
-                Upload Audio
+                {t("recording.uploadAudio")}
               </motion.button>
               <input
                 ref={fileInputRef}
@@ -271,7 +274,7 @@ export function RecordingArea() {
               }}
               className="mt-6 text-orange-600 font-semibold hover:underline"
             >
-              Record again
+              {t("common.recordAgain")}
             </button>
           )}
         </div>

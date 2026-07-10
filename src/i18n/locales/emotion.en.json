@@ -1,0 +1,418 @@
+{
+  "states": {
+    "euphoric_and_outgoing": {
+      "name": "Euphoric and Outgoing",
+      "explanation": "Your bird sounds elated, highly energized, and strongly drawn to social contact.",
+      "careAdvice": [
+        "Share in their enthusiasm with supervised play.",
+        "Offer complex foraging and exploration tasks.",
+        "Ensure rest time follows high-energy sessions.",
+        "Rotate toys to keep stimulation healthy, not overwhelming."
+      ]
+    },
+    "playful_and_enthusiastic": {
+      "name": "Playful and Enthusiastic",
+      "explanation": "Your bird sounds upbeat, energized, and eager to interact.",
+      "careAdvice": [
+        "Offer enrichment activities and foraging toys.",
+        "Provide supervised interaction and gentle play.",
+        "Encourage exploration and positive training sessions.",
+        "Ensure adequate rest after active periods."
+      ]
+    },
+    "happy_and_socially_engaged": {
+      "name": "Happy and Socially Engaged",
+      "explanation": "Clear positive mood with active interest in social contact.",
+      "careAdvice": [
+        "Encourage interaction when your bird approaches you.",
+        "Offer enrichment toys and shared activities.",
+        "Continue your current care routine.",
+        "Rotate toys to sustain mental stimulation."
+      ]
+    },
+    "cheerful_and_conversational": {
+      "name": "Cheerful and Conversational",
+      "explanation": "Warm, positive vocalizing with a sociable, chatty quality.",
+      "careAdvice": [
+        "Respond with calm, friendly speech to reinforce bonding.",
+        "Offer mirror-time or gentle call-and-response.",
+        "Keep a predictable daily interaction window."
+      ]
+    },
+    "upbeat_and_interactive": {
+      "name": "Upbeat and Interactive",
+      "explanation": "Positive energy with willingness to engage when invited.",
+      "careAdvice": [
+        "Initiate short training or play when your bird is receptive.",
+        "Use treats and praise for cooperative behavior.",
+        "Avoid overstimulation from loud environments."
+      ]
+    },
+    "content_and_companionable": {
+      "name": "Content and Companionable",
+      "explanation": "Settled happiness with a friendly, low-key social presence.",
+      "careAdvice": [
+        "Sit nearby and offer quiet companionship.",
+        "Maintain consistent feeding and sleep routines.",
+        "Provide gentle head scratches if your bird solicits them."
+      ]
+    },
+    "pleased_and_attentive": {
+      "name": "Pleased and Attentive",
+      "explanation": "Mildly positive mood with focused awareness of surroundings.",
+      "careAdvice": [
+        "Offer a new perch view or safe window exposure.",
+        "Introduce one new toy at a time.",
+        "Keep interactions brief and positive."
+      ]
+    },
+    "relaxed_and_content": {
+      "name": "Relaxed and Content",
+      "explanation": "Your bird appears calm, comfortable, and at ease.",
+      "careAdvice": [
+        "Maintain your current daily routine.",
+        "Offer gentle interaction when your bird initiates.",
+        "Continue positive reinforcement for calm behavior.",
+        "Keep the environment quiet and predictable."
+      ]
+    },
+    "serene_and_restful": {
+      "name": "Serene and Restful",
+      "explanation": "Very low stimulation with a peaceful, settled tone.",
+      "careAdvice": [
+        "This may be normal rest—avoid disturbing sleep.",
+        "Ensure 10–12 hours of dark, quiet time nightly.",
+        "Monitor only if this follows a sudden behavior change."
+      ]
+    },
+    "calm_and_observant": {
+      "name": "Calm and Observant",
+      "explanation": "Your bird seems settled, attentive, and mildly socially aware.",
+      "careAdvice": [
+        "Maintain a steady, low-stress routine.",
+        "Offer optional enrichment without pressure.",
+        "Watch for cues before initiating interaction.",
+        "Keep perches and sightlines comfortable."
+      ]
+    },
+    "quietly_curious": {
+      "name": "Quietly Curious",
+      "explanation": "Low-key alertness with gentle interest in the environment.",
+      "careAdvice": [
+        "Place foraging items within easy reach.",
+        "Allow your bird to explore at their own pace.",
+        "Use soft speech rather than sudden approaches."
+      ]
+    },
+    "mellow_and_self_sufficient": {
+      "name": "Mellow and Self-Sufficient",
+      "explanation": "Comfortable mood while focused on solo activity.",
+      "careAdvice": [
+        "Respect independent play time.",
+        "Ensure toys and perches support solo enrichment.",
+        "Check in periodically without forcing contact."
+      ]
+    },
+    "bright_and_attentive": {
+      "name": "Bright and Attentive",
+      "explanation": "Neutral-to-positive tone with engaged, watchful energy.",
+      "careAdvice": [
+        "Offer puzzle feeders or shredding toys.",
+        "Keep a consistent daily schedule.",
+        "Reward calm alertness with a small treat."
+      ]
+    },
+    "energetic_but_self_contained": {
+      "name": "Energetic but Self-Contained",
+      "explanation": "High activity directed inward rather than toward social contact.",
+      "careAdvice": [
+        "Channel energy into flying, climbing, or foraging.",
+        "Let your bird choose when to engage socially.",
+        "Ensure safe out-of-cage exercise if possible."
+      ]
+    },
+    "alert_but_reserved": {
+      "name": "Alert but Reserved",
+      "explanation": "Your bird is attentive but not strongly seeking interaction.",
+      "careAdvice": [
+        "Respect personal space while staying nearby.",
+        "Use soft speech and slow movements.",
+        "Offer enrichment that can be used independently.",
+        "Build trust with predictable routines."
+      ]
+    },
+    "vocal_and_attention_seeking": {
+      "name": "Vocal and Attention-Seeking",
+      "explanation": "Your bird is energized and actively calling for interaction.",
+      "careAdvice": [
+        "Respond with brief positive attention to reinforce calm calls.",
+        "Provide social time and training when appropriate.",
+        "Ensure the bird is not bored or under-enriched.",
+        "Avoid reinforcing excessive screaming with excitement."
+      ]
+    },
+    "excited_and_independent": {
+      "name": "Excited and Independent",
+      "explanation": "High energy with a self-directed, less social focus.",
+      "careAdvice": [
+        "Channel energy into foraging and puzzle toys.",
+        "Avoid overstimulation from loud environments.",
+        "Let your bird choose when to engage socially.",
+        "Ensure plenty of out-of-cage exercise if safe."
+      ]
+    },
+    "restless_and_unsettled": {
+      "name": "Restless and Unsettled",
+      "explanation": "Elevated arousal without a clear positive or negative emotional tone.",
+      "careAdvice": [
+        "Check for boredom, hunger, or environmental changes.",
+        "Offer a short flight or play session.",
+        "Reduce cage-bound time if safe alternatives exist."
+      ]
+    },
+    "stressed_and_defensive": {
+      "name": "Stressed and Defensive",
+      "explanation": "Vocalizations suggest tension, distress, and guarded behavior.",
+      "careAdvice": [
+        "Reduce environmental stressors immediately.",
+        "Lower noise levels and limit sudden movements.",
+        "Give your bird space and avoid forced handling.",
+        "Monitor for repeated stress signals over the next days.",
+        "Consult an avian vet if stress persists."
+      ]
+    },
+    "uneasy_and_on_guard": {
+      "name": "Uneasy and On Guard",
+      "explanation": "Mild negative tone with elevated alertness.",
+      "careAdvice": [
+        "Identify and remove recent stress triggers.",
+        "Speak softly and move slowly near the cage.",
+        "Avoid sudden changes to diet or layout.",
+        "Offer a covered retreat area."
+      ]
+    },
+    "irritable_and_agitated": {
+      "name": "Irritable and Agitated",
+      "explanation": "Negative mood paired with high stimulation—possibly frustrated.",
+      "careAdvice": [
+        "Pause handling and lower stimulation.",
+        "Check for pain, illness, or hormonal triggers.",
+        "Offer a quiet retreat and fresh water.",
+        "Consult a vet if agitation persists."
+      ]
+    },
+    "withdrawn_and_uncomfortable": {
+      "name": "Withdrawn and Uncomfortable",
+      "explanation": "Your bird may feel low, withdrawn, or physically uncomfortable.",
+      "careAdvice": [
+        "Observe carefully without forcing interaction.",
+        "Check temperature, lighting, diet, and cage placement.",
+        "Monitor appetite, droppings, and activity levels.",
+        "Offer a quiet retreat space in the cage.",
+        "Seek veterinary advice if withdrawal continues."
+      ]
+    },
+    "distressed_and_avoidant": {
+      "name": "Distressed and Avoidant",
+      "explanation": "Strong discomfort with active avoidance of contact.",
+      "careAdvice": [
+        "Stop handling and give immediate space.",
+        "Review for predators, drafts, or cage mates bullying.",
+        "Keep interactions minimal until behavior improves.",
+        "Contact an avian veterinarian if distress continues."
+      ]
+    },
+    "lonely_and_subdued": {
+      "name": "Lonely and Subdued",
+      "explanation": "Low mood with reduced social engagement—possible loneliness.",
+      "careAdvice": [
+        "Increase gentle, predictable companionship nearby.",
+        "Consider safe social audio or mirrored enrichment.",
+        "Avoid long isolation periods.",
+        "Monitor for sustained withdrawal."
+      ]
+    },
+    "subdued_and_low_spirit": {
+      "name": "Subdued and Low Spirit",
+      "explanation": "Muted emotional tone across valence and energy.",
+      "careAdvice": [
+        "Review diet, sleep, and recent environmental changes.",
+        "Offer favorite foods and low-pressure interaction.",
+        "Schedule a vet visit if low spirit is new or worsening."
+      ]
+    },
+    "balanced_and_steady": {
+      "name": "Balanced and Steady",
+      "explanation": "Emotional signals are near neutral across all dimensions.",
+      "careAdvice": [
+        "Continue consistent daily care.",
+        "Note any shifts over time in recordings.",
+        "Offer routine enrichment and fresh food.",
+        "Maintain regular health checkups."
+      ]
+    },
+    "neutral_and_even_tempered": {
+      "name": "Neutral and Even-Tempered",
+      "explanation": "Steady, middle-range signals without strong emotional peaks.",
+      "careAdvice": [
+        "Keep routines consistent.",
+        "Track recordings over time for subtle shifts.",
+        "Offer routine enrichment."
+      ]
+    },
+    "wary_but_coping": {
+      "name": "Wary but Coping",
+      "explanation": "Slightly negative tone with manageable arousal—monitor closely.",
+      "careAdvice": [
+        "Reduce new stimuli temporarily.",
+        "Use calm voice and predictable routines.",
+        "Avoid forcing interaction until comfort improves."
+      ]
+    },
+    "content_but_low_energy": {
+      "name": "Content but Low Energy",
+      "explanation": "Generally positive mood with low stimulation.",
+      "careAdvice": [
+        "This may be normal rest—monitor for sudden changes.",
+        "Provide gentle enrichment at a comfortable pace.",
+        "Ensure adequate sleep hours in a dark, quiet room.",
+        "Schedule a vet check if lethargy is new or worsening."
+      ]
+    }
+  },
+  "valence": {
+    "distressed": {
+      "label": "Distressed",
+      "description": "Strong negative emotional tone."
+    },
+    "very_uncomfortable": {
+      "label": "Very Uncomfortable",
+      "description": "Clearly uncomfortable vocalization."
+    },
+    "upset": {
+      "label": "Upset",
+      "description": "Noticeably upset or agitated tone."
+    },
+    "uneasy": {
+      "label": "Uneasy",
+      "description": "Slightly negative or wary tone."
+    },
+    "slightly_wary": {
+      "label": "Slightly Wary",
+      "description": "Mild caution in vocal tone."
+    },
+    "settled": {
+      "label": "Settled",
+      "description": "Emotionally even and stable."
+    },
+    "mildly_positive": {
+      "label": "Mildly Positive",
+      "description": "Gently upbeat undertone."
+    },
+    "content": {
+      "label": "Content",
+      "description": "Mildly positive and settled."
+    },
+    "pleased": {
+      "label": "Pleased",
+      "description": "Comfortably positive vocalization."
+    },
+    "happy": {
+      "label": "Happy",
+      "description": "Positive, upbeat vocalization."
+    },
+    "very_happy": {
+      "label": "Very Happy",
+      "description": "Strongly positive emotional tone."
+    },
+    "joyful_thriving": {
+      "label": "Joyful / Thriving",
+      "description": "Highly positive, thriving vocalization."
+    }
+  },
+  "arousal": {
+    "very_calm": {
+      "label": "Very Calm",
+      "description": "Low energy and minimal stimulation."
+    },
+    "relaxed": {
+      "label": "Relaxed",
+      "description": "Calm with gentle alertness."
+    },
+    "gentle": {
+      "label": "Gentle",
+      "description": "Soft, unhurried activity level."
+    },
+    "alert": {
+      "label": "Alert",
+      "description": "Attentive and moderately active."
+    },
+    "engaged": {
+      "label": "Engaged",
+      "description": "Actively responsive and animated."
+    },
+    "excited": {
+      "label": "Excited",
+      "description": "Elevated energy and responsiveness."
+    },
+    "highly_stimulated": {
+      "label": "Highly Stimulated",
+      "description": "Very high energy vocalization."
+    },
+    "intense": {
+      "label": "Intense",
+      "description": "Peak stimulation and vocal intensity."
+    }
+  },
+  "social": {
+    "avoidant": {
+      "label": "Avoidant",
+      "description": "Strongly avoiding social contact."
+    },
+    "withdrawn": {
+      "label": "Withdrawn",
+      "description": "Pulling back from interaction."
+    },
+    "reserved": {
+      "label": "Reserved",
+      "description": "Limited social interest."
+    },
+    "independent": {
+      "label": "Independent",
+      "description": "Self-focused, low social drive."
+    },
+    "detached": {
+      "label": "Detached",
+      "description": "Minimal orientation toward others."
+    },
+    "self_focused": {
+      "label": "Self-Focused",
+      "description": "Engaged with self rather than others."
+    },
+    "neutral": {
+      "label": "Neutral",
+      "description": "Balanced social engagement."
+    },
+    "interested": {
+      "label": "Interested",
+      "description": "Mild curiosity toward others."
+    },
+    "sociable": {
+      "label": "Sociable",
+      "description": "Comfortably engaging socially."
+    },
+    "social": {
+      "label": "Social",
+      "description": "Actively engaging socially."
+    },
+    "very_social": {
+      "label": "Very Social",
+      "description": "Strong desire for interaction."
+    },
+    "attention_seeking": {
+      "label": "Attention-Seeking",
+      "description": "Actively seeking attention and contact."
+    }
+  },
+  "summary": "{{valence}}、{{arousal}}、{{social}}。"
+}

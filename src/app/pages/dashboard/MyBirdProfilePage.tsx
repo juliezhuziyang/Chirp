@@ -86,7 +86,7 @@ export default function MyBirdProfilePage() {
       });
       setEditing(false);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Failed to save");
+      setError(e instanceof Error ? e.message : t("myBird.saveFailed"));
     } finally {
       setSaving(false);
     }
@@ -108,9 +108,9 @@ export default function MyBirdProfilePage() {
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-2">
             <Bird className="w-8 h-8 text-orange-500" />
-            My Bird Profile
+            {t("myBird.title")}
           </h1>
-          <p className="text-gray-500 mt-1">Your bird&apos;s information and preferences</p>
+          <p className="text-gray-500 mt-1">{t("myBird.subtitle")}</p>
         </div>
         {!editing && (
           <button
@@ -119,7 +119,7 @@ export default function MyBirdProfilePage() {
             className="flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-orange-200 bg-white hover:bg-orange-50 text-orange-700 font-medium transition-colors"
           >
             <Pencil className="w-4 h-4" />
-            Edit
+            {t("common.edit")}
           </button>
         )}
       </div>
@@ -175,11 +175,11 @@ export default function MyBirdProfilePage() {
                   onClick={() => fileRef.current?.click()}
                   className="px-3 py-1 text-sm rounded-lg border border-orange-200 text-orange-700 flex items-center gap-1"
                 >
-                  <Upload className="w-3 h-3" /> Upload
+                  <Upload className="w-3 h-3" /> {t("common.upload")}
                 </button>
               </div>
             ) : (
-              <p className="text-sm text-gray-500">Bird avatar</p>
+              <p className="text-sm text-gray-500">{t("myBird.birdAvatar")}</p>
             )}
           </div>
         </div>
@@ -187,28 +187,28 @@ export default function MyBirdProfilePage() {
         <div className="p-6 sm:p-8 space-y-6">
           {user.ownsParrot ? (
             <>
-              <Field label="Bird Name" editing={editing}>
+              <Field label={t("myBird.birdName")} editing={editing}>
                 {editing ? (
                   <input
                     value={birdName}
                     onChange={(e) => setBirdName(e.target.value)}
                     className="w-full px-4 py-3 rounded-xl border-2 border-orange-100 focus:border-orange-400 outline-none"
-                    placeholder="e.g. Kiwi"
+                    placeholder={t("myBird.birdNamePlaceholder")}
                   />
                 ) : (
                   <p className="text-lg font-semibold text-gray-900">
-                    {user.bird?.name || "—"}
+                    {user.bird?.name || t("common.dash")}
                   </p>
                 )}
               </Field>
 
-              <Field label="Species" editing={editing}>
+              <Field label={t("myBird.species")} editing={editing}>
                 {editing ? (
                   <>
                     <input
                       value={speciesSearch}
                       onChange={(e) => setSpeciesSearch(e.target.value)}
-                      placeholder="Search..."
+                      placeholder={t("myBird.speciesSearchPlaceholder")}
                       className="w-full px-4 py-2 rounded-xl border border-orange-100 mb-2"
                     />
                     <select
@@ -216,7 +216,7 @@ export default function MyBirdProfilePage() {
                       onChange={(e) => setSpecies(e.target.value)}
                       className="w-full px-4 py-3 rounded-xl border-2 border-orange-100"
                     >
-                      <option value="">Select species</option>
+                      <option value="">{t("myBird.selectSpecies")}</option>
                       {filteredSpecies.map((s) => (
                         <option key={s.id} value={s.id}>
                           {s.label}
@@ -226,12 +226,12 @@ export default function MyBirdProfilePage() {
                   </>
                 ) : (
                   <p className="text-gray-800">
-                    {user.bird?.species ? t(`species.${user.bird.species}`) : "—"}
+                    {user.bird?.species ? t(`species.${user.bird.species}`) : t("common.dash")}
                   </p>
                 )}
               </Field>
 
-              <Field label="Sex" editing={editing}>
+              <Field label={t("myBird.sex")} editing={editing}>
                 {editing ? (
                   <div className="flex flex-wrap gap-2">
                     {(["male", "female", "unsure"] as const).map((s) => (
@@ -245,18 +245,28 @@ export default function MyBirdProfilePage() {
                             : "border-orange-100"
                         }`}
                       >
-                        {s === "unsure" ? "Not sure" : s.charAt(0).toUpperCase() + s.slice(1)}
+                        {s === "unsure"
+                          ? t("common.notSure")
+                          : s === "male"
+                            ? t("common.male")
+                            : t("common.female")}
                       </button>
                     ))}
                   </div>
                 ) : (
                   <p className="text-gray-800 capitalize">
-                    {user.bird?.sex === "unsure" ? "Not sure" : user.bird?.sex || "—"}
+                    {user.bird?.sex === "unsure"
+                      ? t("common.notSure")
+                      : user.bird?.sex === "male"
+                        ? t("common.male")
+                        : user.bird?.sex === "female"
+                          ? t("common.female")
+                          : t("common.dash")}
                   </p>
                 )}
               </Field>
 
-              <Field label="Age" editing={editing}>
+              <Field label={t("myBird.age")} editing={editing}>
                 {editing ? (
                   <div className="bg-orange-50/50 rounded-2xl p-4 border border-orange-100">
                     <p className="text-center font-bold text-orange-700 mb-3">
@@ -274,16 +284,16 @@ export default function MyBirdProfilePage() {
                   <p className="text-gray-800">
                     {user.bird?.ageMonths != null
                       ? formatAgeLabel(user.bird.ageMonths)
-                      : "—"}
+                      : t("common.dash")}
                   </p>
                 )}
               </Field>
             </>
           ) : (
-            <p className="text-gray-600">You indicated you don&apos;t own a parrot yet.</p>
+            <p className="text-gray-600">{t("myBird.noParrotYet")}</p>
           )}
 
-          <Field label="Your needs & preferences" editing={editing}>
+          <Field label={t("myBird.needsPreferences")} editing={editing}>
             {editing ? (
               <div className="flex flex-wrap gap-2">
                 {needOptions.map((opt) => (
@@ -304,7 +314,7 @@ export default function MyBirdProfilePage() {
             ) : (
               <div className="flex flex-wrap gap-2">
                 {user.needs.length === 0 ? (
-                  <span className="text-gray-500">—</span>
+                  <span className="text-gray-500">{t("common.dash")}</span>
                 ) : (
                   user.needs.map((id) => (
                     <span
@@ -332,7 +342,7 @@ export default function MyBirdProfilePage() {
                 className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold disabled:opacity-50"
               >
                 <Save className="w-4 h-4" />
-                {saving ? "Saving..." : "Save Changes"}
+                {saving ? t("common.saving") : t("myBird.saveChanges")}
               </button>
               <button
                 type="button"
@@ -340,7 +350,7 @@ export default function MyBirdProfilePage() {
                 className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border-2 border-orange-200 font-semibold text-gray-700 hover:bg-orange-50"
               >
                 <X className="w-4 h-4" />
-                Cancel
+                {t("common.cancel")}
               </button>
             </div>
           )}

@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion } from 'motion/react';
+import { useTranslation } from 'react-i18next';
 
 interface VASGraphProps {
   valence: number; // -5 to 5
@@ -8,6 +9,7 @@ interface VASGraphProps {
 }
 
 export function VASGraph3D({ valence, arousal, socialEngagement }: VASGraphProps) {
+  const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const [rotation, setRotation] = useState({ x: -20, y: 30 }); // Start with arousal pointing upward
   const [isDragging, setIsDragging] = useState(false);
@@ -222,7 +224,7 @@ export function VASGraph3D({ valence, arousal, socialEngagement }: VASGraphProps
               transform: `translateZ(0px) rotateY(${-rotation.y}deg) rotateX(${-rotation.x}deg)`,
             }}
           >
-            Valence (-)
+            {t('vas3d.valenceNegative')}
           </div>
           <div
             className="absolute text-xs font-extrabold text-green-700 whitespace-nowrap"
@@ -232,7 +234,7 @@ export function VASGraph3D({ valence, arousal, socialEngagement }: VASGraphProps
               transform: `translateZ(0px) rotateY(${-rotation.y}deg) rotateX(${-rotation.x}deg)`,
             }}
           >
-            Valence (+)
+            {t('vas3d.valencePositive')}
           </div>
 
           {/* Y-axis (Arousal) - points upward from origin (0 to 5) */}
@@ -255,7 +257,7 @@ export function VASGraph3D({ valence, arousal, socialEngagement }: VASGraphProps
               transform: `translateZ(0px) rotateY(${-rotation.y}deg) rotateX(${-rotation.x}deg)`,
             }}
           >
-            Arousal (+)
+            {t('vas3d.arousalPositive')}
           </div>
 
           {/* Z-axis (Social Engagement) - extends from -5 to 5 along Z, shares origin */}
@@ -293,7 +295,7 @@ export function VASGraph3D({ valence, arousal, socialEngagement }: VASGraphProps
               transform: `translateZ(-175px) rotateY(${-rotation.y}deg) rotateX(${-rotation.x}deg)`,
             }}
           >
-            Social (-)
+            {t('vas3d.socialNegative')}
           </div>
           <div
             className="absolute text-xs font-extrabold text-purple-800 whitespace-nowrap"
@@ -303,7 +305,7 @@ export function VASGraph3D({ valence, arousal, socialEngagement }: VASGraphProps
               transform: `translateZ(175px) rotateY(${-rotation.y}deg) rotateX(${-rotation.x}deg)`,
             }}
           >
-            Social (+)
+            {t('vas3d.socialPositive')}
           </div>
 
           {/* Data point - True 3D sphere properly positioned in 3D space */}
@@ -465,28 +467,28 @@ export function VASGraph3D({ valence, arousal, socialEngagement }: VASGraphProps
 
       {/* Instructions */}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-sm px-6 py-3 rounded-full text-xs text-gray-600 border border-orange-200 shadow-lg">
-        <span className="font-semibold">🖱️ Drag to rotate</span> • View the 3D graph from different angles
+        <span className="font-semibold">🖱️ {t('vas3d.dragHint')}</span> • {t('vas3d.viewHint')}
       </div>
 
       {/* Value labels */}
       <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm rounded-xl p-4 text-sm border-2 border-orange-200 shadow-xl">
-        <h4 className="font-bold text-gray-800 mb-3 text-base">VAS Values</h4>
+        <h4 className="font-bold text-gray-800 mb-3 text-base">{t('vas3d.valuesTitle')}</h4>
         <div className="space-y-2">
           <div className="flex items-center gap-3">
             <div className="w-4 h-4 bg-gradient-to-r from-red-500 to-green-500 rounded-full"></div>
-            <span className="font-semibold text-gray-700">Valence:</span>
+            <span className="font-semibold text-gray-700">{t('vas3d.valenceLabel')}</span>
             <span className={`font-bold ${valence >= 0 ? 'text-green-600' : 'text-red-600'}`}>
               {valence.toFixed(2)}
             </span>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
-            <span className="font-semibold text-gray-700">Arousal:</span>
+            <span className="font-semibold text-gray-700">{t('vas3d.arousalLabel')}</span>
             <span className="font-bold text-blue-600">{arousal.toFixed(2)}</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-4 h-4 bg-purple-500 rounded-full"></div>
-            <span className="font-semibold text-gray-700">Social:</span>
+            <span className="font-semibold text-gray-700">{t('vas3d.socialLabel')}</span>
             <span className={`font-bold ${socialEngagement >= 0 ? 'text-purple-500' : 'text-purple-700'}`}>
               {socialEngagement.toFixed(2)}
             </span>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   PolarAngleAxis,
   PolarGrid,
@@ -16,26 +17,27 @@ interface EmotionRadarChartProps {
 }
 
 export function EmotionRadarChart({ scores }: EmotionRadarChartProps) {
+  const { t } = useTranslation();
   const [animated, setAnimated] = useState(false);
   const normalized = radarChartValues(scores);
 
   const data = [
-    { dimension: "Valence", value: animated ? normalized.valence * 100 : 0, fullMark: 100 },
+    { dimension: t("chart.valence"), value: animated ? normalized.valence * 100 : 0, fullMark: 100 },
     {
-      dimension: "Arousal",
+      dimension: t("chart.arousal"),
       value: animated ? normalized.arousal * 100 : 0,
       fullMark: 100,
     },
     {
-      dimension: "Social",
+      dimension: t("chart.social"),
       value: animated ? normalized.socialEngagement * 100 : 0,
       fullMark: 100,
     },
   ];
 
   useEffect(() => {
-    const t = requestAnimationFrame(() => setAnimated(true));
-    return () => cancelAnimationFrame(t);
+    const frame = requestAnimationFrame(() => setAnimated(true));
+    return () => cancelAnimationFrame(frame);
   }, [scores]);
 
   return (
@@ -54,7 +56,7 @@ export function EmotionRadarChart({ scores }: EmotionRadarChartProps) {
           />
           <PolarRadiusAxis angle={90} domain={[0, 100]} tick={false} axisLine={false} />
           <Radar
-            name="Emotion"
+            name={t("chart.emotion")}
             dataKey="value"
             stroke="#f97316"
             fill="url(#chirpRadarFill)"
@@ -73,9 +75,9 @@ export function EmotionRadarChart({ scores }: EmotionRadarChartProps) {
         </RadarChart>
       </ResponsiveContainer>
       <div className="flex justify-center gap-4 text-xs text-gray-500 mt-1">
-        <span>Valence −5 to +5</span>
-        <span>Arousal 0 to 5</span>
-        <span>Social −5 to +5</span>
+        <span>{t("chart.legendValence")}</span>
+        <span>{t("chart.legendArousal")}</span>
+        <span>{t("chart.legendSocial")}</span>
       </div>
     </motion.div>
   );

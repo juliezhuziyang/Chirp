@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 import { ArrowLeft, ArrowRight, Bird, Search } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../contexts/AuthContext";
@@ -19,6 +20,7 @@ type StepId =
   | "needs";
 
 export function OnboardingFlow() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { completeOnboarding } = useAuth();
   const needOptions = useNeedOptions();
@@ -127,15 +129,15 @@ export function OnboardingFlow() {
             className="w-full"
           >
             {currentStep === "owns-parrot" && (
-              <QuestionBlock title="Do you own a parrot?">
+              <QuestionBlock title={t("onboarding.ownsParrotTitle")}>
                 <OptionCard
-                  label="Yes"
+                  label={t("common.yes")}
                   selected={ownsParrot === true}
                   onClick={() => setOwnsParrot(true)}
                   icon={<Bird className="w-6 h-6 text-orange-500" />}
                 />
                 <OptionCard
-                  label="No"
+                  label={t("common.no")}
                   selected={ownsParrot === false}
                   onClick={() => setOwnsParrot(false)}
                 />
@@ -143,12 +145,12 @@ export function OnboardingFlow() {
             )}
 
             {currentStep === "species" && (
-              <QuestionBlock title="What species is your parrot?">
+              <QuestionBlock title={t("onboarding.speciesTitle")}>
                 <div className="relative mb-4">
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
                     type="text"
-                    placeholder="Search species..."
+                    placeholder={t("onboarding.speciesSearchPlaceholder")}
                     value={speciesSearch}
                     onChange={(e) => setSpeciesSearch(e.target.value)}
                     className="w-full pl-12 pr-4 py-3 rounded-2xl border-2 border-orange-100 bg-white focus:border-orange-400 focus:outline-none"
@@ -168,12 +170,12 @@ export function OnboardingFlow() {
             )}
 
             {currentStep === "bird-name" && (
-              <QuestionBlock title="What is your bird's name?">
+              <QuestionBlock title={t("onboarding.birdNameTitle")}>
                 <input
                   type="text"
                   value={birdName}
                   onChange={(e) => setBirdName(e.target.value)}
-                  placeholder="e.g. Kiwi, Mango, Sunny..."
+                  placeholder={t("onboarding.birdNamePlaceholder")}
                   className="w-full px-5 py-4 rounded-2xl border-2 border-orange-100 bg-white text-lg focus:border-orange-400 focus:outline-none text-center font-medium"
                   autoFocus
                 />
@@ -181,15 +183,15 @@ export function OnboardingFlow() {
             )}
 
             {currentStep === "sex" && (
-              <QuestionBlock title="What is your bird's sex?">
-                <OptionCard label="Male" selected={sex === "male"} onClick={() => setSex("male")} />
-                <OptionCard label="Female" selected={sex === "female"} onClick={() => setSex("female")} />
-                <OptionCard label="Not sure" selected={sex === "unsure"} onClick={() => setSex("unsure")} />
+              <QuestionBlock title={t("onboarding.sexTitle")}>
+                <OptionCard label={t("common.male")} selected={sex === "male"} onClick={() => setSex("male")} />
+                <OptionCard label={t("common.female")} selected={sex === "female"} onClick={() => setSex("female")} />
+                <OptionCard label={t("common.notSure")} selected={sex === "unsure"} onClick={() => setSex("unsure")} />
               </QuestionBlock>
             )}
 
             {currentStep === "age" && (
-              <QuestionBlock title="How old is your bird?">
+              <QuestionBlock title={t("onboarding.ageTitle")}>
                 <div className="bg-white rounded-3xl p-8 border-2 border-orange-100 shadow-lg">
                   <p className="text-4xl font-bold text-center bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent mb-8">
                     {formatAgeLabel(ageMonths)}
@@ -203,15 +205,15 @@ export function OnboardingFlow() {
                     className="[&_[data-slot=slider-range]]:bg-gradient-to-r [&_[data-slot=slider-range]]:from-orange-500 [&_[data-slot=slider-range]]:to-amber-500"
                   />
                   <div className="flex justify-between text-sm text-gray-500 mt-4 font-medium">
-                    <span>1 month</span>
-                    <span>10 years</span>
+                    <span>{t("common.oneMonth")}</span>
+                    <span>{t("common.tenYears")}</span>
                   </div>
                 </div>
               </QuestionBlock>
             )}
 
             {currentStep === "needs" && (
-              <QuestionBlock title="What do you need the most?" subtitle="Select all that apply">
+              <QuestionBlock title={t("onboarding.needsTitle")} subtitle={t("onboarding.needsSubtitle")}>
                 {needOptions.map((opt) => (
                   <OptionCard
                     key={opt.id}
@@ -234,7 +236,7 @@ export function OnboardingFlow() {
               className="flex-1 flex items-center justify-center gap-2 py-4 rounded-2xl border-2 border-orange-200 bg-white font-semibold text-gray-700 hover:bg-orange-50 transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
-              Back
+              {t("common.back")}
             </button>
           )}
           <button
@@ -246,10 +248,10 @@ export function OnboardingFlow() {
             {isSubmitting ? (
               <span className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
             ) : stepIndex === totalSteps - 1 ? (
-              "Get Started"
+              t("common.getStarted")
             ) : (
               <>
-                Continue
+                {t("common.continue")}
                 <ArrowRight className="w-5 h-5" />
               </>
             )}

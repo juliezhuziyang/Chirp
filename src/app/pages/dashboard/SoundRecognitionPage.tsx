@@ -8,6 +8,7 @@ import { useNeedOptions } from "../../../lib/useTranslatedOptions";
 import { formatAgeLabel } from "../../../lib/localAuth";
 
 export default function SoundRecognitionPage() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const needOptions = useNeedOptions();
   const needLabels = user?.needs
@@ -27,12 +28,10 @@ export default function SoundRecognitionPage() {
           <div className="flex-1">
             <div className="inline-flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full text-sm font-medium mb-3">
               <Sparkles className="w-4 h-4" />
-              Core feature
+              {t("soundPage.badge")}
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold mb-2">Sound Emotion Recognition</h1>
-            <p className="text-orange-50 text-lg max-w-xl">
-              Record or upload your bird&apos;s vocalizations for AI-powered emotion analysis.
-            </p>
+            <h1 className="text-3xl sm:text-4xl font-bold mb-2">{t("soundPage.title")}</h1>
+            <p className="text-orange-50 text-lg max-w-xl">{t("soundPage.description")}</p>
           </div>
         </div>
       </motion.div>
@@ -51,7 +50,9 @@ export default function SoundRecognitionPage() {
                 <strong className="text-gray-900">{user.bird.name}</strong>
               </span>
             )}
-            {user.bird.species && <span className="text-gray-600">{user.bird.species}</span>}
+            {user.bird.species && (
+              <span className="text-gray-600">{t(`species.${user.bird.species}`)}</span>
+            )}
             {user.bird.ageMonths != null && (
               <span className="text-orange-600 font-medium">
                 {formatAgeLabel(user.bird.ageMonths)}

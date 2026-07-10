@@ -77,7 +77,7 @@ export default function Home() {
             <div className="relative rounded-3xl overflow-hidden shadow-2xl">
               <ImageWithFallback
                 src="https://images.unsplash.com/photo-1767840927450-1817414cd2d7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsb3ZlYmlyZCUyMHBhcnJvdCUyMGNvbG9yZnVsfGVufDF8fHx8MTc3MTEzOTMxMXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
-                alt="Colorful lovebird"
+                alt={t('home.heroImageAlt')}
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-orange-900/30 to-transparent"></div>

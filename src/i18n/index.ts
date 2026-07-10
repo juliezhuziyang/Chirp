@@ -3,6 +3,8 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
 import en from "./locales/en.json";
 import zh from "./locales/zh.json";
+import emotionEn from "./locales/emotion.en.json";
+import emotionZh from "./locales/emotion.zh.json";
 
 export const LOCALE_STORAGE_KEY = "chirp_locale";
 
@@ -15,11 +17,13 @@ i18n
   .use(initReactI18next)
   .init({
     resources: {
-      en: { translation: en },
-      zh: { translation: zh },
+      en: { translation: en, emotion: emotionEn },
+      zh: { translation: zh, emotion: emotionZh },
     },
     supportedLngs: ["en", "zh"],
     fallbackLng: "en",
+    ns: ["translation", "emotion"],
+    defaultNS: "translation",
     load: "languageOnly",
     interpolation: { escapeValue: false },
     detection: {

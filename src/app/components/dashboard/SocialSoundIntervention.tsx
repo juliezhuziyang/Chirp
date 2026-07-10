@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 import { Heart, Music, RefreshCw } from "lucide-react";
 import type { AudioLibraryClip, MlEmotionScores } from "../../../lib/types";
 import {
@@ -14,6 +15,7 @@ interface SocialSoundInterventionProps {
 }
 
 export function SocialSoundIntervention({ scores }: SocialSoundInterventionProps) {
+  const { t } = useTranslation();
   const interpretation = interpretEmotionScores(scores);
   const show = shouldOfferSocialIntervention(scores, interpretation);
 
@@ -32,7 +34,7 @@ export function SocialSoundIntervention({ scores }: SocialSoundInterventionProps
       setClip(next);
       setRevealed(true);
     } catch {
-      setError("Could not load a positive sound clip. Please try again.");
+      setError(t("intervention.loadError"));
     } finally {
       setLoading(false);
     }
@@ -50,17 +52,9 @@ export function SocialSoundIntervention({ scores }: SocialSoundInterventionProps
             <Heart className="w-5 h-5" />
           </div>
           <div className="flex-1 min-w-0">
-            <h4 className="text-lg font-bold text-teal-950">
-              Your parrot may benefit from positive social sounds
-            </h4>
-            <p className="text-sm text-teal-900/80 mt-2 leading-relaxed">
-              Would you like to play recordings of socially engaged and happy parrots?
-            </p>
-            <p className="text-xs text-teal-800/60 mt-2 italic">
-              This is a gentle care suggestion based on vocal patterns—not a medical or
-              behavioral diagnosis. Always observe your bird and consult an avian professional
-              if you have concerns.
-            </p>
+            <h4 className="text-lg font-bold text-teal-950">{t("intervention.title")}</h4>
+            <p className="text-sm text-teal-900/80 mt-2 leading-relaxed">{t("intervention.description")}</p>
+            <p className="text-xs text-teal-800/60 mt-2 italic">{t("intervention.disclaimer")}</p>
 
             {!revealed && (
               <button
@@ -70,7 +64,7 @@ export function SocialSoundIntervention({ scores }: SocialSoundInterventionProps
                 className="mt-4 inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-teal-600 text-white font-semibold text-sm hover:bg-teal-700 disabled:opacity-60 transition-colors shadow-md"
               >
                 <Music className="w-4 h-4" />
-                {loading ? "Loading…" : "Play Positive Parrot Sounds"}
+                {loading ? t("common.loadingEllipsis") : t("intervention.playButton")}
               </button>
             )}
 
@@ -90,7 +84,7 @@ export function SocialSoundIntervention({ scores }: SocialSoundInterventionProps
               className="inline-flex items-center gap-2 text-sm font-medium text-teal-700 hover:text-teal-900 disabled:opacity-50"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
-              Try another clip
+              {t("intervention.tryAnother")}
             </button>
           </div>
         )}

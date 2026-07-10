@@ -1,10 +1,20 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 import { AuthLayout } from "../components/auth/AuthLayout";
 import { useAuth } from "../contexts/AuthContext";
 
+function translateAuthError(message: string, t: (key: string) => string): string {
+  if (message.includes("INVALID_CREDENTIALS")) return t("auth.errors.invalidCredentials");
+  if (message.includes("EMAIL_EXISTS") || message.includes("already exists")) {
+    return t("auth.errors.emailExists");
+  }
+  return message;
+}
+
 export default function Register() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { register, user, isLoading } = useAuth();
   const [name, setName] = useState("");
@@ -25,11 +35,11 @@ export default function Register() {
     setError("");
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError(t("auth.errors.passwordMismatch"));
       return;
     }
     if (password.length < 6) {
-      setError("Password must be at least 6 characters");
+      setError(t("auth.errors.passwordTooShort"));
       return;
     }
 
@@ -38,10 +48,8 @@ export default function Register() {
       await register(email, password, name);
       navigate("/onboarding", { replace: true });
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "Failed to create account";
-      setError(msg.includes("EMAIL_EXISTS") || msg.includes("already exists")
-        ? "An account with this email already exists"
-        : msg);
+      const msg = err instanceof Error ? err.message : t("auth.errors.createAccountFailed");
+      setError(translateAuthError(msg, t));
     } finally {
       setIsSubmitting(false);
     }
@@ -49,42 +57,42 @@ export default function Register() {
 
   return (
     <AuthLayout
-      title="Join Chirp"
-      subtitle="Create your account to start understanding your bird"
+      title={t("auth.registerTitle")}
+      subtitle={t("auth.registerSubtitle")}
       footer={
         <p className="text-gray-600">
-          Already have an account?{" "}
+          {t("auth.registerHasAccount")}{" "}
           <Link to="/login" className="text-orange-600 font-semibold hover:underline">
-            Sign in
+            {t("auth.registerSignIn")}
           </Link>
         </p>
       }
     >
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">{t("common.name")}</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
             className="w-full px-4 py-3 rounded-xl border-2 border-orange-100 bg-input-background focus:border-orange-400 focus:outline-none transition-colors"
-            placeholder="Your name"
+            placeholder={t("auth.registerNamePlaceholder")}
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">{t("common.email")}</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
             className="w-full px-4 py-3 rounded-xl border-2 border-orange-100 bg-input-background focus:border-orange-400 focus:outline-none transition-colors"
-            placeholder="you@example.com"
+            placeholder={t("auth.loginEmailPlaceholder")}
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">{t("common.password")}</label>
           <input
             type="password"
             value={password}
@@ -92,18 +100,18 @@ export default function Register() {
             required
             minLength={6}
             className="w-full px-4 py-3 rounded-xl border-2 border-orange-100 bg-input-background focus:border-orange-400 focus:outline-none transition-colors"
-            placeholder="At least 6 characters"
+            placeholder={t("auth.registerPasswordPlaceholder")}
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Confirm password</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">{t("common.confirmPassword")}</label>
           <input
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
             className="w-full px-4 py-3 rounded-xl border-2 border-orange-100 bg-input-background focus:border-orange-400 focus:outline-none transition-colors"
-            placeholder="••••••••"
+            placeholder={t("auth.loginPasswordPlaceholder")}
           />
         </div>
 
@@ -124,7 +132,7 @@ export default function Register() {
           whileTap={{ scale: 0.99 }}
           className="w-full py-4 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold shadow-lg hover:shadow-xl transition-shadow disabled:opacity-50 mt-2"
         >
-          {isSubmitting ? "Creating account..." : "Create Account"}
+          {isSubmitting ? t("auth.registerSubmitting") : t("auth.registerSubmit")}
         </motion.button>
       </form>
     </AuthLayout>

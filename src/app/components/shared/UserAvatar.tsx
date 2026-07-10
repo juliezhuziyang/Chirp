@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { cn } from "../ui/utils";
 import { getPreset } from "../../../lib/avatars";
 import type { UserAvatar as AvatarType } from "../../../lib/types";
@@ -16,7 +17,9 @@ const sizes = {
 };
 
 export function UserAvatar({ avatar, size = "md", className }: UserAvatarProps) {
+  const { t } = useTranslation();
   const preset = getPreset(avatar.presetId);
+  const label = t(`avatars.${preset.id}`, { defaultValue: preset.label });
 
   if (avatar.type === "custom" && avatar.customUrl) {
     return (
@@ -36,7 +39,7 @@ export function UserAvatar({ avatar, size = "md", className }: UserAvatarProps) 
         sizes[size],
         className,
       )}
-      title={preset.label}
+      title={label}
     >
       <span>{preset.emoji}</span>
     </div>

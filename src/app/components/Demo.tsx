@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Upload, Mic, X, Play, Pause } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Upload, Mic, X, Play } from 'lucide-react';
 import { VASGraph3D } from './VASGraph3D';
 
 interface AnalysisResult {
@@ -8,11 +9,12 @@ interface AnalysisResult {
   arousal: number;
   socialEngagement: number;
   confidence: number;
-  emotion: string;
-  advice: string;
+  emotionKey: string;
+  adviceKey: string;
 }
 
 export function Demo() {
+  const { t } = useTranslation();
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const [isRecording, setIsRecording] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -39,7 +41,7 @@ export function Demo() {
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
-    
+
     const files = e.dataTransfer.files;
     if (files.length > 0 && files[0].type.startsWith('audio/')) {
       setAudioFile(files[0]);
@@ -60,7 +62,6 @@ export function Demo() {
       setRecordingError(null);
       setRecordingTime(0);
 
-      // Request microphone access
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
           echoCancellation: true,
@@ -72,7 +73,6 @@ export function Demo() {
       streamRef.current = stream;
       audioChunksRef.current = [];
 
-      // Determine supported MIME type
       let mimeType = 'audio/webm';
       if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
         mimeType = 'audio/webm;codecs=opus';
@@ -87,18 +87,14 @@ export function Demo() {
       const mediaRecorder = new MediaRecorder(stream, { mimeType });
       mediaRecorderRef.current = mediaRecorder;
 
-      // Handle data available event
       mediaRecorder.ondataavailable = (event) => {
         if (event.data.size > 0) {
           audioChunksRef.current.push(event.data);
         }
       };
 
-      // Handle recording stop
       mediaRecorder.onstop = () => {
         const audioBlob = new Blob(audioChunksRef.current, { type: mimeType });
-
-        // Create File from Blob
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
         const audioFile = new File(
           [audioBlob],
@@ -109,44 +105,37 @@ export function Demo() {
         setAudioFile(audioFile);
         setAnalysisResult(null);
 
-        // Stop all tracks and cleanup
         if (streamRef.current) {
           streamRef.current.getTracks().forEach(track => track.stop());
           streamRef.current = null;
         }
 
-        // Clear timer
         if (timerIntervalRef.current) {
           clearInterval(timerIntervalRef.current);
           timerIntervalRef.current = null;
         }
       };
 
-      // Handle recording errors
-      mediaRecorder.onerror = (event) => {
-        console.error('MediaRecorder error:', event);
-        setRecordingError('Recording error occurred');
+      mediaRecorder.onerror = () => {
+        setRecordingError(t('demo.recordingErrors.generic'));
         stopRecording();
       };
 
-      // Start recording (timeslice ensures chunks are captured in all browsers)
       mediaRecorder.start(250);
       setIsRecording(true);
 
-      // Start timer
       timerIntervalRef.current = window.setInterval(() => {
         setRecordingTime(prev => prev + 1);
       }, 1000);
 
     } catch (error) {
-      console.error('Failed to start recording:', error);
       if (error instanceof Error) {
         if (error.name === 'NotAllowedError') {
-          setRecordingError('Microphone access denied. Please allow microphone permissions.');
+          setRecordingError(t('demo.recordingErrors.micDenied'));
         } else if (error.name === 'NotFoundError') {
-          setRecordingError('No microphone found. Please connect a microphone.');
+          setRecordingError(t('demo.recordingErrors.noMic'));
         } else {
-          setRecordingError('Failed to start recording: ' + error.message);
+          setRecordingError(t('demo.recordingErrors.startFailed', { message: error.message }));
         }
       }
     }
@@ -173,42 +162,37 @@ export function Demo() {
 
   const handleAnalyze = () => {
     if (!audioFile) return;
-    
+
     setIsAnalyzing(true);
-    
-    // Simulate analysis with random values
+
     setTimeout(() => {
       const result: AnalysisResult = {
-        valence: Math.random() * 10 - 5, // -5 to 5
-        arousal: Math.random() * 5, // 0 to 5
-        socialEngagement: Math.random() * 10 - 5, // -5 to 5
-        confidence: 75 + Math.random() * 20, // 75-95%
-        emotion: '',
-        advice: '',
+        valence: Math.random() * 10 - 5,
+        arousal: Math.random() * 5,
+        socialEngagement: Math.random() * 10 - 5,
+        confidence: 75 + Math.random() * 20,
+        emotionKey: 'neutral',
+        adviceKey: 'neutral',
       };
 
-      // Determine emotion based on VAS values
       if (result.valence > 2 && result.arousal > 3) {
-        result.emotion = 'Excited & Happy';
-        result.advice = 'Your lovebird is in a highly positive and energetic state! This is great. Continue engaging with your bird through play and social interaction.';
+        result.emotionKey = 'excitedHappy';
+        result.adviceKey = 'excitedHappy';
       } else if (result.valence > 2 && result.arousal < 2) {
-        result.emotion = 'Content & Calm';
-        result.advice = 'Your lovebird appears relaxed and content. This indicates a comfortable environment. Maintain current care routines.';
+        result.emotionKey = 'contentCalm';
+        result.adviceKey = 'contentCalm';
       } else if (result.valence < -2 && result.arousal > 3) {
-        result.emotion = 'Stressed or Agitated';
-        result.advice = 'Your bird may be experiencing stress or discomfort. Check for environmental stressors, ensure adequate food/water, and consider a vet visit if this persists.';
+        result.emotionKey = 'stressedAgitated';
+        result.adviceKey = 'stressedAgitated';
       } else if (result.valence < -2 && result.arousal < 2) {
-        result.emotion = 'Subdued or Unhappy';
-        result.advice = 'Your lovebird may be feeling down or unwell. Monitor closely for signs of illness and increase gentle interaction. Consult a vet if concerning.';
+        result.emotionKey = 'subduedUnhappy';
+        result.adviceKey = 'subduedUnhappy';
       } else if (result.socialEngagement > 3) {
-        result.emotion = 'Seeking Interaction';
-        result.advice = 'Your bird is actively seeking social engagement! Spend quality time with your lovebird through gentle handling, talking, or playtime.';
+        result.emotionKey = 'seekingInteraction';
+        result.adviceKey = 'seekingInteraction';
       } else if (result.socialEngagement < -3) {
-        result.emotion = 'Withdrawn';
-        result.advice = 'Your bird may need some quiet time. Respect their space while ensuring their basic needs are met. Gradual, gentle interaction may help.';
-      } else {
-        result.emotion = 'Neutral State';
-        result.advice = 'Your lovebird is in a balanced emotional state. Continue providing consistent care, enrichment, and social interaction.';
+        result.emotionKey = 'withdrawn';
+        result.adviceKey = 'withdrawn';
       }
 
       setAnalysisResult(result);
@@ -221,20 +205,14 @@ export function Demo() {
     setAnalysisResult(null);
   };
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
-      // Stop recording if active
       if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
         mediaRecorderRef.current.stop();
       }
-
-      // Stop all media tracks
       if (streamRef.current) {
         streamRef.current.getTracks().forEach(track => track.stop());
       }
-
-      // Clear timer
       if (timerIntervalRef.current) {
         clearInterval(timerIntervalRef.current);
       }
@@ -245,7 +223,6 @@ export function Demo() {
     <section className="relative py-16 bg-white/30 backdrop-blur-sm" style={{ zIndex: 2 }}>
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-8">
-          {/* Left: Upload/Record Section */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -253,7 +230,6 @@ export function Demo() {
             transition={{ duration: 0.8 }}
             className="space-y-6"
           >
-            {/* Drag and Drop Area */}
             <div
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
@@ -277,17 +253,13 @@ export function Demo() {
                   <div className="bg-gradient-to-br from-orange-500 to-amber-500 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
                     <Upload className="w-10 h-10 text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                    Upload Audio File
-                  </h3>
-                  <p className="text-gray-600 mb-6">
-                    Drag and drop your audio file here, or click to browse
-                  </p>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">{t('demo.uploadTitle')}</h3>
+                  <p className="text-gray-600 mb-6">{t('demo.uploadDescription')}</p>
                   <button
                     onClick={() => fileInputRef.current?.click()}
                     className="bg-gradient-to-r from-orange-500 to-amber-500 text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition-shadow"
                   >
-                    Choose File
+                    {t('demo.chooseFile')}
                   </button>
                 </div>
               ) : (
@@ -295,9 +267,7 @@ export function Demo() {
                   <div className="bg-green-100 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6">
                     <Play className="w-10 h-10 text-green-600" />
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">
-                    {audioFile.name}
-                  </h3>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">{audioFile.name}</h3>
                   <p className="text-sm text-gray-500 mb-4">
                     {(audioFile.size / 1024).toFixed(2)} KB
                   </p>
@@ -306,26 +276,24 @@ export function Demo() {
                     className="text-red-600 hover:text-red-700 font-semibold flex items-center gap-2 mx-auto"
                   >
                     <X className="w-4 h-4" />
-                    Remove
+                    {t('common.remove')}
                   </button>
                 </div>
               )}
             </div>
 
-            {/* Divider */}
             <div className="flex items-center gap-4">
               <div className="flex-1 h-px bg-gradient-to-r from-transparent via-orange-300 to-transparent"></div>
-              <span className="text-sm font-semibold text-gray-500">OR</span>
+              <span className="text-sm font-semibold text-gray-500">{t('common.or')}</span>
               <div className="flex-1 h-px bg-gradient-to-r from-transparent via-orange-300 to-transparent"></div>
             </div>
 
-            {/* Recording Button */}
             <div className="bg-gradient-to-br from-white to-orange-50 border-2 border-orange-200 rounded-3xl p-8 text-center">
               <div className={`${isRecording ? 'bg-red-500' : 'bg-gradient-to-br from-orange-500 to-amber-500'} w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg transition-all`}>
                 <Mic className={`w-10 h-10 text-white ${isRecording ? 'animate-pulse' : ''}`} />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                {isRecording ? 'Recording...' : 'Record Live'}
+                {isRecording ? t('demo.recording') : t('demo.recordLive')}
               </h3>
 
               {isRecording && (
@@ -333,12 +301,12 @@ export function Demo() {
                   <div className="text-3xl font-bold text-red-600 font-mono">
                     {Math.floor(recordingTime / 60)}:{(recordingTime % 60).toString().padStart(2, '0')}
                   </div>
-                  <p className="text-sm text-gray-500 mt-1">Recording time</p>
+                  <p className="text-sm text-gray-500 mt-1">{t('demo.recordingTime')}</p>
                 </div>
               )}
 
               <p className="text-gray-600 mb-6">
-                {isRecording ? 'Capturing your lovebird\'s chirps' : 'Record your lovebird\'s sounds in real-time'}
+                {isRecording ? t('demo.recordingCapturing') : t('demo.recordingPrompt')}
               </p>
 
               {recordingError && (
@@ -355,11 +323,10 @@ export function Demo() {
                     : 'bg-gradient-to-r from-orange-500 to-amber-500'
                 } text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all`}
               >
-                {isRecording ? 'Stop Recording' : 'Start Recording'}
+                {isRecording ? t('demo.stopRecording') : t('demo.startRecording')}
               </button>
             </div>
 
-            {/* Analyze Button */}
             <button
               onClick={handleAnalyze}
               disabled={!audioFile || isAnalyzing}
@@ -368,15 +335,14 @@ export function Demo() {
               {isAnalyzing ? (
                 <span className="flex items-center justify-center gap-3">
                   <div className="w-5 h-5 border-[3px] border-white border-t-transparent rounded-full animate-spin"></div>
-                  Analyzing Chirp...
+                  {t('demo.analyzing')}
                 </span>
               ) : (
-                'Analyze Chirp'
+                t('demo.analyzeChirp')
               )}
             </button>
           </motion.div>
 
-          {/* Right: Results Section */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -396,12 +362,8 @@ export function Demo() {
                     <div className="w-32 h-32 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
                       <span className="text-6xl">🦜</span>
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                      Ready to Analyze
-                    </h3>
-                    <p className="text-gray-600">
-                      Upload or record audio to see the emotional analysis results
-                    </p>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-3">{t('demo.readyTitle')}</h3>
+                    <p className="text-gray-600">{t('demo.readyDescription')}</p>
                   </div>
                 </motion.div>
               ) : (
@@ -412,17 +374,15 @@ export function Demo() {
                   exit={{ opacity: 0, scale: 0.9 }}
                   className="space-y-6"
                 >
-                  {/* 3D VAS Graph */}
                   <VASGraph3D
                     valence={analysisResult.valence}
                     arousal={analysisResult.arousal}
                     socialEngagement={analysisResult.socialEngagement}
                   />
 
-                  {/* Confidence Score */}
                   <div className="bg-white rounded-2xl p-6 border border-orange-200 shadow-lg">
                     <div className="flex items-center justify-between mb-3">
-                      <h4 className="text-lg font-bold text-gray-900">Confidence Score</h4>
+                      <h4 className="text-lg font-bold text-gray-900">{t('demo.confidenceScore')}</h4>
                       <span className="text-3xl font-bold text-orange-600">
                         {analysisResult.confidence.toFixed(1)}%
                       </span>
@@ -437,24 +397,26 @@ export function Demo() {
                     </div>
                   </div>
 
-                  {/* Emotion & Advice */}
                   <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl p-6 border border-orange-200">
                     <div className="mb-4">
-                      <h4 className="text-sm font-semibold text-gray-600 mb-2">Detected Emotion</h4>
-                      <p className="text-2xl font-bold text-orange-600">{analysisResult.emotion}</p>
+                      <h4 className="text-sm font-semibold text-gray-600 mb-2">{t('demo.detectedEmotion')}</h4>
+                      <p className="text-2xl font-bold text-orange-600">
+                        {t(`demo.emotions.${analysisResult.emotionKey}`)}
+                      </p>
                     </div>
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-600 mb-2">Care Advice</h4>
-                      <p className="text-gray-700 leading-relaxed">{analysisResult.advice}</p>
+                      <h4 className="text-sm font-semibold text-gray-600 mb-2">{t('demo.careAdvice')}</h4>
+                      <p className="text-gray-700 leading-relaxed">
+                        {t(`demo.advice.${analysisResult.adviceKey}`)}
+                      </p>
                     </div>
                   </div>
 
-                  {/* Analyze Another Button */}
                   <button
                     onClick={handleClear}
                     className="w-full bg-white text-orange-600 border-2 border-orange-300 px-8 py-4 rounded-2xl font-bold hover:bg-orange-50 transition-colors"
                   >
-                    Analyze Another Recording
+                    {t('demo.analyzeAnother')}
                   </button>
                 </motion.div>
               )}

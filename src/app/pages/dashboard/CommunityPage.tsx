@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 import { Image, Mic, Send, MessageCircle } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import * as socialApi from "../../../lib/socialApi";
@@ -13,6 +14,7 @@ import { UserAvatar } from "../../components/shared/UserAvatar";
 import { ProfilePopup } from "../../components/shared/ProfilePopup";
 
 export default function CommunityPage() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [posts, setPosts] = useState<CommunityPost[]>([]);
   const [text, setText] = useState("");
@@ -82,9 +84,9 @@ export default function CommunityPage() {
   };
 
   const handleComment = async (postId: string) => {
-    const t = commentDrafts[postId]?.trim();
-    if (!t) return;
-    await socialApi.addPostComment(postId, t);
+    const comment = commentDrafts[postId]?.trim();
+    if (!comment) return;
+    await socialApi.addPostComment(postId, comment);
     setCommentDrafts((d) => ({ ...d, [postId]: "" }));
     load();
   };
@@ -98,20 +100,20 @@ export default function CommunityPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Community</h1>
-        <p className="text-gray-500 mt-1">Connect with fellow bird lovers</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{t("community.title")}</h1>
+        <p className="text-gray-500 mt-1">{t("community.subtitle")}</p>
       </div>
 
       <div className="bg-white rounded-2xl border border-orange-100 p-4 shadow-sm">
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="Share something with the community..."
+          placeholder={t("community.postPlaceholder")}
           rows={3}
           className="w-full resize-none border-0 focus:ring-0 outline-none text-gray-800 placeholder:text-gray-400"
         />
         {(pendingImage || pendingAudio) && (
-          <p className="text-xs text-orange-600 mb-2">Attachment ready</p>
+          <p className="text-xs text-orange-600 mb-2">{t("community.attachmentReady")}</p>
         )}
         <div className="flex items-center justify-between pt-3 border-t border-orange-50">
           <div className="flex gap-2">
@@ -157,7 +159,7 @@ export default function CommunityPage() {
             className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 text-white font-semibold text-sm disabled:opacity-50"
           >
             <Send className="w-4 h-4" />
-            Post
+            {t("common.post")}
           </button>
         </div>
       </div>
@@ -167,7 +169,7 @@ export default function CommunityPage() {
           <div className="w-10 h-10 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
         </div>
       ) : posts.length === 0 ? (
-        <p className="text-center text-gray-500 py-12">No posts yet. Be the first to share!</p>
+        <p className="text-center text-gray-500 py-12">{t("community.noPosts")}</p>
       ) : (
         <div className="space-y-4">
           {posts.map((post) => (
@@ -232,7 +234,7 @@ export default function CommunityPage() {
                   onChange={(e) =>
                     setCommentDrafts((d) => ({ ...d, [post.id]: e.target.value }))
                   }
-                  placeholder="Write a comment..."
+                  placeholder={t("community.commentPlaceholder")}
                   className="flex-1 text-sm px-3 py-2 rounded-xl bg-orange-50/50 border border-orange-100 outline-none focus:border-orange-300"
                   onKeyDown={(e) => e.key === "Enter" && handleComment(post.id)}
                 />

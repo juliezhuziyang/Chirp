@@ -1,0 +1,418 @@
+{
+  "states": {
+    "euphoric_and_outgoing": {
+      "name": "狂喜外向",
+      "explanation": "你的鸟听起来兴高采烈、精力充沛，并且强烈渴望社交接触。",
+      "careAdvice": [
+        "在监督下与它一起分享这份热情，一起玩耍。",
+        "提供复杂的觅食和探索任务。",
+        "确保在高能量活动之后安排休息时间。",
+        "轮换玩具，让刺激保持适度，避免过度。"
+      ]
+    },
+    "playful_and_enthusiastic": {
+      "name": "活泼热情",
+      "explanation": "你的鸟听起来心情愉快、精力充沛，并且渴望互动。",
+      "careAdvice": [
+        "提供丰富化活动和觅食玩具。",
+        "提供有监督的互动和轻柔的玩耍。",
+        "鼓励探索，进行积极的训练。",
+        "确保在活动时段之后有足够的休息。"
+      ]
+    },
+    "happy_and_socially_engaged": {
+      "name": "快乐且社交活跃",
+      "explanation": "情绪明显积极，并对社交接触表现出主动兴趣。",
+      "careAdvice": [
+        "当鸟儿靠近你时，鼓励互动。",
+        "提供丰富化玩具和共同活动。",
+        "继续当前的日常护理。",
+        "轮换玩具以维持心理刺激。"
+      ]
+    },
+    "cheerful_and_conversational": {
+      "name": "愉快健谈",
+      "explanation": "温暖、积极的鸣叫，带有善于交际、爱聊天的特质。",
+      "careAdvice": [
+        "用平静友好的话语回应，以强化情感联结。",
+        "提供照镜子时间或轻柔的呼唤应答。",
+        "保持可预期的每日互动时段。"
+      ]
+    },
+    "upbeat_and_interactive": {
+      "name": "开朗且互动积极",
+      "explanation": "积极能量，在被邀请时愿意参与互动。",
+      "careAdvice": [
+        "当鸟儿愿意接受时，开始简短的训练或玩耍。",
+        "用零食和表扬奖励配合的行为。",
+        "避免嘈杂环境造成过度刺激。"
+      ]
+    },
+    "content_and_companionable": {
+      "name": "满足且友善",
+      "explanation": "安稳的快乐，带有友好、低强度的社交表现。",
+      "careAdvice": [
+        "坐在附近，提供安静的陪伴。",
+        "保持规律的喂食和睡眠作息。",
+        "如果鸟儿主动请求，可以轻柔地抚摸头部。"
+      ]
+    },
+    "pleased_and_attentive": {
+      "name": "愉悦且专注",
+      "explanation": "轻度积极情绪，并对周围环境保持专注的觉察。",
+      "careAdvice": [
+        "提供新的栖木视角或安全的窗景。",
+        "一次只引入一件新玩具。",
+        "保持简短而积极的互动。"
+      ]
+    },
+    "relaxed_and_content": {
+      "name": "放松且满足",
+      "explanation": "你的鸟看起来平静、舒适、自在。",
+      "careAdvice": [
+        "保持当前的日常作息。",
+        "当鸟儿主动发起互动时再轻柔回应。",
+        "继续对平静行为进行正向强化。",
+        "保持环境安静且可预期。"
+      ]
+    },
+    "serene_and_restful": {
+      "name": "宁静休憩",
+      "explanation": "刺激水平很低，整体氛围平和安稳。",
+      "careAdvice": [
+        "这可能是正常休息——避免打扰睡眠。",
+        "确保每晚有 10–12 小时的黑暗、安静时间。",
+        "只有在行为突然改变后才需要特别留意。"
+      ]
+    },
+    "calm_and_observant": {
+      "name": "平静且观察敏锐",
+      "explanation": "你的鸟看起来安稳、专注，并对社交环境有轻度觉察。",
+      "careAdvice": [
+        "保持稳定、低压力的日常安排。",
+        "提供可选的丰富化活动，不要强迫。",
+        "在发起互动前先观察它的信号。",
+        "保持栖木和视线环境舒适。"
+      ]
+    },
+    "quietly_curious": {
+      "name": "安静好奇",
+      "explanation": "低强度的警觉，对环境有温和的兴趣。",
+      "careAdvice": [
+        "把觅食物品放在容易够到的位置。",
+        "让鸟儿按自己的节奏探索。",
+        "用轻柔的话语接近，避免突然靠近。"
+      ]
+    },
+    "mellow_and_self_sufficient": {
+      "name": "温和且自给自足",
+      "explanation": "舒适的情绪，同时专注于独自活动。",
+      "careAdvice": [
+        "尊重它独立玩耍的时间。",
+        "确保玩具和栖木能支持独自丰富化。",
+        "定期查看，但不要强迫接触。"
+      ]
+    },
+    "bright_and_attentive": {
+      "name": "明亮且专注",
+      "explanation": "中性偏积极的声调，带有投入、警觉的能量。",
+      "careAdvice": [
+        "提供益智喂食器或撕咬玩具。",
+        "保持稳定的每日作息。",
+        "用少量零食奖励平静的警觉状态。"
+      ]
+    },
+    "energetic_but_self_contained": {
+      "name": "精力充沛但自我专注",
+      "explanation": "高活动量主要指向自身，而非社交接触。",
+      "careAdvice": [
+        "把能量引导到飞行、攀爬或觅食活动中。",
+        "让鸟儿自己决定何时进行社交互动。",
+        "如果条件允许，确保有安全的笼外运动。"
+      ]
+    },
+    "alert_but_reserved": {
+      "name": "警觉但保留",
+      "explanation": "你的鸟很专注，但没有强烈寻求互动。",
+      "careAdvice": [
+        "尊重个人空间，同时保持在附近。",
+        "使用轻柔的语气和缓慢的动作。",
+        "提供可以独立使用的丰富化物品。",
+        "通过可预期的日常安排建立信任。"
+      ]
+    },
+    "vocal_and_attention_seeking": {
+      "name": "鸣叫且求关注",
+      "explanation": "你的鸟精力充沛，并主动鸣叫寻求互动。",
+      "careAdvice": [
+        "用简短积极的关注回应，以强化平静的叫声。",
+        "在合适时提供社交时间和训练。",
+        "确保鸟儿没有因无聊或丰富化不足而发声。",
+        "避免用过度兴奋来强化尖叫行为。"
+      ]
+    },
+    "excited_and_independent": {
+      "name": "兴奋且独立",
+      "explanation": "高能量，但更多指向自身，社交意愿较低。",
+      "careAdvice": [
+        "把能量引导到觅食和益智玩具上。",
+        "避免嘈杂环境造成过度刺激。",
+        "让鸟儿自己决定何时进行社交互动。",
+        "如果安全，确保有足够的笼外运动。"
+      ]
+    },
+    "restless_and_unsettled": {
+      "name": "躁动不安",
+      "explanation": "唤醒水平升高，但没有明确的积极或消极情绪基调。",
+      "careAdvice": [
+        "检查是否因无聊、饥饿或环境变化引起。",
+        "提供一次简短的飞行或玩耍。",
+        "如果有安全替代方案，减少长时间待在笼内。"
+      ]
+    },
+    "stressed_and_defensive": {
+      "name": "紧张且防御",
+      "explanation": "鸣叫显示紧张、痛苦，并带有戒备行为。",
+      "careAdvice": [
+        "立即减少环境压力源。",
+        "降低噪音，限制突然动作。",
+        "给鸟儿空间，避免强迫接触或抓握。",
+        "接下来几天持续观察是否反复出现压力信号。",
+        "如果压力持续，请咨询鸟类兽医。"
+      ]
+    },
+    "uneasy_and_on_guard": {
+      "name": "不安且戒备",
+      "explanation": "轻度负面情绪，伴随警觉性升高。",
+      "careAdvice": [
+        "找出并移除最近的压力诱因。",
+        "在笼旁轻声说话，动作缓慢。",
+        "避免突然改变饮食或笼内布局。",
+        "提供一个可遮盖的退避区域。"
+      ]
+    },
+    "irritable_and_agitated": {
+      "name": "易怒且激动",
+      "explanation": "负面情绪与高刺激并存——可能感到挫败。",
+      "careAdvice": [
+        "暂停抓握，降低刺激强度。",
+        "检查是否有疼痛、疾病或激素相关诱因。",
+        "提供安静的退避空间和新鲜饮水。",
+        "如果激动持续，请咨询兽医。"
+      ]
+    },
+    "withdrawn_and_uncomfortable": {
+      "name": "退缩且不适",
+      "explanation": "你的鸟可能情绪低落、退缩，或身体感到不适。",
+      "careAdvice": [
+        "仔细观察，不要强迫互动。",
+        "检查温度、光照、饮食和笼位摆放。",
+        "观察食欲、粪便和活动水平。",
+        "在笼内提供安静的退避空间。",
+        "如果退缩持续，请寻求兽医建议。"
+      ]
+    },
+    "distressed_and_avoidant": {
+      "name": "痛苦且回避",
+      "explanation": "强烈不适，并主动回避接触。",
+      "careAdvice": [
+        "停止抓握，立即给予空间。",
+        "检查是否有天敌威胁、穿堂风，或笼内同伴欺凌。",
+        "在行为改善前尽量减少互动。",
+        "如果痛苦持续，请联系鸟类兽医。"
+      ]
+    },
+    "lonely_and_subdued": {
+      "name": "孤独且低落",
+      "explanation": "情绪偏低，社交参与度下降——可能感到孤独。",
+      "careAdvice": [
+        "增加温和、可预期的近距离陪伴。",
+        "考虑安全的社交音频或镜子丰富化。",
+        "避免长时间单独隔离。",
+        "持续观察是否出现长期退缩。"
+      ]
+    },
+    "subdued_and_low_spirit": {
+      "name": "沉静且精神不振",
+      "explanation": "在效价和能量维度上都呈现低沉的情绪基调。",
+      "careAdvice": [
+        "检查饮食、睡眠和最近的环境变化。",
+        "提供它喜欢的食物和低压力的互动。",
+        "如果精神不振是新出现或加重，请安排兽医检查。"
+      ]
+    },
+    "balanced_and_steady": {
+      "name": "平衡且稳定",
+      "explanation": "各维度的情绪信号都接近中性。",
+      "careAdvice": [
+        "继续一致的日常护理。",
+        "在录音中留意随时间出现的变化。",
+        "提供常规丰富化活动和新鲜食物。",
+        "保持定期健康检查。"
+      ]
+    },
+    "neutral_and_even_tempered": {
+      "name": "中性且性情平稳",
+      "explanation": "信号稳定，处于中间范围，没有强烈情绪峰值。",
+      "careAdvice": [
+        "保持作息一致。",
+        "长期追踪录音，留意细微变化。",
+        "提供常规丰富化活动。"
+      ]
+    },
+    "wary_but_coping": {
+      "name": "警惕但在应对",
+      "explanation": "情绪略偏负面，唤醒水平尚可——需要密切观察。",
+      "careAdvice": [
+        "暂时减少新的刺激。",
+        "使用平静语气和可预期的日常安排。",
+        "在舒适度改善前，避免强迫互动。"
+      ]
+    },
+    "content_but_low_energy": {
+      "name": "满足但能量偏低",
+      "explanation": "总体情绪积极，但刺激水平较低。",
+      "careAdvice": [
+        "这可能是正常休息——留意是否突然变化。",
+        "以舒适节奏提供轻柔的丰富化活动。",
+        "确保在黑暗、安静的房间里有足够的睡眠时间。",
+        "如果精神沉滞是新出现或加重，请安排兽医检查。"
+      ]
+    }
+  },
+  "valence": {
+    "distressed": {
+      "label": "痛苦",
+      "description": "强烈的负面情绪基调。"
+    },
+    "very_uncomfortable": {
+      "label": "非常不适",
+      "description": "明显表现出不适的鸣叫。"
+    },
+    "upset": {
+      "label": "心烦",
+      "description": "明显心烦或激动不安的声调。"
+    },
+    "uneasy": {
+      "label": "不安",
+      "description": "略带负面或警惕的声调。"
+    },
+    "slightly_wary": {
+      "label": "略警惕",
+      "description": "鸣叫中带轻度谨慎。"
+    },
+    "settled": {
+      "label": "平稳",
+      "description": "情绪均衡且稳定。"
+    },
+    "mildly_positive": {
+      "label": "轻度积极",
+      "description": "温和上扬的底色。"
+    },
+    "content": {
+      "label": "满足",
+      "description": "轻度积极且安稳。"
+    },
+    "pleased": {
+      "label": "愉悦",
+      "description": "舒适而积极的鸣叫。"
+    },
+    "happy": {
+      "label": "快乐",
+      "description": "积极、轻快的鸣叫。"
+    },
+    "very_happy": {
+      "label": "非常快乐",
+      "description": "强烈的积极情绪基调。"
+    },
+    "joyful_thriving": {
+      "label": "喜悦 / 状态良好",
+      "description": "高度积极、状态良好的鸣叫。"
+    }
+  },
+  "arousal": {
+    "very_calm": {
+      "label": "非常平静",
+      "description": "低能量，刺激水平极低。"
+    },
+    "relaxed": {
+      "label": "放松",
+      "description": "平静中带有轻度警觉。"
+    },
+    "gentle": {
+      "label": "温和",
+      "description": "柔和、不急促的活动水平。"
+    },
+    "alert": {
+      "label": "警觉",
+      "description": "专注且活动水平适中。"
+    },
+    "engaged": {
+      "label": "投入",
+      "description": "积极回应，表现活跃。"
+    },
+    "excited": {
+      "label": "兴奋",
+      "description": "能量和反应性升高。"
+    },
+    "highly_stimulated": {
+      "label": "高度刺激",
+      "description": "能量非常高的鸣叫。"
+    },
+    "intense": {
+      "label": "强烈",
+      "description": "刺激和鸣叫强度达到峰值。"
+    }
+  },
+  "social": {
+    "avoidant": {
+      "label": "回避",
+      "description": "强烈回避社交接触。"
+    },
+    "withdrawn": {
+      "label": "退缩",
+      "description": "从互动中退后。"
+    },
+    "reserved": {
+      "label": "保留",
+      "description": "社交兴趣有限。"
+    },
+    "independent": {
+      "label": "独立",
+      "description": "以自我为中心，社交驱动力低。"
+    },
+    "detached": {
+      "label": "疏离",
+      "description": "对他人的关注极少。"
+    },
+    "self_focused": {
+      "label": "自我专注",
+      "description": "更关注自身而非他人。"
+    },
+    "neutral": {
+      "label": "中性",
+      "description": "社交参与度平衡。"
+    },
+    "interested": {
+      "label": "有兴趣",
+      "description": "对他人有轻度好奇。"
+    },
+    "sociable": {
+      "label": "善于交际",
+      "description": "能舒适地进行社交互动。"
+    },
+    "social": {
+      "label": "社交",
+      "description": "正在积极进行社交互动。"
+    },
+    "very_social": {
+      "label": "非常社交",
+      "description": "强烈渴望互动。"
+    },
+    "attention_seeking": {
+      "label": "求关注",
+      "description": "主动寻求关注和接触。"
+    }
+  },
+  "summary": "{{valence}}、{{arousal}}、{{social}}。"
+}

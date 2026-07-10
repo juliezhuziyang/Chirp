@@ -1,3 +1,4 @@
+import i18n from "../i18n";
 import { defaultAvatar } from "./avatars";
 import type { BirdProfile, UserAvatar, UserProfile } from "./types";
 
@@ -136,15 +137,16 @@ export function localUpdateProfile(
 }
 
 export function formatAgeLabel(months: number): string {
+  const t = i18n.t.bind(i18n);
   if (months < 12) {
-    return months === 1 ? "1 month" : `${months} months`;
+    return months === 1 ? t("time.oneMonth") : t("time.months", { count: months });
   }
   const years = Math.floor(months / 12);
   const rem = months % 12;
   if (rem === 0) {
-    return years === 1 ? "1 year" : `${years} years`;
+    return years === 1 ? t("time.oneYear") : t("time.years", { count: years });
   }
-  return `${years}y ${rem}m`;
+  return t("time.yearsMonths", { years, months: rem });
 }
 
 export { type BirdProfile };
