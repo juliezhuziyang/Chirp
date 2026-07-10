@@ -37,6 +37,11 @@ export function RecordingArea() {
   const [analysisStep, setAnalysisStep] = useState<AnalysisStep | null>(null);
   const [scores, setScores] = useState<MlEmotionScores | null>(null);
   const [birdProbability, setBirdProbability] = useState<number | undefined>();
+  const [analysisAudio, setAnalysisAudio] = useState<{
+    blob: Blob;
+    filename: string;
+    mime: string;
+  } | null>(null);
   const [notBird, setNotBird] = useState(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
@@ -46,13 +51,20 @@ export function RecordingArea() {
     setAnalysisMessage("");
     setScores(null);
     setBirdProbability(undefined);
+    setAnalysisAudio(null);
     setNotBird(false);
     setAnalysisStep(null);
   };
 
-  const processAudio = useCallback(async (blob: Blob) => {
+  const processAudio = useCallback(async (blob: Blob, sourceFilename?: string) => {
     setStatus("analyzing");
     resetResults();
+    const audioMeta = {
+      blob,
+      filename: sourceFilename ?? `chirp-recording-${Date.now()}.webm`,
+      mime: blob.type || "audio/webm",
+    };
+    setAnalysisAudio(audioMeta);
     try {
       const result = await analyzeBirdAudio(blob, setAnalysisStep);
 
@@ -117,7 +129,7 @@ export function RecordingArea() {
     if (!file) return;
     setStatus("uploading");
     resetResults();
-    void processAudio(file);
+    void processAudio(file, file.name);
     e.target.value = "";
   };
 
@@ -202,7 +214,11 @@ export function RecordingArea() {
 
             {status === "complete" && scores && (
               <motion.div key="results" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                <PredictionResultCard scores={scores} birdProbability={birdProbability} />
+                <PredictionResultCard
+                  scores={scores}
+                  birdProbability={birdProbability}
+                  analysisAudio={analysisAudio}
+                />
               </motion.div>
             )}
 

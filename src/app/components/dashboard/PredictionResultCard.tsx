@@ -8,12 +8,23 @@ import { EmotionRadarChart } from "./EmotionRadarChart";
 import { SocialSoundIntervention } from "./SocialSoundIntervention";
 import { AnalysisFeedback } from "./AnalysisFeedback";
 
+export interface AnalysisAudioAttachment {
+  blob: Blob;
+  filename: string;
+  mime: string;
+}
+
 interface PredictionResultCardProps {
   scores: MlEmotionScores;
   birdProbability?: number;
+  analysisAudio?: AnalysisAudioAttachment | null;
 }
 
-export function PredictionResultCard({ scores, birdProbability }: PredictionResultCardProps) {
+export function PredictionResultCard({
+  scores,
+  birdProbability,
+  analysisAudio,
+}: PredictionResultCardProps) {
   const { t } = useTranslation();
   const interpretation = localizeEmotionInterpretation(interpretEmotionScores(scores), t);
 
@@ -93,6 +104,7 @@ export function PredictionResultCard({ scores, birdProbability }: PredictionResu
         scores={scores}
         predictedState={interpretation.combinedState}
         birdProbability={birdProbability}
+        analysisAudio={analysisAudio}
       />
     </motion.div>
   );

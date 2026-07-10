@@ -5,6 +5,7 @@ import { MessageCircle, CheckCircle, ThumbsUp, ThumbsDown } from "lucide-react";
 import type { MlEmotionScores } from "../../../lib/types";
 import { useContributeEmotions } from "../../../lib/useTranslatedOptions";
 import * as socialApi from "../../../lib/socialApi";
+import type { AnalysisAudioAttachment } from "./PredictionResultCard";
 
 type Phase = "ask" | "thanks" | "correct" | "done";
 
@@ -12,12 +13,14 @@ interface AnalysisFeedbackProps {
   scores: MlEmotionScores;
   predictedState: string;
   birdProbability?: number;
+  analysisAudio?: AnalysisAudioAttachment | null;
 }
 
 export function AnalysisFeedback({
   scores,
   predictedState,
   birdProbability,
+  analysisAudio,
 }: AnalysisFeedbackProps) {
   const { t } = useTranslation();
   const emotionOptions = useContributeEmotions();
@@ -37,6 +40,20 @@ export function AnalysisFeedback({
     setSubmitting(true);
     setError("");
     try {
+      let audioPayload: {
+        audioBase64?: string;
+        audioFilename?: string;
+        audioMime?: string;
+      } = {};
+
+      if (!accurate && analysisAudio) {
+        audioPayload = {
+          audioBase64: await socialApi.blobToBase64(analysisAudio.blob),
+          audioFilename: analysisAudio.filename,
+          audioMime: analysisAudio.mime,
+        };
+      }
+
       await socialApi.submitAnalysisFeedback({
         accurate,
         predictedState,
@@ -44,6 +61,7 @@ export function AnalysisFeedback({
         birdProbability,
         correctedEmotions: emotions,
         behaviorNotes: behavior,
+        ...audioPayload,
       });
       setPhase(accurate ? "thanks" : "done");
     } catch {

@@ -485,6 +485,9 @@ app.post("/feedback/analysis", async (c) => {
         ? body.correctedEmotions.map(String)
         : undefined,
       behaviorNotes: body.behaviorNotes ? String(body.behaviorNotes) : undefined,
+      audioBase64: body.audioBase64 ? String(body.audioBase64) : undefined,
+      audioFilename: body.audioFilename ? String(body.audioFilename) : undefined,
+      audioMime: body.audioMime ? String(body.audioMime) : undefined,
     });
     return c.json({ success: true, entry });
   } catch (e) {

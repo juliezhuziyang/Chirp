@@ -533,6 +533,9 @@ export async function saveAnalysisFeedback(
     birdProbability?: number;
     correctedEmotions?: string[];
     behaviorNotes?: string;
+    audioBase64?: string;
+    audioFilename?: string;
+    audioMime?: string;
   },
 ) {
   const user = await auth.getUserById(userId);
@@ -551,6 +554,7 @@ export async function saveAnalysisFeedback(
     birdProbability: data.birdProbability ?? null,
     correctedEmotions: data.correctedEmotions ?? [],
     behaviorNotes: data.behaviorNotes?.trim() ?? "",
+    hasAudioAttachment: Boolean(!data.accurate && data.audioBase64 && data.audioFilename),
     createdAt: new Date().toISOString(),
   };
 
@@ -566,6 +570,20 @@ export async function saveAnalysisFeedback(
         (data.correctedEmotions ?? []).join(", ") || "—"
       }</p>
        <p><strong>Behavior notes:</strong> ${entry.behaviorNotes || "—"}</p>`;
+
+  const attachments = [];
+  if (!data.accurate && data.audioBase64 && data.audioFilename) {
+    attachments.push({
+      filename: data.audioFilename,
+      content: data.audioBase64,
+    });
+  }
+
+  const audioNote = attachments.length
+    ? "<p><strong>Audio:</strong> Recording attached to this email.</p>"
+    : !data.accurate
+      ? "<p><strong>Audio:</strong> Not included (missing or upload failed).</p>"
+      : "";
 
   try {
     await sendResendEmail({
@@ -583,7 +601,9 @@ export async function saveAnalysisFeedback(
             : ""
         }
         ${emotionBlock}
+        ${audioNote}
       `,
+      attachments: attachments.length ? attachments : undefined,
     });
   } catch (e) {
     console.error("Analysis feedback email failed:", e);
