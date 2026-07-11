@@ -307,16 +307,16 @@
     "tagDebate": "Debate & Public Speaking",
     "githubLink": "View Project on GitHub",
     "developerPhotoAlt": "Ziyang Zhu (Julie)",
-    "ctaTitle": "Stay Updated on Chirp's Development",
-    "ctaDescription": "Subscribe to our newsletter to be notified when Chirp launches!",
-    "ctaButton": "Subscribe Now"
+    "ctaTitle": "Ready to Get Started with Chirp?",
+    "ctaDescription": "Create a free account and start understanding your lovebird's vocal expressions today.",
+    "ctaButton": "Create Account"
   },
   "howItWorks": {
     "pageTitle": "How It Works",
     "pageSubtitle": "Discover the science and technology behind Chirp's AI-powered vocal analysis",
     "ctaTitle": "Ready to Experience Chirp?",
-    "ctaDescription": "Subscribe to our newsletter and be the first to know when we launch!",
-    "ctaButton": "Get Notified",
+    "ctaDescription": "Sign up for a free account and try AI-powered sound emotion analysis.",
+    "ctaButton": "Get Started",
     "pipeline": "Continuous AI Learning Pipeline",
     "steps": {
       "collect": {
@@ -344,9 +344,9 @@
   "demo": {
     "pageTitle": "Try Chirp Demo",
     "pageSubtitle": "Experience real-time AI analysis of lovebird vocalizations",
-    "ctaTitle": "Want Full Access When We Launch?",
-    "ctaDescription": "This demo shows random values. Subscribe to be notified when the full AI model is ready!",
-    "ctaButton": "Join the Waitlist",
+    "ctaTitle": "Want the Full Chirp Experience?",
+    "ctaDescription": "This demo uses sample values. Create an account to use the real AI analysis pipeline.",
+    "ctaButton": "Create Account",
     "uploadTitle": "Upload Audio File",
     "uploadDescription": "Drag and drop your audio file here, or click to browse",
     "chooseFile": "Choose File",

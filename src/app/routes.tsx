@@ -3,7 +3,6 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import HowItWorksPage from "./pages/HowItWorksPage";
 import DemoPage from "./pages/DemoPage";
-import Newsletter from "./pages/Newsletter";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Onboarding from "./pages/Onboarding";
@@ -19,7 +18,7 @@ export const router = createBrowserRouter([
   { path: "/about", Component: About },
   { path: "/how-it-works", Component: HowItWorksPage },
   { path: "/demo", Component: DemoPage },
-  { path: "/newsletter", Component: Newsletter },
+  { path: "/newsletter", element: <Navigate to="/register" replace /> },
   { path: "/login", Component: Login },
   { path: "/register", Component: Register },
   { path: "/onboarding", Component: Onboarding },

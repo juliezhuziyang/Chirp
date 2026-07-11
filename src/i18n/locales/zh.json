@@ -307,16 +307,16 @@
     "tagDebate": "辩论与公众演讲",
     "githubLink": "在 GitHub 查看项目",
     "developerPhotoAlt": "Ziyang Zhu (Julie)",
-    "ctaTitle": "关注 Chirp 的开发进展",
-    "ctaDescription": "订阅我们的通讯，在 Chirp 上线时第一时间收到通知！",
-    "ctaButton": "立即订阅"
+    "ctaTitle": "准备好开始使用 Chirp 了吗？",
+    "ctaDescription": "免费注册账号，马上开始了解你的牡丹鹦鹉叫声。",
+    "ctaButton": "创建账号"
   },
   "howItWorks": {
     "pageTitle": "工作原理",
     "pageSubtitle": "了解 Chirp AI 驱动叫声分析背后的科学与技术",
     "ctaTitle": "准备好体验 Chirp 了吗？",
-    "ctaDescription": "订阅我们的通讯，上线时第一时间获知！",
-    "ctaButton": "获取通知",
+    "ctaDescription": "注册免费账号，体验 AI 驱动的声音情绪分析。",
+    "ctaButton": "立即开始",
     "pipeline": "持续 AI 学习流程",
     "steps": {
       "collect": {
@@ -344,9 +344,9 @@
   "demo": {
     "pageTitle": "试用 Chirp 演示",
     "pageSubtitle": "体验牡丹鹦鹉叫声的实时 AI 分析",
-    "ctaTitle": "想在正式上线时获得完整访问权限？",
-    "ctaDescription": "此演示显示随机数值。订阅以在完整 AI 模型就绪时收到通知！",
-    "ctaButton": "加入等候名单",
+    "ctaTitle": "想体验完整的 Chirp 功能？",
+    "ctaDescription": "此演示使用示例数值。创建账号即可使用真实的 AI 分析流程。",
+    "ctaButton": "创建账号",
     "uploadTitle": "上传音频文件",
     "uploadDescription": "将音频文件拖放到此处，或点击浏览",
     "chooseFile": "选择文件",

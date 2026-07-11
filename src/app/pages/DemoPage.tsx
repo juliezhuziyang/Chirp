@@ -45,7 +45,7 @@ export default function DemoPage() {
           <h2 className="text-3xl font-bold text-white mb-4">{t('demo.ctaTitle')}</h2>
           <p className="text-lg text-orange-100 mb-6">{t('demo.ctaDescription')}</p>
           <Link
-            to="/newsletter"
+            to="/register"
             className="inline-block bg-white text-orange-600 px-10 py-4 rounded-full font-bold text-lg shadow-xl hover:shadow-2xl transition-shadow"
           >
             {t('demo.ctaButton')}
