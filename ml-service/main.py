@@ -37,10 +37,21 @@ async def lifespan(_app: FastAPI):
 
 app = FastAPI(title="Chirp ML Service", lifespan=lifespan)
 
+
+def _cors_origins() -> list[str]:
+    raw = os.getenv("CHIRP_ML_CORS", "*")
+    origins = [part.strip() for part in raw.split(",") if part.strip()]
+    return origins or ["*"]
+
+
+_CORS_ORIGINS = _cors_origins()
+# Browsers reject Access-Control-Allow-Origin: * when credentials are enabled.
+_CORS_CREDENTIALS = "*" not in _CORS_ORIGINS
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=os.getenv("CHIRP_ML_CORS", "*").split(","),
-    allow_credentials=True,
+    allow_origins=_CORS_ORIGINS,
+    allow_credentials=_CORS_CREDENTIALS,
     allow_methods=["*"],
     allow_headers=["*"],
 )

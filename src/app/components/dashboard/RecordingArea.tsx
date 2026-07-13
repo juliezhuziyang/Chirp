@@ -11,6 +11,12 @@ import { WaveformVisualizer } from "./WaveformVisualizer";
 import { PredictionResultCard } from "./PredictionResultCard";
 
 function translateAnalysisError(message: string, t: (key: string) => string): string {
+  if (message === "ML_SERVICE_URL_MISSING" || message.includes("ML_SERVICE_URL_MISSING")) {
+    return t("errors.mlUrlMissing");
+  }
+  if (message === "ML_TIMEOUT" || message.includes("ML_TIMEOUT")) {
+    return t("errors.mlTimeout");
+  }
   if (message.includes("Could not decode this audio format")) {
     return t("errors.audioDecodeFailed");
   }

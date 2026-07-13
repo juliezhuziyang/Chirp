@@ -453,6 +453,8 @@
     "invalidResponse": "分析服务返回无效响应。",
     "modelsNotLoaded": "分析服务尚未就绪。请启动 ML 服务（见 ml-service/README.md）并运行 train_models.py。",
     "networkError": "无法连接分析服务。生产环境请检查 VITE_ML_SERVICE_URL，开发环境请启动本地 ML 服务。",
+    "mlUrlMissing": "分析服务未配置。请在 Vercel 设置 VITE_ML_SERVICE_URL 为你的 Render ML 地址，然后重新 Deploy 前端。",
+    "mlTimeout": "分析服务响应超时。Render 免费版可能正在冷启动，请等约一分钟后再试。",
     "microphoneDenied": "麦克风访问被拒绝或不可用。",
     "analysisFailed": "分析失败（{{status}}）"
   },

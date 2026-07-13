@@ -2,8 +2,6 @@ import { convertBlobToWav } from "./audioToWav";
 import { getMlServiceBaseUrl } from "./mlConfig";
 import type { MlAnalyzeResponse } from "./types";
 
-const ML_BASE = getMlServiceBaseUrl();
-
 export type AnalysisStep =
   | "uploading"
   | "extracting"
@@ -11,11 +9,58 @@ export type AnalysisStep =
   | "predicting"
   | "done";
 
+/** Render free tier can take ~30–60s to wake; analysis itself may need more time. */
+const HEALTH_TIMEOUT_MS = 90_000;
+const ANALYZE_TIMEOUT_MS = 180_000;
+
+function mlBaseUrl(): string {
+  return getMlServiceBaseUrl();
+}
+
+function assertMlConfigured(): void {
+  const base = mlBaseUrl();
+  if (import.meta.env.PROD && (base === "/api/ml" || !base)) {
+    throw new Error("ML_SERVICE_URL_MISSING");
+  }
+}
+
+async function fetchWithTimeout(
+  url: string,
+  init: RequestInit,
+  timeoutMs: number,
+): Promise<Response> {
+  const controller = new AbortController();
+  const timer = window.setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...init, signal: controller.signal });
+  } catch (err) {
+    if (err instanceof DOMException && err.name === "AbortError") {
+      throw new Error("ML_TIMEOUT");
+    }
+    throw err;
+  } finally {
+    window.clearTimeout(timer);
+  }
+}
+
+/** Best-effort wake for cold-started hosts (e.g. Render free). */
+async function wakeMlService(base: string): Promise<void> {
+  try {
+    await fetchWithTimeout(`${base}/health`, { method: "GET" }, HEALTH_TIMEOUT_MS);
+  } catch {
+    // Analyze call will surface a clearer error if the service is still down.
+  }
+}
+
 export async function analyzeBirdAudio(
   blob: Blob,
   onStep?: (step: AnalysisStep) => void,
 ): Promise<MlAnalyzeResponse> {
+  assertMlConfigured();
+  const base = mlBaseUrl();
+
   onStep?.("uploading");
+  await wakeMlService(base);
 
   let uploadBlob = blob;
   let ext = "wav";
@@ -23,25 +68,7 @@ export async function analyzeBirdAudio(
     try {
       uploadBlob = await convertBlobToWav(blob);
       ext = "wav";
-    } catch (convErr) {
-      // #region agent log
-      fetch("http://127.0.0.1:7456/ingest/d1ed4e7d-8058-4fd1-84fd-9eb9e206300f", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "X-Debug-Session-Id": "d00018" },
-        body: JSON.stringify({
-          sessionId: "d00018",
-          location: "mlApi.ts:analyzeBirdAudio",
-          message: "wav conversion failed",
-          data: {
-            blobType: blob.type,
-            error: convErr instanceof Error ? convErr.message : String(convErr),
-          },
-          timestamp: Date.now(),
-          hypothesisId: "A",
-          runId: "post-fix",
-        }),
-      }).catch(() => {});
-      // #endregion
+    } catch {
       throw new Error(
         "Could not decode this audio format in your browser. Try uploading a WAV file.",
       );
@@ -52,38 +79,24 @@ export async function analyzeBirdAudio(
     type: "audio/wav",
   });
 
-  // #region agent log
-  fetch("http://127.0.0.1:7456/ingest/d1ed4e7d-8058-4fd1-84fd-9eb9e206300f", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "X-Debug-Session-Id": "d00018" },
-    body: JSON.stringify({
-      sessionId: "d00018",
-      location: "mlApi.ts:analyzeBirdAudio",
-      message: "upload payload",
-      data: {
-        originalBlobType: blob.type,
-        originalSize: blob.size,
-        uploadSize: uploadBlob.size,
-        ext,
-        filename: file.name,
-        mlBase: ML_BASE,
-      },
-      timestamp: Date.now(),
-      hypothesisId: "D",
-      runId: "post-fix",
-    }),
-  }).catch(() => {});
-  // #endregion
-
   const form = new FormData();
   form.append("audio", file);
 
   onStep?.("extracting");
 
-  const response = await fetch(`${ML_BASE}/analyze`, {
-    method: "POST",
-    body: form,
-  });
+  let response: Response;
+  try {
+    response = await fetchWithTimeout(
+      `${base}/analyze`,
+      { method: "POST", body: form },
+      ANALYZE_TIMEOUT_MS,
+    );
+  } catch (err) {
+    if (err instanceof Error && err.message === "ML_TIMEOUT") {
+      throw err;
+    }
+    throw new Error("Failed to fetch");
+  }
 
   onStep?.("detecting_bird");
 
@@ -99,21 +112,6 @@ export async function analyzeBirdAudio(
       typeof data.detail === "string"
         ? data.detail
         : (data as { error?: string }).error || `Analysis failed (${response.status})`;
-    // #region agent log
-    fetch("http://127.0.0.1:7456/ingest/d1ed4e7d-8058-4fd1-84fd-9eb9e206300f", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "X-Debug-Session-Id": "d00018" },
-      body: JSON.stringify({
-        sessionId: "d00018",
-        location: "mlApi.ts:analyzeBirdAudio",
-        message: "analyze error response",
-        data: { status: response.status, detail, raw: data },
-        timestamp: Date.now(),
-        hypothesisId: "A",
-        runId: "post-fix",
-      }),
-    }).catch(() => {});
-    // #endregion
     throw new Error(detail);
   }
 
@@ -127,7 +125,12 @@ export async function analyzeBirdAudio(
 
 export async function checkMlServiceHealth(): Promise<boolean> {
   try {
-    const res = await fetch(`${ML_BASE}/health`);
+    assertMlConfigured();
+    const res = await fetchWithTimeout(
+      `${mlBaseUrl()}/health`,
+      { method: "GET" },
+      HEALTH_TIMEOUT_MS,
+    );
     if (!res.ok) return false;
     const data = await res.json();
     return Boolean(data.ok && data.modelsLoaded);

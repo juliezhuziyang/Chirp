@@ -90,7 +90,12 @@ export function DashboardSidebar() {
       </div>
 
       {user && (
-        <div className="px-3 py-4 flex items-center gap-3 border-b border-orange-50">
+        <button
+          type="button"
+          onClick={() => navigate("/dashboard/my-bird")}
+          className="px-3 py-4 flex items-center gap-3 border-b border-orange-50 w-full text-left hover:bg-orange-50/80 transition-colors"
+          aria-label={t("dashboard.myBirdProfile")}
+        >
           <UserAvatar avatar={user.avatar} size="md" />
           {expanded && (
             <div className="min-w-0">
@@ -100,7 +105,7 @@ export function DashboardSidebar() {
               </p>
             </div>
           )}
-        </div>
+        </button>
       )}
 
       <nav className="flex-1 py-3 px-2 space-y-1 overflow-y-auto">

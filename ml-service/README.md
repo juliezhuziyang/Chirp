@@ -47,7 +47,7 @@ No separate build command is required; the Dockerfile runs `pip install -r requi
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `PORT` | Auto-set by Railway | Do not override unless debugging |
-| `CHIRP_ML_CORS` | Recommended | Comma-separated frontend origins, e.g. `https://your-app.com,http://localhost:5173`. Defaults to `*` if unset |
+| `CHIRP_ML_CORS` | Recommended | Comma-separated frontend origins **with no spaces**, e.g. `https://your-app.com,https://www.your-app.com`. Use `*` only for quick testing (credentials are disabled when `*` is used). |
 
 See `ml-service/.env.example` for a template.
 

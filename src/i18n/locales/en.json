@@ -453,6 +453,8 @@
     "invalidResponse": "Invalid response from analysis service.",
     "modelsNotLoaded": "The analysis service is not ready. Start the ML service (see ml-service/README.md) and run train_models.py.",
     "networkError": "Cannot reach the analysis service. Check that VITE_ML_SERVICE_URL is set for production, or start the local ML service for development.",
+    "mlUrlMissing": "Analysis is not configured. Set VITE_ML_SERVICE_URL in Vercel to your Render ML URL, then redeploy the frontend.",
+    "mlTimeout": "The analysis service took too long to respond. On Render free tier it may be waking up — wait about a minute and try again.",
     "microphoneDenied": "Microphone access denied or unavailable.",
     "analysisFailed": "Analysis failed ({{status}})"
   },
