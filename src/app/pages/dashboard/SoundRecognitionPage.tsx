@@ -11,7 +11,7 @@ export default function SoundRecognitionPage() {
   const { t } = useTranslation();
   const { user } = useAuth();
   const needOptions = useNeedOptions();
-  const needLabels = user?.needs
+  const needLabels = (user?.needs ?? [])
     .map((id) => needOptions.find((n) => n.id === id)?.label)
     .filter(Boolean);
 

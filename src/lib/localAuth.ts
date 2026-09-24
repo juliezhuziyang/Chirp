@@ -127,7 +127,6 @@ export function localUpdateProfile(
     bird: updates.bird !== undefined ? updates.bird : user.bird,
     needs: updates.needs !== undefined ? updates.needs : user.needs,
     avatar: updates.avatar !== undefined ? updates.avatar : (user.avatar ?? defaultAvatar(userId)),
-    onboardingCompleted: user.onboardingCompleted,
     updatedAt: new Date().toISOString(),
   };
 

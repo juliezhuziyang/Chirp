@@ -313,10 +313,10 @@ export default function MyBirdProfilePage() {
               </div>
             ) : (
               <div className="flex flex-wrap gap-2">
-                {user.needs.length === 0 ? (
+                {(user.needs ?? []).length === 0 ? (
                   <span className="text-gray-500">{t("common.dash")}</span>
                 ) : (
-                  user.needs.map((id) => (
+                  (user.needs ?? []).map((id) => (
                     <span
                       key={id}
                       className="text-sm bg-orange-100 text-orange-800 px-3 py-1 rounded-full"

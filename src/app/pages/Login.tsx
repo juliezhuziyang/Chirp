@@ -37,7 +37,9 @@ export default function Login() {
     setIsSubmitting(true);
     try {
       const loggedIn = await login(email, password);
-      const dest = from || (loggedIn.onboardingCompleted ? "/dashboard/sound" : "/onboarding");
+      const dest = loggedIn.onboardingCompleted
+        ? (from?.startsWith("/dashboard") ? from : "/dashboard/sound")
+        : "/onboarding";
       navigate(dest, { replace: true });
     } catch (err) {
       const msg = err instanceof Error ? err.message : t("auth.errors.signInFailed");

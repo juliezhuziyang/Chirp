@@ -184,10 +184,11 @@ export async function saveOnboarding(data: OnboardingData): Promise<UserProfile>
   if (useLocalFallback) {
     const current = localAuth.localGetUser(token);
     if (!current) throw new Error("Not authenticated");
-    return localAuth.localUpdateProfile(current.id, {
+    const updated = localAuth.localUpdateProfile(current.id, {
       ...payload,
       onboardingCompleted: true,
     });
+    return { ...updated, onboardingCompleted: true };
   }
 
   try {
@@ -199,15 +200,16 @@ export async function saveOnboarding(data: OnboardingData): Promise<UserProfile>
       },
       true,
     );
-    return result.user;
+    return { ...result.user, onboardingCompleted: true };
   } catch {
     useLocalFallback = true;
     const current = localAuth.localGetUser(token);
     if (!current) throw new Error("Not authenticated");
-    return localAuth.localUpdateProfile(current.id, {
+    const updated = localAuth.localUpdateProfile(current.id, {
       ...payload,
       onboardingCompleted: true,
     });
+    return { ...updated, onboardingCompleted: true };
   }
 }
 
