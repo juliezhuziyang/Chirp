@@ -1,8 +1,11 @@
 import { motion } from "motion/react";
 import { useTranslation } from "react-i18next";
-import { Bird, Sparkles } from "lucide-react";
 import type { MlEmotionScores } from "../../../lib/types";
-import { interpretEmotionScores } from "../../../lib/emotionInterpretation";
+import {
+  interpretEmotionScores,
+  radarChartValues,
+  shouldOfferSocialIntervention,
+} from "../../../lib/emotionInterpretation";
 import { localizeEmotionInterpretation } from "../../../lib/localizeEmotion";
 import { EmotionRadarChart } from "./EmotionRadarChart";
 import { SocialSoundIntervention } from "./SocialSoundIntervention";
@@ -26,104 +29,122 @@ export function PredictionResultCard({
   analysisAudio,
 }: PredictionResultCardProps) {
   const { t } = useTranslation();
-  const interpretation = localizeEmotionInterpretation(interpretEmotionScores(scores), t);
+  const raw = interpretEmotionScores(scores);
+  const interpretation = localizeEmotionInterpretation(raw, t);
+  const offerSound = shouldOfferSocialIntervention(scores, raw);
+  const normalized = radarChartValues(scores);
+
+  const dimensions = [
+    {
+      label: t("prediction.valence"),
+      shortLabel: t("chart.valence"),
+      value: scores.valence,
+      fill: normalized.valence,
+      detail: `${interpretation.valence.label} — ${interpretation.valence.description}`,
+    },
+    {
+      label: t("prediction.arousal"),
+      shortLabel: t("chart.arousal"),
+      value: scores.arousal,
+      fill: normalized.arousal,
+      detail: `${interpretation.arousal.label} — ${interpretation.arousal.description}`,
+    },
+    {
+      label: t("prediction.socialEngagement"),
+      shortLabel: t("chart.social"),
+      value: scores.socialEngagement,
+      fill: normalized.socialEngagement,
+      detail: `${interpretation.social.label} — ${interpretation.social.description}`,
+    },
+  ];
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
+    <motion.article
+      initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mt-6 space-y-5 text-left"
+      className="text-left"
     >
-      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 border border-green-300 text-green-800 text-sm font-semibold">
-        <Bird className="w-4 h-4" />
-        {t("prediction.birdDetected")}
-        {birdProbability != null && (
-          <span className="text-green-700 font-normal">
-            {t("prediction.confidence", { percent: Math.round(birdProbability * 100) })}
-          </span>
-        )}
+      <header className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2 pb-4 border-b border-stone-200">
+        <div className="min-w-0">
+          <p className="text-xs font-medium tracking-wide uppercase text-stone-500">
+            {t("prediction.detectedState")}
+          </p>
+          <h2 className="text-2xl sm:text-3xl font-semibold text-stone-900 mt-1 leading-tight">
+            {interpretation.combinedState}
+          </h2>
+          <p className="text-stone-600 mt-2 max-w-2xl text-sm leading-relaxed">
+            {interpretation.summary}
+          </p>
+        </div>
+        <p className="text-sm text-stone-500 shrink-0">
+          {t("prediction.birdDetected")}
+          {birdProbability != null && (
+            <span className="text-stone-700 font-medium">
+              {" "}
+              {t("prediction.confidence", { percent: Math.round(birdProbability * 100) })}
+            </span>
+          )}
+        </p>
+      </header>
+
+      <div className="grid lg:grid-cols-[17rem_minmax(0,1fr)] gap-8 lg:gap-10 pt-5 items-start">
+        <div>
+          <EmotionRadarChart scores={scores} compact />
+          <div className="mt-2 space-y-3">
+            {dimensions.map((dim) => (
+              <div key={dim.label}>
+                <div className="flex items-baseline justify-between gap-3 text-sm">
+                  <span className="text-stone-600">{dim.shortLabel}</span>
+                  <span className="tabular-nums font-medium text-stone-900">{dim.value.toFixed(1)}</span>
+                </div>
+                <div className="mt-1 h-1 bg-stone-200 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-orange-500 rounded-full"
+                    style={{ width: `${Math.round(dim.fill * 100)}%` }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="min-w-0 space-y-5">
+          <p className="text-sm text-stone-700 leading-relaxed">{interpretation.explanation}</p>
+          <dl className="space-y-3">
+            {dimensions.map((dim) => (
+              <div key={dim.label} className="grid sm:grid-cols-[9.5rem_minmax(0,1fr)] gap-x-4 gap-y-0.5">
+                <dt className="text-sm font-medium text-stone-900">{dim.label}</dt>
+                <dd className="text-sm text-stone-600 leading-relaxed">{dim.detail}</dd>
+              </div>
+            ))}
+          </dl>
+          <div>
+            <h3 className="text-sm font-medium text-stone-900 mb-2">{t("prediction.careAdvice")}</h3>
+            <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-1.5">
+              {interpretation.careAdvice.map((tip) => (
+                <li key={tip} className="text-sm text-stone-600 leading-relaxed pl-3 border-l border-orange-300">
+                  {tip}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
 
-      <div className="rounded-2xl border border-orange-100 bg-gradient-to-br from-orange-50/80 to-amber-50/80 p-4">
-        <EmotionRadarChart scores={scores} />
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <ScoreTile label={t("prediction.valence")} value={scores.valence} range={t("prediction.rangeValence")} />
-        <ScoreTile label={t("prediction.arousal")} value={scores.arousal} range={t("prediction.rangeArousal")} />
-        <ScoreTile
-          label={t("prediction.socialEngagement")}
-          value={scores.socialEngagement}
-          range={t("prediction.rangeSocial")}
+      <div
+        className={`mt-6 pt-6 border-t border-stone-200 grid gap-4 items-start ${
+          offerSound ? "lg:grid-cols-2" : ""
+        }`}
+      >
+        <SocialSoundIntervention scores={scores} embedded />
+        <AnalysisFeedback
+          scores={scores}
+          predictedState={interpretation.combinedState}
+          birdProbability={birdProbability}
+          analysisAudio={analysisAudio}
+          embedded
         />
       </div>
-
-      <div className="rounded-2xl border-2 border-orange-200 bg-white p-5 shadow-sm">
-        <div className="flex items-center gap-2 text-orange-600 mb-2">
-          <Sparkles className="w-4 h-4" />
-          <span className="text-sm font-semibold">{t("prediction.detectedState")}</span>
-        </div>
-        <p className="text-xl font-bold text-gray-900">{interpretation.combinedState}</p>
-        <p className="text-gray-600 mt-2 text-sm">{interpretation.summary}</p>
-      </div>
-
-      <div className="rounded-2xl bg-orange-50/70 border border-orange-100 p-5 space-y-3">
-        <h4 className="font-semibold text-gray-900">{t("prediction.detailedInterpretation")}</h4>
-        <p className="text-sm text-gray-700">{interpretation.explanation}</p>
-        <ul className="text-sm text-gray-600 space-y-1">
-          <li>
-            <strong>{t("prediction.dimensionValence")}</strong> {interpretation.valence.label} —{" "}
-            {interpretation.valence.description}
-          </li>
-          <li>
-            <strong>{t("prediction.dimensionArousal")}</strong> {interpretation.arousal.label} —{" "}
-            {interpretation.arousal.description}
-          </li>
-          <li>
-            <strong>{t("prediction.dimensionSocial")}</strong> {interpretation.social.label} —{" "}
-            {interpretation.social.description}
-          </li>
-        </ul>
-      </div>
-
-      <div className="rounded-2xl bg-amber-50 border border-amber-200 p-5">
-        <h4 className="font-semibold text-amber-900 mb-3">{t("prediction.careAdvice")}</h4>
-        <ul className="space-y-2">
-          {interpretation.careAdvice.map((tip) => (
-            <li key={tip} className="flex gap-2 text-sm text-amber-950">
-              <span className="text-orange-500 font-bold">•</span>
-              <span>{tip}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <SocialSoundIntervention scores={scores} />
-
-      <AnalysisFeedback
-        scores={scores}
-        predictedState={interpretation.combinedState}
-        birdProbability={birdProbability}
-        analysisAudio={analysisAudio}
-      />
-    </motion.div>
-  );
-}
-
-function ScoreTile({
-  label,
-  value,
-  range,
-}: {
-  label: string;
-  value: number;
-  range: string;
-}) {
-  return (
-    <div className="rounded-xl bg-white border border-orange-100 p-3 text-center">
-      <p className="text-xs text-gray-500">{label}</p>
-      <p className="text-2xl font-bold text-gray-900 mt-1">{value.toFixed(1)}</p>
-      <p className="text-xs text-gray-400 mt-0.5">{range}</p>
-    </div>
+    </motion.article>
   );
 }

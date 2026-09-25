@@ -17,6 +17,7 @@ export default function ContributePage() {
   const [feedback, setFeedback] = useState("");
   const [feedbackSent, setFeedbackSent] = useState(false);
   const [feedbackLoading, setFeedbackLoading] = useState(false);
+  const [feedbackError, setFeedbackError] = useState("");
 
   const toggleEmotion = (e: string) => {
     setEmotions((prev) =>
@@ -64,12 +65,14 @@ export default function ContributePage() {
   const handleFeedback = async () => {
     if (!feedback.trim()) return;
     setFeedbackLoading(true);
+    setFeedbackError("");
+    setFeedbackSent(false);
     try {
       await socialApi.submitFeedback(feedback.trim());
       setFeedbackSent(true);
       setFeedback("");
     } catch {
-      setError(t("contribute.errors.feedbackFailed"));
+      setFeedbackError(t("contribute.errors.feedbackFailed"));
     } finally {
       setFeedbackLoading(false);
     }
@@ -186,6 +189,9 @@ export default function ContributePage() {
         />
         {feedbackSent && (
           <p className="text-green-600 text-sm mt-2">{t("contribute.feedbackThanks")}</p>
+        )}
+        {feedbackError && (
+          <p className="text-red-600 text-sm mt-2">{feedbackError}</p>
         )}
         <button
           type="button"

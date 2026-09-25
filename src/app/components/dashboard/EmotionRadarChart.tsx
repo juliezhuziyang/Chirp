@@ -14,9 +14,10 @@ import { radarChartValues } from "../../../lib/emotionInterpretation";
 
 interface EmotionRadarChartProps {
   scores: MlEmotionScores;
+  compact?: boolean;
 }
 
-export function EmotionRadarChart({ scores }: EmotionRadarChartProps) {
+export function EmotionRadarChart({ scores, compact = false }: EmotionRadarChartProps) {
   const { t } = useTranslation();
   const [animated, setAnimated] = useState(false);
   const normalized = radarChartValues(scores);
@@ -45,7 +46,7 @@ export function EmotionRadarChart({ scores }: EmotionRadarChartProps) {
       initial={{ opacity: 0, scale: 0.96 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
-      className="w-full h-72 sm:h-80"
+      className={compact ? "w-full h-52" : "w-full h-72 sm:h-80"}
     >
       <ResponsiveContainer width="100%" height="100%">
         <RadarChart data={data} cx="50%" cy="50%" outerRadius="72%">
@@ -74,11 +75,13 @@ export function EmotionRadarChart({ scores }: EmotionRadarChartProps) {
           </defs>
         </RadarChart>
       </ResponsiveContainer>
-      <div className="flex justify-center gap-4 text-xs text-gray-500 mt-1">
-        <span>{t("chart.legendValence")}</span>
-        <span>{t("chart.legendArousal")}</span>
-        <span>{t("chart.legendSocial")}</span>
-      </div>
+      {!compact && (
+        <div className="flex justify-center gap-4 text-xs text-gray-500 mt-1">
+          <span>{t("chart.legendValence")}</span>
+          <span>{t("chart.legendArousal")}</span>
+          <span>{t("chart.legendSocial")}</span>
+        </div>
+      )}
     </motion.div>
   );
 }

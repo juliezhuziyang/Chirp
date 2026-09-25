@@ -244,7 +244,9 @@
     "postPlaceholder": "Share something with the community...",
     "attachmentReady": "Attachment ready",
     "noPosts": "No posts yet. Be the first to share!",
-    "commentPlaceholder": "Write a comment..."
+    "commentPlaceholder": "Write a comment...",
+    "postFailed": "Couldn't publish this post. Sign in again, then retry.",
+    "attachmentTooLarge": "That file is too large to attach. Try one under 1.5MB."
   },
   "contribute": {
     "title": "Contribute",
@@ -274,7 +276,7 @@
       "noEmotion": "Please select at least one emotion",
       "videoTooLarge": "Video must be under 8MB for upload",
       "submissionFailed": "Submission failed. Ensure RESEND_API_KEY is set on the server.",
-      "feedbackFailed": "Failed to send feedback"
+      "feedbackFailed": "Couldn't send feedback. Sign in again, then retry."
     }
   },
   "about": {

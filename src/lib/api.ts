@@ -78,6 +78,7 @@ export async function register(
   password: string,
   name: string,
 ): Promise<{ user: UserProfile; token: string }> {
+  useLocalFallback = false;
   try {
     const result = await tryRemote(() =>
       apiRequest<{ user: UserProfile; token: string }>("/auth/register", {
@@ -107,6 +108,7 @@ export async function login(
   email: string,
   password: string,
 ): Promise<{ user: UserProfile; token: string }> {
+  useLocalFallback = false;
   try {
     const result = await tryRemote(() =>
       apiRequest<{ user: UserProfile; token: string }>("/auth/login", {
@@ -155,7 +157,12 @@ export async function fetchCurrentUser(): Promise<UserProfile | null> {
       true,
     );
     return result.user;
-  } catch {
+  } catch (e) {
+    const err = e as Error & { isApiError?: boolean };
+    if (err.isApiError && /unauthorized|401/i.test(err.message)) {
+      setStoredToken(null);
+      return null;
+    }
     useLocalFallback = true;
     return localAuth.localGetUser(token);
   }

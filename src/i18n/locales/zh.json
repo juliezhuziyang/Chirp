@@ -244,7 +244,9 @@
     "postPlaceholder": "与社区分享一些内容...",
     "attachmentReady": "附件已就绪",
     "noPosts": "还没有帖子，来做第一个分享的人吧！",
-    "commentPlaceholder": "写评论..."
+    "commentPlaceholder": "写评论...",
+    "postFailed": "发帖失败。请重新登录后再试。",
+    "attachmentTooLarge": "附件太大，请换一张 1.5MB 以内的文件。"
   },
   "contribute": {
     "title": "贡献数据",
@@ -274,7 +276,7 @@
       "noEmotion": "请至少选择一种情绪",
       "videoTooLarge": "视频须小于 8MB 才能上传",
       "submissionFailed": "提交失败。请确保服务器已设置 RESEND_API_KEY。",
-      "feedbackFailed": "发送反馈失败"
+      "feedbackFailed": "发送反馈失败。请重新登录后再试。"
     }
   },
   "about": {

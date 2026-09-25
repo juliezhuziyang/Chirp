@@ -14,6 +14,7 @@ interface AnalysisFeedbackProps {
   predictedState: string;
   birdProbability?: number;
   analysisAudio?: AnalysisAudioAttachment | null;
+  embedded?: boolean;
 }
 
 export function AnalysisFeedback({
@@ -21,6 +22,7 @@ export function AnalysisFeedback({
   predictedState,
   birdProbability,
   analysisAudio,
+  embedded = false,
 }: AnalysisFeedbackProps) {
   const { t } = useTranslation();
   const emotionOptions = useContributeEmotions();
@@ -91,7 +93,11 @@ export function AnalysisFeedback({
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      className="rounded-2xl border-2 border-orange-200 bg-white p-5 shadow-sm"
+      className={
+        embedded
+          ? "h-full rounded-xl border border-stone-200 bg-stone-50/80 p-4"
+          : "rounded-2xl border-2 border-orange-200 bg-white p-5 shadow-sm"
+      }
     >
       <div className="flex items-center gap-2 text-orange-600 mb-4">
         <MessageCircle className="w-5 h-5" />

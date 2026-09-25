@@ -152,6 +152,30 @@ export function RecordingArea() {
     ? t(`recording.steps.${analysisStep}`)
     : t("recording.analyzingDefault");
 
+  if (status === "complete" && scores) {
+    return (
+      <section className="w-full">
+        <div className="flex justify-end mb-3">
+          <button
+            type="button"
+            onClick={() => {
+              setStatus("idle");
+              resetResults();
+            }}
+            className="text-sm font-medium text-stone-500 hover:text-orange-700"
+          >
+            {t("common.recordAgain")}
+          </button>
+        </div>
+        <PredictionResultCard
+          scores={scores}
+          birdProbability={birdProbability}
+          analysisAudio={analysisAudio}
+        />
+      </section>
+    );
+  }
+
   return (
     <motion.section
       initial={{ opacity: 0, y: 30 }}
@@ -215,16 +239,6 @@ export function RecordingArea() {
                   <AlertCircle className="w-8 h-8 text-amber-600" />
                   <p className="text-sm leading-relaxed">{analysisMessage}</p>
                 </div>
-              </motion.div>
-            )}
-
-            {status === "complete" && scores && (
-              <motion.div key="results" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                <PredictionResultCard
-                  scores={scores}
-                  birdProbability={birdProbability}
-                  analysisAudio={analysisAudio}
-                />
               </motion.div>
             )}
 

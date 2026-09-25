@@ -12,9 +12,10 @@ import { InterventionAudioPlayer } from "./InterventionAudioPlayer";
 
 interface SocialSoundInterventionProps {
   scores: MlEmotionScores;
+  embedded?: boolean;
 }
 
-export function SocialSoundIntervention({ scores }: SocialSoundInterventionProps) {
+export function SocialSoundIntervention({ scores, embedded = false }: SocialSoundInterventionProps) {
   const { t } = useTranslation();
   const interpretation = interpretEmotionScores(scores);
   const show = shouldOfferSocialIntervention(scores, interpretation);
@@ -44,9 +45,15 @@ export function SocialSoundIntervention({ scores }: SocialSoundInterventionProps
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mt-8 pt-6 border-t-2 border-dashed border-teal-200"
+      className={embedded ? "h-full" : "mt-8 pt-6 border-t-2 border-dashed border-teal-200"}
     >
-      <div className="rounded-2xl border border-teal-200 bg-gradient-to-br from-teal-50/90 to-emerald-50/80 p-5 sm:p-6 shadow-sm">
+      <div
+        className={
+          embedded
+            ? "h-full rounded-xl border border-stone-200 bg-stone-50/80 p-4"
+            : "rounded-2xl border border-teal-200 bg-gradient-to-br from-teal-50/90 to-emerald-50/80 p-5 sm:p-6 shadow-sm"
+        }
+      >
         <div className="flex items-start gap-3">
           <div className="p-2 rounded-xl bg-teal-100 text-teal-700 shrink-0">
             <Heart className="w-5 h-5" />

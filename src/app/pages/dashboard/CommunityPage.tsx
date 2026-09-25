@@ -20,6 +20,7 @@ export default function CommunityPage() {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(true);
   const [posting, setPosting] = useState(false);
+  const [postError, setPostError] = useState("");
   const [profile, setProfile] = useState<PublicUserSummary | null>(null);
   const [profileOpen, setProfileOpen] = useState(false);
   const [relationship, setRelationship] = useState<FriendRelationshipStatus>("none");
@@ -67,6 +68,7 @@ export default function CommunityPage() {
   const handlePost = async () => {
     if (!text.trim() && !pendingImage && !pendingAudio) return;
     setPosting(true);
+    setPostError("");
     try {
       await socialApi.createCommunityPost({
         text,
@@ -78,6 +80,8 @@ export default function CommunityPage() {
       setPendingAudio(null);
       load();
       notifyActivityFeedUpdated();
+    } catch {
+      setPostError(t("community.postFailed"));
     } finally {
       setPosting(false);
     }
@@ -92,6 +96,11 @@ export default function CommunityPage() {
   };
 
   const readFile = (file: File, cb: (url: string) => void) => {
+    if (file.size > 1.5 * 1024 * 1024) {
+      setPostError(t("community.attachmentTooLarge"));
+      return;
+    }
+    setPostError("");
     const reader = new FileReader();
     reader.onload = () => cb(reader.result as string);
     reader.readAsDataURL(file);
@@ -115,6 +124,7 @@ export default function CommunityPage() {
         {(pendingImage || pendingAudio) && (
           <p className="text-xs text-orange-600 mb-2">{t("community.attachmentReady")}</p>
         )}
+        {postError && <p className="text-sm text-red-600 mb-2">{postError}</p>}
         <div className="flex items-center justify-between pt-3 border-t border-orange-50">
           <div className="flex gap-2">
             <button
