@@ -227,7 +227,7 @@
     "next": "下一步",
     "backToReport": "回到报告",
     "kicker": "根据这次报告",
-    "clipIntro": "这是另一只牡丹鹦鹉的真实录音。放给你的鸟听就好，这段是按它现在的状态挑的。",
+    "clipIntro": "这是另一只牡丹鹦鹉的真实录音。选它是因为实验里别的鸟听到这段之后的反应。",
     "tryAnother": "换一段",
     "playbackProgress": "播放进度",
     "playError": "这段播放不了。",
@@ -237,11 +237,11 @@
     "modes": {
       "echo": {
         "title": "回应它",
-        "reason": "它现在是「{{state}}」，正在找互动。放一段会接话的鸟叫，和它呼应。"
+        "reason": "它现在是「{{state}}」，正在找互动。放一段实验里别的鸟听到之后会回应的叫声，和它呼应。"
       },
       "cheer": {
         "title": "哄一哄",
-        "reason": "它现在是「{{state}}」，听起来有些低落。放一段温暖、开心的叫声，帮它振奋起来。"
+        "reason": "它现在是「{{state}}」，听起来有些低落。放一段实验里别的鸟听到之后会转过来听的叫声。"
       },
       "rest": {
         "title": "让它休息",
@@ -255,26 +255,12 @@
       },
       "companion": {
         "title": "想陪它的话，可以放一段",
-        "reason": "它现在是「{{state}}」，状态平稳。一段友好的叫声是可选的陪伴，不是它现在需要的。"
+        "reason": "它现在是「{{state}}」，状态平稳。一段别的鸟会停下来听的叫声是可选的陪伴，不是它现在需要的。"
       }
     },
-    "clips": {
-      "Bobby_callforresponse_1401": "呼唤回应",
-      "Bobby_callandresponse_1521": "一呼一应",
-      "Aster_respondtocallreadytofly_1331": "应答后准备起飞",
-      "Fizzy_respondtomate_1402": "回应伴侣",
-      "Duke_respondtohuman_1331": "回应主人",
-      "Fizzy_readytoflyrespondingtocall_1318": "听到呼唤后准备起飞",
-      "Aster_callforresponse_1356": "呼唤回应",
-      "Fizzy_responding_1330": "正在回应",
-      "Cleo_lovinghappywithduke_1359": "和 Duke 在一起时亲昵又开心",
-      "Eko_happyflying_1325": "开心飞行时的叫声",
-      "Cleo_happylovingconversationwithduke_1348": "和 Duke 的愉快亲昵交谈",
-      "Cleo_happytofindhome_1350": "找到家时的开心叫声",
-      "Eko_happychirping_1320": "开心啁啾",
-      "Cleo_lovingtalkingtoduke_1652": "和 Duke 的亲昵交谈",
-      "Duke_happygreeting_2000": "开心问候",
-      "Cleo_happycurious_2000": "开心又好奇"
+    "reactions": {
+      "echo": "别的鸟听到之后回应了",
+      "cheer": "别的鸟听到之后转过来听了"
     }
   },
   "friends": {

@@ -7,24 +7,30 @@ export interface PlaybackClip {
   audioUrl: string;
 }
 
-/** Curated from the playback experiment. Lower within-receiver score spread came first. */
+/**
+ * Chosen from listener reactions in the playback experiment, not from words in the filename.
+ * Echo: at least two of three listeners answered (responded, approached, or called back),
+ * none shut down or alarmed, and they oriented toward the sound.
+ * Cheer: listeners turned and attended, without that answer, and without shutting down.
+ * At most two clips per bird. See notebooks/08_playback_response_model.ipynb.
+ */
 export const PLAYBACK_CLIPS: PlaybackClip[] = [
-  clip("echo", "Bobby_callforresponse_1401", "Bobby"),
-  clip("echo", "Bobby_callandresponse_1521", "Bobby"),
-  clip("echo", "Aster_respondtocallreadytofly_1331", "Aster"),
+  clip("echo", "Cleo_alarmresponding_1848", "Cleo"),
+  clip("echo", "Aster_callingfizzy_1336", "Aster"),
+  clip("echo", "Bobby_readytofly_0905", "Bobby"),
+  clip("echo", "Eko_landingcallmate_1343", "Eko"),
+  clip("echo", "Cleo_readytofly_1831", "Cleo"),
+  clip("echo", "Aster_warnmate_1326", "Aster"),
   clip("echo", "Fizzy_respondtomate_1402", "Fizzy"),
-  clip("echo", "Duke_respondtohuman_1331", "Duke"),
-  clip("echo", "Fizzy_readytoflyrespondingtocall_1318", "Fizzy"),
-  clip("echo", "Aster_callforresponse_1356", "Aster"),
-  clip("echo", "Fizzy_responding_1330", "Fizzy"),
-  clip("cheer", "Cleo_lovinghappywithduke_1359", "Cleo"),
-  clip("cheer", "Eko_happyflying_1325", "Eko"),
-  clip("cheer", "Cleo_happylovingconversationwithduke_1348", "Cleo"),
-  clip("cheer", "Cleo_happytofindhome_1350", "Cleo"),
-  clip("cheer", "Eko_happychirping_1320", "Eko"),
-  clip("cheer", "Cleo_lovingtalkingtoduke_1652", "Cleo"),
-  clip("cheer", "Duke_happygreeting_2000", "Duke"),
-  clip("cheer", "Cleo_happycurious_2000", "Cleo"),
+  clip("echo", "Bobby_callmate_1857", "Bobby"),
+  clip("cheer", "Bobby_callmate_1314", "Bobby"),
+  clip("cheer", "Bobby_callmate_1326", "Bobby"),
+  clip("cheer", "Fizzy_talkingtomateandhuman_1323", "Fizzy"),
+  clip("cheer", "Duke_drinkwater_1333", "Duke"),
+  clip("cheer", "Cleo_alonewalking_1527", "Cleo"),
+  clip("cheer", "Aster_curiousobservingneighbor_1200", "Aster"),
+  clip("cheer", "Duke_gotohuman_1841", "Duke"),
+  clip("cheer", "Eko_tellingbobbyshescoming_1352", "Eko"),
 ];
 
 function clip(pool: PlaybackPool, id: string, bird: string): PlaybackClip {

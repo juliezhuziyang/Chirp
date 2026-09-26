@@ -227,7 +227,7 @@
     "next": "Next",
     "backToReport": "Back to report",
     "kicker": "For this report",
-    "clipIntro": "This is a real recording of another lovebird. Play it for yours — it was chosen to fit how they sound right now.",
+    "clipIntro": "This is a real recording of another lovebird. It was chosen because of how other birds reacted when they heard it.",
     "tryAnother": "Try another",
     "playbackProgress": "Playback progress",
     "playError": "Could not play this clip.",
@@ -237,11 +237,11 @@
     "modes": {
       "echo": {
         "title": "Answer them back",
-        "reason": "They sound {{state}}. They are reaching out, so play a bird that answers in the same spirit."
+        "reason": "They sound {{state}}. They are reaching out, so play a call that other lovebirds answered."
       },
       "cheer": {
         "title": "A sound to lift them",
-        "reason": "They sound {{state}}. A warm, happy call can cheer them up."
+        "reason": "They sound {{state}}. Play a call that made other lovebirds turn and listen."
       },
       "rest": {
         "title": "Let them rest",
@@ -255,26 +255,12 @@
       },
       "companion": {
         "title": "A friendly bird, if you want",
-        "reason": "They sound {{state}}. A gentle call is optional company, not something they need right now."
+        "reason": "They sound {{state}}. A call that other birds listened to is optional company, not something they need right now."
       }
     },
-    "clips": {
-      "Bobby_callforresponse_1401": "call for response",
-      "Bobby_callandresponse_1521": "call and response",
-      "Aster_respondtocallreadytofly_1331": "answers a call, ready to fly",
-      "Fizzy_respondtomate_1402": "answers their mate",
-      "Duke_respondtohuman_1331": "answers a person",
-      "Fizzy_readytoflyrespondingtocall_1318": "answers a call, ready to fly",
-      "Aster_callforresponse_1356": "call for response",
-      "Fizzy_responding_1330": "answering",
-      "Cleo_lovinghappywithduke_1359": "happy and affectionate with Duke",
-      "Eko_happyflying_1325": "happy while flying",
-      "Cleo_happylovingconversationwithduke_1348": "happy, affectionate conversation with Duke",
-      "Cleo_happytofindhome_1350": "happy to find home",
-      "Eko_happychirping_1320": "happy chirping",
-      "Cleo_lovingtalkingtoduke_1652": "affectionate talk with Duke",
-      "Duke_happygreeting_2000": "happy greeting",
-      "Cleo_happycurious_2000": "happy and curious"
+    "reactions": {
+      "echo": "other birds answered when they heard it",
+      "cheer": "other birds turned toward it and listened"
     }
   },
   "friends": {

@@ -126,7 +126,7 @@ export function PlaybackResponse({ scores }: PlaybackResponseProps) {
                   {clip.bird}
                   <span className="font-normal text-stone-600">
                     {" · "}
-                    {t(`playback.clips.${clip.id}`)}
+                    {t(`playback.reactions.${clip.pool}`)}
                   </span>
                 </p>
                 <div className="mt-3 max-w-md">
