@@ -1,7 +1,7 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useTranslation } from "react-i18next";
-import { Mic, Upload, Square, Sparkles, Bird, AlertCircle } from "lucide-react";
+import { Mic, Upload, Square, Sparkles, Bird, AlertCircle, ArrowLeft, ArrowRight } from "lucide-react";
 import type { AnalysisStatus, MlEmotionScores } from "../../../lib/types";
 import { analyzeBirdAudio, type AnalysisStep } from "../../../lib/mlApi";
 import { interpretEmotionScores } from "../../../lib/emotionInterpretation";
@@ -9,6 +9,7 @@ import * as socialApi from "../../../lib/socialApi";
 import { notifyActivityFeedUpdated } from "../../../lib/activityFeed";
 import { WaveformVisualizer } from "./WaveformVisualizer";
 import { PredictionResultCard } from "./PredictionResultCard";
+import { PlaybackResponse } from "./PlaybackResponse";
 
 function translateAnalysisError(message: string, t: (key: string) => string): string {
   if (message === "ML_SERVICE_URL_MISSING" || message.includes("ML_SERVICE_URL_MISSING")) {
@@ -49,6 +50,7 @@ export function RecordingArea() {
     mime: string;
   } | null>(null);
   const [notBird, setNotBird] = useState(false);
+  const [resultStep, setResultStep] = useState<"report" | "response">("report");
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -60,6 +62,7 @@ export function RecordingArea() {
     setAnalysisAudio(null);
     setNotBird(false);
     setAnalysisStep(null);
+    setResultStep("report");
   };
 
   const processAudio = useCallback(async (blob: Blob, sourceFilename?: string) => {
@@ -154,8 +157,20 @@ export function RecordingArea() {
 
   if (status === "complete" && scores) {
     return (
-      <section className="w-full">
-        <div className="flex justify-end mb-3">
+      <section className={`w-full ${resultStep === "report" ? "pb-24" : ""}`}>
+        <div className="flex items-center justify-between gap-3 mb-3">
+          {resultStep === "response" ? (
+            <button
+              type="button"
+              onClick={() => setResultStep("report")}
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-stone-500 hover:text-orange-700"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              {t("playback.backToReport")}
+            </button>
+          ) : (
+            <span />
+          )}
           <button
             type="button"
             onClick={() => {
@@ -167,11 +182,28 @@ export function RecordingArea() {
             {t("common.recordAgain")}
           </button>
         </div>
-        <PredictionResultCard
-          scores={scores}
-          birdProbability={birdProbability}
-          analysisAudio={analysisAudio}
-        />
+        {resultStep === "report" ? (
+          <>
+            <PredictionResultCard
+              scores={scores}
+              birdProbability={birdProbability}
+              analysisAudio={analysisAudio}
+            />
+            <button
+              type="button"
+              onClick={() => {
+                setResultStep("response");
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              className="fixed bottom-6 right-6 z-30 inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-stone-900 text-white text-base font-semibold shadow-xl hover:bg-orange-600 transition-colors"
+            >
+              {t("playback.next")}
+              <ArrowRight className="w-5 h-5" />
+            </button>
+          </>
+        ) : (
+          <PlaybackResponse scores={scores} />
+        )}
       </section>
     );
   }

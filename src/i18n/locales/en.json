@@ -223,6 +223,59 @@
     "playError": "Could not play this clip.",
     "audioUnavailable": "Audio file unavailable. Try another clip."
   },
+  "playback": {
+    "next": "Next",
+    "backToReport": "Back to report",
+    "kicker": "For this report",
+    "experimentClip": "Playback experiment",
+    "tryAnother": "Try another",
+    "playbackProgress": "Playback progress",
+    "playError": "Could not play this clip.",
+    "audioUnavailable": "This recording is unavailable. Try another.",
+    "disclaimer": "This suggestion follows the vocal pattern in the report. It is not a medical or behavioral diagnosis. Watch your bird, and skip playback if they seem unsettled.",
+    "modes": {
+      "echo": {
+        "title": "Answer them back",
+        "reason": "They sound {{state}}. They are reaching out, so play a bird that answers in the same spirit."
+      },
+      "cheer": {
+        "title": "A sound to lift them",
+        "reason": "They sound {{state}}. A warm, happy call can cheer them up."
+      },
+      "rest": {
+        "title": "Let them rest",
+        "reason": "They sound {{state}}, and their energy is very low.",
+        "body": "Don't play audio. Give them a quiet place to rest, and wait until they have energy again."
+      },
+      "quiet": {
+        "title": "Keep it quiet",
+        "reason": "They sound {{state}}. They are already worked up.",
+        "body": "Don't add another bird call on top of that. Keep the room quiet until they settle."
+      },
+      "companion": {
+        "title": "A friendly bird, if you want",
+        "reason": "They sound {{state}}. A gentle call is optional company, not something they need right now."
+      }
+    },
+    "clips": {
+      "Bobby_callforresponse_1401": "call for response",
+      "Bobby_callandresponse_1521": "call and response",
+      "Aster_respondtocallreadytofly_1331": "answers a call, ready to fly",
+      "Fizzy_respondtomate_1402": "answers their mate",
+      "Duke_respondtohuman_1331": "answers a person",
+      "Fizzy_readytoflyrespondingtocall_1318": "answers a call, ready to fly",
+      "Aster_callforresponse_1356": "call for response",
+      "Fizzy_responding_1330": "answering",
+      "Cleo_lovinghappywithduke_1359": "happy and affectionate with Duke",
+      "Eko_happyflying_1325": "happy while flying",
+      "Cleo_happylovingconversationwithduke_1348": "happy, affectionate conversation with Duke",
+      "Cleo_happytofindhome_1350": "happy to find home",
+      "Eko_happychirping_1320": "happy chirping",
+      "Cleo_lovingtalkingtoduke_1652": "affectionate talk with Duke",
+      "Duke_happygreeting_2000": "happy greeting",
+      "Cleo_happycurious_2000": "happy and curious"
+    }
+  },
   "friends": {
     "title": "Friends",
     "subtitle": "Stay connected with other bird parents",

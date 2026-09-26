@@ -4,11 +4,9 @@ import type { MlEmotionScores } from "../../../lib/types";
 import {
   interpretEmotionScores,
   radarChartValues,
-  shouldOfferSocialIntervention,
 } from "../../../lib/emotionInterpretation";
 import { localizeEmotionInterpretation } from "../../../lib/localizeEmotion";
 import { EmotionRadarChart } from "./EmotionRadarChart";
-import { SocialSoundIntervention } from "./SocialSoundIntervention";
 import { AnalysisFeedback } from "./AnalysisFeedback";
 
 export interface AnalysisAudioAttachment {
@@ -31,7 +29,6 @@ export function PredictionResultCard({
   const { t } = useTranslation();
   const raw = interpretEmotionScores(scores);
   const interpretation = localizeEmotionInterpretation(raw, t);
-  const offerSound = shouldOfferSocialIntervention(scores, raw);
   const normalized = radarChartValues(scores);
 
   const dimensions = [
@@ -131,12 +128,7 @@ export function PredictionResultCard({
         </div>
       </div>
 
-      <div
-        className={`mt-6 pt-6 border-t border-stone-200 grid gap-4 items-start ${
-          offerSound ? "lg:grid-cols-2" : ""
-        }`}
-      >
-        <SocialSoundIntervention scores={scores} embedded />
+      <div className="mt-6 pt-6 border-t border-stone-200">
         <AnalysisFeedback
           scores={scores}
           predictedState={interpretation.combinedState}

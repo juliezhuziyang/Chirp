@@ -223,6 +223,59 @@
     "playError": "无法播放此片段。",
     "audioUnavailable": "音频文件不可用，请换一段试试。"
   },
+  "playback": {
+    "next": "下一步",
+    "backToReport": "回到报告",
+    "kicker": "根据这次报告",
+    "experimentClip": "Playback 实验录音",
+    "tryAnother": "换一段",
+    "playbackProgress": "播放进度",
+    "playError": "这段播放不了。",
+    "audioUnavailable": "这段录音不可用，换一段试试。",
+    "disclaimer": "这是根据这次叫声报告给出的建议，不是医疗或行为诊断。请看着鸟儿的反应；如果它显得不安，就不要放。",
+    "modes": {
+      "echo": {
+        "title": "回应它",
+        "reason": "它现在是「{{state}}」，正在找互动。放一段会接话的鸟叫，和它呼应。"
+      },
+      "cheer": {
+        "title": "哄一哄",
+        "reason": "它现在是「{{state}}」，听起来有些低落。放一段温暖、开心的叫声，帮它振奋起来。"
+      },
+      "rest": {
+        "title": "让它休息",
+        "reason": "它现在是「{{state}}」，精神很弱。",
+        "body": "不要放音频。给它一个安静的地方休息，等它自己有精神了再互动。"
+      },
+      "quiet": {
+        "title": "先别加声音",
+        "reason": "它现在是「{{state}}」，已经比较激动。",
+        "body": "不要再叠一层鸟叫。先把房间放安静，等它缓和下来。"
+      },
+      "companion": {
+        "title": "想陪它的话，可以放一段",
+        "reason": "它现在是「{{state}}」，状态平稳。一段友好的叫声是可选的陪伴，不是它现在需要的。"
+      }
+    },
+    "clips": {
+      "Bobby_callforresponse_1401": "呼唤回应",
+      "Bobby_callandresponse_1521": "一呼一应",
+      "Aster_respondtocallreadytofly_1331": "应答后准备起飞",
+      "Fizzy_respondtomate_1402": "回应伴侣",
+      "Duke_respondtohuman_1331": "回应主人",
+      "Fizzy_readytoflyrespondingtocall_1318": "听到呼唤后准备起飞",
+      "Aster_callforresponse_1356": "呼唤回应",
+      "Fizzy_responding_1330": "正在回应",
+      "Cleo_lovinghappywithduke_1359": "和 Duke 在一起时亲昵又开心",
+      "Eko_happyflying_1325": "开心飞行时的叫声",
+      "Cleo_happylovingconversationwithduke_1348": "和 Duke 的愉快亲昵交谈",
+      "Cleo_happytofindhome_1350": "找到家时的开心叫声",
+      "Eko_happychirping_1320": "开心啁啾",
+      "Cleo_lovingtalkingtoduke_1652": "和 Duke 的亲昵交谈",
+      "Duke_happygreeting_2000": "开心问候",
+      "Cleo_happycurious_2000": "开心又好奇"
+    }
+  },
   "friends": {
     "title": "好友",
     "subtitle": "与其他鸟主人保持联系",
