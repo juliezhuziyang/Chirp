@@ -207,7 +207,7 @@ export default function About() {
               </div>
 
               <a
-                href="https://github.com/Julie-Zhu24/Chirp"
+                href="https://github.com/juliezhuziyang/Chirp"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 bg-gray-900 text-white px-6 py-3 rounded-full font-semibold hover:bg-gray-800 transition-colors shadow-lg"

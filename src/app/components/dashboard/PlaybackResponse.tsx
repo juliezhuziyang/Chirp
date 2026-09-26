@@ -111,54 +111,54 @@ export function PlaybackResponse({ scores }: PlaybackResponseProps) {
               onEnded={() => setPlaying(false)}
               onError={() => setError(t("playback.audioUnavailable"))}
             />
-            <p className="text-xs text-stone-500">{t("playback.experimentClip")}</p>
-            <p className="mt-1 text-sm font-medium text-stone-900">
-              {clip.bird}
-              <span className="font-normal text-stone-600">
-                {" · "}
-                {t(`playback.clips.${clip.id}`)}
-              </span>
-            </p>
-
-            <div className="mt-4 flex flex-wrap items-center gap-3">
+            <div className="flex items-center gap-5">
               <button
                 type="button"
                 onClick={togglePlay}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 text-white text-sm font-semibold shadow-sm hover:shadow-md transition-shadow"
+                className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-orange-500 to-amber-400 text-white shadow-lg inline-flex items-center justify-center shrink-0 hover:shadow-xl transition-shadow"
+                aria-label={playing ? t("common.pause") : t("common.play")}
               >
-                {playing ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                {playing ? t("common.pause") : t("common.play")}
+                {playing ? <Pause className="w-8 h-8 sm:w-10 sm:h-10" /> : <Play className="w-8 h-8 sm:w-10 sm:h-10 ml-1" />}
               </button>
-              <button
-                type="button"
-                onClick={tryAnother}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-orange-200 text-sm font-medium text-orange-800 hover:bg-orange-50"
-              >
-                <RefreshCw className="w-4 h-4" />
-                {t("playback.tryAnother")}
-              </button>
-            </div>
-
-            <div className="mt-4 max-w-md">
-              <input
-                type="range"
-                min={0}
-                max={duration || 100}
-                step={0.1}
-                value={currentTime}
-                onChange={(e) => {
-                  const audio = audioRef.current;
-                  if (!audio) return;
-                  const seekTime = Number(e.target.value);
-                  audio.currentTime = seekTime;
-                  setCurrentTime(seekTime);
-                }}
-                className="w-full h-1.5 accent-orange-500 cursor-pointer"
-                aria-label={t("playback.playbackProgress")}
-              />
-              <p className="mt-1 text-xs tabular-nums text-stone-500">
-                {formatTime(currentTime)} / {formatTime(duration)}
-              </p>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm text-stone-600 leading-relaxed">{t("playback.clipIntro")}</p>
+                <p className="mt-1 text-sm font-medium text-stone-900">
+                  {clip.bird}
+                  <span className="font-normal text-stone-600">
+                    {" · "}
+                    {t(`playback.clips.${clip.id}`)}
+                  </span>
+                </p>
+                <div className="mt-3 max-w-md">
+                  <input
+                    type="range"
+                    min={0}
+                    max={duration || 100}
+                    step={0.1}
+                    value={currentTime}
+                    onChange={(e) => {
+                      const audio = audioRef.current;
+                      if (!audio) return;
+                      const seekTime = Number(e.target.value);
+                      audio.currentTime = seekTime;
+                      setCurrentTime(seekTime);
+                    }}
+                    className="w-full h-1.5 accent-orange-500 cursor-pointer"
+                    aria-label={t("playback.playbackProgress")}
+                  />
+                  <p className="mt-1 text-xs tabular-nums text-stone-500">
+                    {formatTime(currentTime)} / {formatTime(duration)}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={tryAnother}
+                  className="mt-2 inline-flex items-center gap-1.5 text-sm font-medium text-orange-700 hover:text-orange-900"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                  {t("playback.tryAnother")}
+                </button>
+              </div>
             </div>
             {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
           </div>
@@ -170,7 +170,7 @@ export function PlaybackResponse({ scores }: PlaybackResponseProps) {
 
         <p className="mt-5 text-xs leading-relaxed text-stone-400 max-w-2xl">{t("playback.disclaimer")}</p>
         <a
-          href="https://github.com/Julie-Zhu24/Chirp"
+          href="https://github.com/juliezhuziyang/Chirp"
           target="_blank"
           rel="noopener noreferrer"
           className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-orange-700 hover:text-orange-800"
