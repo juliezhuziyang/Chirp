@@ -233,6 +233,7 @@
     "playError": "这段播放不了。",
     "audioUnavailable": "这段录音不可用，换一段试试。",
     "disclaimer": "这是根据这次叫声报告给出的建议，不是医疗或行为诊断。请看着鸟儿的反应；如果它显得不安，就不要放。",
+    "researchLink": "如果你对这项研究是怎么做的感兴趣，可以到 GitHub 上看",
     "modes": {
       "echo": {
         "title": "回应它",

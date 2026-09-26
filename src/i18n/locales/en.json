@@ -233,6 +233,7 @@
     "playError": "Could not play this clip.",
     "audioUnavailable": "This recording is unavailable. Try another.",
     "disclaimer": "This suggestion follows the vocal pattern in the report. It is not a medical or behavioral diagnosis. Watch your bird, and skip playback if they seem unsettled.",
+    "researchLink": "Curious how this research was done? See it on GitHub",
     "modes": {
       "echo": {
         "title": "Answer them back",

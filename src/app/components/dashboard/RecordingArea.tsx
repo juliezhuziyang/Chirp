@@ -195,7 +195,7 @@ export function RecordingArea() {
                 setResultStep("response");
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className="fixed bottom-6 right-6 z-30 inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-stone-900 text-white text-base font-semibold shadow-xl hover:bg-orange-600 transition-colors"
+              className="fixed bottom-6 right-6 z-30 inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 text-white text-sm font-semibold shadow-md hover:shadow-lg transition-shadow"
             >
               {t("playback.next")}
               <ArrowRight className="w-5 h-5" />
