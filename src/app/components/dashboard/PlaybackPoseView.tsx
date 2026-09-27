@@ -1,8 +1,8 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   POSE_FPS,
-  POSE_ONSET_S,
+  cageVideoUrl,
   poseEndSeconds,
   type ClipPose,
   type PosePoint,
@@ -19,8 +19,8 @@ const EDGES: Array<[number, number]> = [
 ];
 
 const TRACK_COLOR: Record<PoseTrack["side"], string> = {
-  left: "#e07a3d",
-  right: "#0f766e",
+  left: "#fb923c",
+  right: "#2dd4bf",
 };
 
 function formatScore(value: number | null, missing: string) {
@@ -61,104 +61,136 @@ function sampleTrack(track: PoseTrack, time: number): PosePoint[] {
   return heldFrame(frames, i0);
 }
 
-function clipBounds(pose: ClipPose) {
-  let minX = Infinity;
-  let minY = Infinity;
-  let maxX = -Infinity;
-  let maxY = -Infinity;
+function birdCrop(pose: ClipPose, frameWidth: number, frameHeight: number) {
+  // Birds sit in the upper half. Follow the keypoints only when one is tracked lower,
+  // so a bad cluster cannot crop the bird out of the picture.
+  let bottom = frameHeight * 0.46;
   for (const track of pose.tracks) {
     for (const frame of track.frames) {
       for (const point of frame) {
-        if (!point) continue;
-        minX = Math.min(minX, point[0]);
-        minY = Math.min(minY, point[1]);
-        maxX = Math.max(maxX, point[0]);
-        maxY = Math.max(maxY, point[1]);
+        if (point) bottom = Math.max(bottom, point[1] + 70);
       }
     }
   }
-  if (!Number.isFinite(minX)) return { x0: 0, y0: 0, x1: 1, y1: 1 };
-  const pad = 40;
-  let x0 = minX - pad;
-  let y0 = minY - pad;
-  let x1 = maxX + pad;
-  let y1 = maxY + pad;
-  const minSpan = 180;
-  if (x1 - x0 < minSpan) {
-    const mid = (x0 + x1) / 2;
-    x0 = mid - minSpan / 2;
-    x1 = mid + minSpan / 2;
-  }
-  if (y1 - y0 < minSpan) {
-    const mid = (y0 + y1) / 2;
-    y0 = mid - minSpan / 2;
-    y1 = mid + minSpan / 2;
-  }
-  return { x0, y0, x1, y1 };
+  return { x: 0, y: 0, w: frameWidth, h: Math.min(frameHeight, bottom) };
 }
 
-function toCanvas(
-  x: number,
-  y: number,
+function drawPose(
+  ctx: CanvasRenderingContext2D,
+  video: HTMLVideoElement,
+  pose: ClipPose,
+  time: number,
   width: number,
   height: number,
-  bounds: { x0: number; y0: number; x1: number; y1: number },
+  frameWidth: number,
+  frameHeight: number,
 ) {
-  return [
-    ((x - bounds.x0) / (bounds.x1 - bounds.x0)) * width,
-    ((y - bounds.y0) / (bounds.y1 - bounds.y0)) * height,
-  ];
-}
-
-function drawPose(ctx: CanvasRenderingContext2D, pose: ClipPose, time: number, width: number, height: number) {
+  const crop = birdCrop(pose, frameWidth, frameHeight);
   ctx.clearRect(0, 0, width, height);
-  ctx.fillStyle = "#fffaf5";
-  ctx.fillRect(0, 0, width, height);
+  if (video.readyState >= 2) {
+    ctx.drawImage(video, crop.x, crop.y, crop.w, crop.h, 0, 0, width, height);
+  } else {
+    ctx.fillStyle = "#1c1917";
+    ctx.fillRect(0, 0, width, height);
+  }
+  const scaleX = width / crop.w;
+  const scaleY = height / crop.h;
 
-  const bounds = clipBounds(pose);
   for (const track of pose.tracks) {
-    const pts = sampleTrack(track, time).map((point) =>
-      point ? toCanvas(point[0], point[1], width, height, bounds) : null,
+    const raw = sampleTrack(track, time);
+    const placed = raw.filter((point): point is [number, number] => point != null);
+    if (placed.length < 2) continue;
+    const xs = placed.map((point) => point[0]);
+    const ys = placed.map((point) => point[1]);
+    const span = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
+    if (span < 70) continue;
+    const pts = raw.map((point) =>
+      point ? [(point[0] - crop.x) * scaleX, (point[1] - crop.y) * scaleY] : null,
     );
-    const color = TRACK_COLOR[track.side] ?? "#78716c";
-    ctx.strokeStyle = color;
-    ctx.fillStyle = color;
-    ctx.lineWidth = 3;
+    const color = TRACK_COLOR[track.side] ?? "#ffffff";
     ctx.lineCap = "round";
-    ctx.beginPath();
-    for (const [from, to] of EDGES) {
-      const a = pts[from];
-      const b = pts[to];
-      if (!a || !b) continue;
-      ctx.moveTo(a[0], a[1]);
-      ctx.lineTo(b[0], b[1]);
-    }
-    ctx.stroke();
+    ctx.lineJoin = "round";
+    const stroke = () => {
+      ctx.beginPath();
+      for (const [from, to] of EDGES) {
+        const a = pts[from];
+        const b = pts[to];
+        if (!a || !b) continue;
+        ctx.moveTo(a[0], a[1]);
+        ctx.lineTo(b[0], b[1]);
+      }
+      ctx.stroke();
+    };
+    ctx.strokeStyle = "rgba(255,255,255,0.9)";
+    ctx.lineWidth = 6;
+    stroke();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 3;
+    stroke();
     for (const point of pts) {
       if (!point) continue;
+      ctx.fillStyle = "white";
       ctx.beginPath();
-      ctx.arc(point[0], point[1], 5, 0, Math.PI * 2);
+      ctx.arc(point[0], point[1], 5.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(point[0], point[1], 3.5, 0, Math.PI * 2);
       ctx.fill();
     }
   }
 }
 
 interface PlaybackPoseViewProps {
+  clipId: string;
   pose: ClipPose;
   time: number;
+  playing: boolean;
+  onTime: (time: number) => void;
+  onEnded: () => void;
   onSeek: (time: number) => void;
 }
 
-export function PlaybackPoseView({ pose, time, onSeek }: PlaybackPoseViewProps) {
+export function PlaybackPoseView({
+  clipId,
+  pose,
+  time,
+  playing,
+  onTime,
+  onEnded,
+  onSeek,
+}: PlaybackPoseViewProps) {
   const { t } = useTranslation();
+  const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [frameSize, setFrameSize] = useState({ width: 720, height: 1280 });
+  const [videoTick, setVideoTick] = useState(0);
   const end = poseEndSeconds(pose);
   const missing = t("playback.pose.missing");
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (Math.abs(video.currentTime - time) > 0.35) {
+      video.currentTime = time;
+    }
+  }, [time, clipId]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (playing) {
+      void video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+  }, [playing]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const paint = () => {
+      const video = videoRef.current;
       const rect = canvas.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
       const width = Math.max(1, rect.width);
@@ -166,34 +198,63 @@ export function PlaybackPoseView({ pose, time, onSeek }: PlaybackPoseViewProps) 
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
       const ctx = canvas.getContext("2d");
-      if (!ctx) return;
+      if (!ctx || !video) return;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      drawPose(ctx, pose, time, width, height);
+      drawPose(ctx, video, pose, time, width, height, frameSize.width, frameSize.height);
     };
     paint();
     const observer = new ResizeObserver(paint);
     observer.observe(canvas);
     return () => observer.disconnect();
-  }, [pose, time]);
+  }, [pose, time, frameSize, videoTick]);
+
+  const crop = birdCrop(pose, frameSize.width, frameSize.height);
 
   return (
     <div className="mt-5 rounded-2xl border border-orange-100 bg-orange-50/40 p-3 sm:p-4">
       <p className="text-sm font-medium text-stone-900">{t("playback.pose.title")}</p>
       <p className="mt-1 text-xs leading-relaxed text-stone-500">{t("playback.pose.note")}</p>
-      <canvas
-        ref={canvasRef}
-        className="mt-3 h-52 w-full rounded-xl border border-orange-100 bg-[#fffaf5] sm:h-64"
-        role="img"
-        aria-label={t("playback.pose.canvas")}
-      />
+      <div className="mt-3 flex justify-center">
+        <div className="relative w-full max-w-xl">
+          <video
+            ref={videoRef}
+            src={cageVideoUrl(clipId)}
+            className="pointer-events-none absolute h-8 w-8 opacity-0"
+            muted
+            playsInline
+            preload="auto"
+            onLoadedMetadata={(event) => {
+              const video = event.currentTarget;
+              setFrameSize({
+                width: video.videoWidth || 720,
+                height: video.videoHeight || 1280,
+              });
+              if (Math.abs(video.currentTime - time) > 0.2) {
+                video.currentTime = time;
+              }
+            }}
+            onSeeked={() => setVideoTick((tick) => tick + 1)}
+            onLoadedData={() => setVideoTick((tick) => tick + 1)}
+            onTimeUpdate={(event) => onTime(event.currentTarget.currentTime)}
+            onEnded={onEnded}
+          />
+          <canvas
+            ref={canvasRef}
+            className="block w-full rounded-xl bg-stone-900"
+            style={{ aspectRatio: `${crop.w} / ${crop.h}` }}
+            role="img"
+            aria-label={t("playback.pose.canvas")}
+          />
+        </div>
+      </div>
       <label className="mt-3 block">
         <span className="text-xs text-stone-500">{t("playback.pose.progress")}</span>
         <input
           type="range"
-          min={POSE_ONSET_S}
+          min={0}
           max={end}
           step={0.1}
-          value={Math.min(Math.max(time, POSE_ONSET_S), end)}
+          value={Math.min(Math.max(time, 0), end)}
           onChange={(event) => onSeek(Number(event.target.value))}
           className="mt-1 w-full h-1.5 accent-orange-500 cursor-pointer"
           aria-label={t("playback.pose.progress")}

@@ -29,3 +29,7 @@ export function poseEndSeconds(pose: ClipPose): number {
   const frames = Math.max(...pose.tracks.map((track) => track.frames.length), 1);
   return (frames - 1) / POSE_FPS;
 }
+
+export function cageVideoUrl(id: string): string {
+  return `/video/cage/${id}.mp4`;
+}

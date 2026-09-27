@@ -48,6 +48,7 @@ export function PlaybackResponse({ scores }: PlaybackResponseProps) {
   const [duration, setDuration] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [poseTime, setPoseTime] = useState(POSE_ONSET_S);
+  const callArmed = useRef(true);
   const pose = clip ? poseForClip(clip.id) : null;
   const poseEnd = pose ? poseEndSeconds(pose) : POSE_ONSET_S;
 
@@ -57,45 +58,44 @@ export function PlaybackResponse({ scores }: PlaybackResponseProps) {
     setDuration(0);
     setError(null);
     setPoseTime(POSE_ONSET_S);
+    callArmed.current = true;
+    audioRef.current?.pause();
     audioRef.current?.load();
   }, [clip?.id]);
 
   useEffect(() => {
-    if (!playing || !pose) return;
-    let frame = 0;
-    let last = performance.now();
-    const step = (now: number) => {
-      const dt = Math.min(0.05, (now - last) / 1000);
-      last = now;
-      setPoseTime((current) => Math.min(poseEnd, current + dt));
-      frame = requestAnimationFrame(step);
-    };
-    frame = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(frame);
-  }, [playing, pose, poseEnd]);
-
-  useEffect(() => {
-    if (!playing || !pose || poseTime < poseEnd - 0.02) return;
-    audioRef.current?.pause();
-    setPlaying(false);
-  }, [playing, pose, poseTime, poseEnd]);
+    if (!pose) return;
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (!playing) {
+      audio.pause();
+      return;
+    }
+    if (poseTime < POSE_ONSET_S - 0.05) {
+      callArmed.current = true;
+      audio.pause();
+      audio.currentTime = 0;
+      return;
+    }
+    if (callArmed.current && poseTime >= POSE_ONSET_S) {
+      callArmed.current = false;
+      audio.currentTime = 0;
+      void audio.play().catch(() => setError(t("playback.playError")));
+    }
+  }, [playing, pose, poseTime, t]);
 
   const togglePlay = useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
     if (pose) {
       if (playing) {
-        audio.pause();
         setPlaying(false);
         return;
       }
-      const restart = poseTime >= poseEnd - 0.05;
-      if (restart) {
-        setPoseTime(POSE_ONSET_S);
+      if (poseTime >= poseEnd - 0.05) {
+        setPoseTime(0);
         audio.currentTime = 0;
-      }
-      if (restart || !audio.ended) {
-        void audio.play().catch(() => setError(t("playback.playError")));
+        callArmed.current = true;
       }
       setPlaying(true);
       return;
@@ -209,11 +209,19 @@ export function PlaybackResponse({ scores }: PlaybackResponseProps) {
                 </button>
               </div>
             </div>
-            {pose && (
+            {pose && clip && (
               <PlaybackPoseView
+                clipId={clip.id}
                 pose={pose}
                 time={poseTime}
+                playing={playing}
+                onTime={setPoseTime}
+                onEnded={() => {
+                  audioRef.current?.pause();
+                  setPlaying(false);
+                }}
                 onSeek={(next) => {
+                  if (next < POSE_ONSET_S - 0.05) callArmed.current = true;
                   setPoseTime(next);
                 }}
               />
