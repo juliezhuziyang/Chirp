@@ -264,14 +264,12 @@
     },
     "pose": {
       "title": "How the birds moved",
-      "note": "The cage video from when this call was played. Colored marks sit on the birds. This is not your bird. Left and right are the two perches.",
+      "note": "Scores from the birds in the cage when this call was played. This is not your bird. Left and right are the two perches.",
       "scale": "Zero is average among the birds we measured.",
       "movement": "Movement",
       "posture": "Posture",
       "direction": "Direction",
       "missing": "—",
-      "canvas": "Cage video with the birds marked",
-      "progress": "Cage video",
       "sides": {
         "left": "Left perch",
         "right": "Right perch"

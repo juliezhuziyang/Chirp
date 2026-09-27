@@ -15,7 +15,7 @@ import {
   poolForPlaybackMode,
   type PlaybackClip,
 } from "../../../lib/playbackCatalog";
-import { POSE_ONSET_S, poseEndSeconds, poseForClip } from "../../../lib/playbackPose";
+import { poseForClip } from "../../../lib/playbackPose";
 import { PlaybackPoseView } from "./PlaybackPoseView";
 
 interface PlaybackResponseProps {
@@ -47,65 +47,26 @@ export function PlaybackResponse({ scores }: PlaybackResponseProps) {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [error, setError] = useState<string | null>(null);
-  const [poseTime, setPoseTime] = useState(POSE_ONSET_S);
-  const callArmed = useRef(true);
   const pose = clip ? poseForClip(clip.id) : null;
-  const poseEnd = pose ? poseEndSeconds(pose) : POSE_ONSET_S;
 
   useEffect(() => {
     setPlaying(false);
     setCurrentTime(0);
     setDuration(0);
     setError(null);
-    setPoseTime(POSE_ONSET_S);
-    callArmed.current = true;
     audioRef.current?.pause();
     audioRef.current?.load();
   }, [clip?.id]);
 
-  useEffect(() => {
-    if (!pose) return;
-    const audio = audioRef.current;
-    if (!audio) return;
-    if (!playing) {
-      audio.pause();
-      return;
-    }
-    if (poseTime < POSE_ONSET_S - 0.05) {
-      callArmed.current = true;
-      audio.pause();
-      audio.currentTime = 0;
-      return;
-    }
-    if (callArmed.current && poseTime >= POSE_ONSET_S) {
-      callArmed.current = false;
-      audio.currentTime = 0;
-      void audio.play().catch(() => setError(t("playback.playError")));
-    }
-  }, [playing, pose, poseTime, t]);
-
   const togglePlay = useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
-    if (pose) {
-      if (playing) {
-        setPlaying(false);
-        return;
-      }
-      if (poseTime >= poseEnd - 0.05) {
-        setPoseTime(0);
-        audio.currentTime = 0;
-        callArmed.current = true;
-      }
-      setPlaying(true);
-      return;
-    }
     if (audio.paused) {
       void audio.play().catch(() => setError(t("playback.playError")));
     } else {
       audio.pause();
     }
-  }, [playing, pose, poseEnd, poseTime, t]);
+  }, [t]);
 
   const tryAnother = () => {
     if (!playbackModePlaysAudio(mode) || !clip) return;
@@ -147,17 +108,11 @@ export function PlaybackResponse({ scores }: PlaybackResponseProps) {
               ref={audioRef}
               src={clip.audioUrl}
               preload="metadata"
-              onPlay={() => {
-                if (!pose) setPlaying(true);
-              }}
-              onPause={() => {
-                if (!pose) setPlaying(false);
-              }}
+              onPlay={() => setPlaying(true)}
+              onPause={() => setPlaying(false)}
               onTimeUpdate={() => setCurrentTime(audioRef.current?.currentTime ?? 0)}
               onLoadedMetadata={() => setDuration(audioRef.current?.duration ?? 0)}
-              onEnded={() => {
-                if (!pose) setPlaying(false);
-              }}
+              onEnded={() => setPlaying(false)}
               onError={() => setError(t("playback.audioUnavailable"))}
             />
             <div className="flex items-center gap-5">
@@ -209,23 +164,7 @@ export function PlaybackResponse({ scores }: PlaybackResponseProps) {
                 </button>
               </div>
             </div>
-            {pose && clip && (
-              <PlaybackPoseView
-                clipId={clip.id}
-                pose={pose}
-                time={poseTime}
-                playing={playing}
-                onTime={setPoseTime}
-                onEnded={() => {
-                  audioRef.current?.pause();
-                  setPlaying(false);
-                }}
-                onSeek={(next) => {
-                  if (next < POSE_ONSET_S - 0.05) callArmed.current = true;
-                  setPoseTime(next);
-                }}
-              />
-            )}
+            {pose && <PlaybackPoseView pose={pose} />}
             {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
           </div>
         ) : (
